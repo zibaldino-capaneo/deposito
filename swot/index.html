@@ -1,1 +1,844 @@
 
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Attorno allo SWOT</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: tavolo da disegno — indice a sinistra, schede di metodo con banco di prova sotto ciascuna */
+:root{
+  --paper:#eef1ef; --sheet:#fbfcfb; --ink:#17262b; --muted:#56686c; --rule:#cdd7d4;
+  --petrol:#1f5560; --petrol-soft:#dce8e9; --ochre:#9a6418; --ochre-soft:#f3e7d2;
+  --crit:#a93526; --crit-soft:#f5dcd7; --warn:#8a6a12; --warn-soft:#f4ecd0; --ok:#2c6a44; --ok-soft:#dbeedf;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-ui:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#101719; --sheet:#172124; --ink:#e2eae8; --muted:#94a7a7; --rule:#2b3a3d;
+  --petrol:#7cbcc6; --petrol-soft:#1d3238; --ochre:#dba556; --ochre-soft:#33291a;
+  --crit:#e8806f; --crit-soft:#3a201c; --warn:#d8b85a; --warn-soft:#332c16; --ok:#79c795; --ok-soft:#1a3123;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#101719; --sheet:#172124; --ink:#e2eae8; --muted:#94a7a7; --rule:#2b3a3d;
+  --petrol:#7cbcc6; --petrol-soft:#1d3238; --ochre:#dba556; --ochre-soft:#33291a;
+  --crit:#e8806f; --crit-soft:#3a201c; --warn:#d8b85a; --warn-soft:#332c16; --ok:#79c795; --ok-soft:#1a3123;
+  color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5}
+*,*::before,*::after{box-sizing:border-box}
+a{color:var(--petrol)}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* testata */
+.mast{display:grid;gap:14px;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);font-weight:600;margin:0}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:0;text-wrap:balance}
+.dek{font-family:var(--f-display);font-size:1.18rem;max-width:62ch;margin:0;color:var(--ink)}
+.caso{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:.9rem;color:var(--muted)}
+.caso input{flex:1 1 260px;max-width:440px}
+
+/* impianto */
+.layout{display:grid;gap:32px;margin-top:28px}
+@media (min-width:960px){.layout{grid-template-columns:200px minmax(0,1fr)}}
+nav.indice{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--paper);padding-block:8px;overflow-x:auto}
+nav.indice ol{list-style:none;margin:0;padding:0;display:flex;gap:6px;white-space:nowrap}
+nav.indice .grp{display:none}
+nav.indice a{display:block;text-decoration:none;color:var(--ink);font-size:.95rem;padding:5px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--sheet)}
+nav.indice a:hover{border-color:var(--petrol);color:var(--petrol)}
+@media (min-width:960px){
+  nav.indice{align-self:start;top:calc(env(safe-area-inset-top,0px) + 16px);padding:0;overflow:visible}
+  nav.indice ol{flex-direction:column;gap:2px;white-space:normal}
+  nav.indice .grp{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+  nav.indice .grp:first-child{margin-top:0}
+  nav.indice a{border:0;background:none;padding:3px 0 3px 10px;border-left:2px solid transparent}
+  nav.indice a:hover{border-left-color:var(--ochre)}
+}
+main{min-width:0;display:grid;gap:56px}
+
+/* premessa */
+.premessa{display:grid;gap:18px}
+.premessa p{font-family:var(--f-display);font-size:1.06rem;max-width:66ch;margin:0}
+.premessa .principio{border-left:3px solid var(--ochre);padding:4px 0 4px 16px;font-style:italic}
+.mappa{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:12px}
+.mappa svg{display:block;min-width:640px;width:100%;height:auto}
+.mappa .nodo rect{fill:var(--sheet);stroke:var(--petrol);stroke-width:1.4}
+.mappa .nodo text{fill:var(--ink);font-family:var(--f-ui);font-size:14px}
+.mappa .nodo .sub{fill:var(--muted);font-size:11px}
+.mappa .hub rect{fill:var(--petrol)}
+.mappa .hub text{fill:var(--sheet);font-weight:600;font-size:18px}
+.mappa .altra rect{stroke:var(--muted);stroke-dasharray:4 3}
+.mappa .freccia{stroke:var(--ochre);stroke-width:1.6;fill:none}
+.mappa .tenue{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.mappa .etic{fill:var(--ochre);font-family:var(--f-mono);font-size:12px}
+.mappa a:hover rect{stroke:var(--ochre)}
+
+/* sezioni metodo */
+section.metodo{display:grid;gap:18px;scroll-margin-top:72px}
+.fam{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);font-weight:600;margin:0}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.6rem,3.2vw,2.1rem);line-height:1.15;margin:2px 0 0;text-wrap:balance}
+h2 .sigla{font-family:var(--f-mono);font-size:.55em;font-weight:500;color:var(--muted);margin-left:.4em;letter-spacing:.04em}
+.domanda{font-family:var(--f-display);font-style:italic;font-size:1.12rem;margin:6px 0 0;max-width:62ch}
+.scheda{display:grid;gap:14px 28px;margin:0}
+@media (min-width:720px){.scheda{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.scheda div{min-width:0}
+.scheda dt{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.scheda dd{margin:0;font-size:.95rem}
+.scheda ol{margin:0;padding-left:1.2em}
+.scheda li+li{margin-top:3px}
+
+.banco{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px;display:grid;gap:16px;min-width:0}
+.banco-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px}
+.banco-h h3{margin:0;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--petrol);font-weight:600}
+.banco-h p{margin:0;font-size:.85rem;color:var(--muted)}
+
+input[type=text],textarea,select{font:inherit;font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:6px 8px;width:100%}
+textarea{resize:vertical;min-height:64px;line-height:1.4}
+input[type=range]{width:100%;accent-color:var(--petrol)}
+button{font:inherit;font-size:.88rem;cursor:pointer;border-radius:3px;border:1px solid var(--petrol);background:var(--petrol);color:var(--sheet);padding:6px 12px;font-weight:600}
+button.sec{background:transparent;color:var(--petrol)}
+button.min{background:transparent;border-color:transparent;color:var(--muted);padding:2px 6px;font-weight:400}
+button.min:hover{color:var(--crit)}
+button:hover:not(.min){filter:brightness(1.08)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* liste a quadranti */
+.quad{display:grid;gap:12px}
+@media (min-width:640px){.quad{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.q{border:1px solid var(--rule);border-radius:3px;padding:12px;display:grid;gap:8px;align-content:start;min-width:0}
+.q h4{margin:0;font-size:.95rem;display:flex;justify-content:space-between;gap:8px}
+.q h4 small{font-weight:400;color:var(--muted);font-size:.78rem}
+.q.pos{border-top:3px solid var(--ok)}
+.q.neg{border-top:3px solid var(--crit)}
+.q.asp{border-top:3px solid var(--petrol)}
+ul.items{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+ul.items li{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;font-size:.93rem;padding:4px 0;border-bottom:1px dotted var(--rule)}
+ul.items li span{min-width:0;overflow-wrap:anywhere}
+.aggiungi{display:flex;gap:6px}
+.aggiungi input{flex:1;min-width:0}
+
+/* tabelle */
+.scorre{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--rule);font-size:.92rem}
+th{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tows{min-width:640px}
+.tows th ul{margin:4px 0 0;padding-left:1.1em;text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink);font-size:.85rem}
+.tows td textarea{min-height:90px}
+.tows .tag{font-family:var(--f-mono);color:var(--ochre);font-size:.8rem;display:block;margin-bottom:4px}
+
+/* PESTEL */
+.pestel-g{display:grid;gap:18px}
+@media (min-width:860px){.pestel-g{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}
+.fattore{display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 12px;padding:10px 0;border-bottom:1px solid var(--rule);align-items:center}
+.fattore .nome{font-weight:600}
+.fattore .cursori{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) 72px;gap:10px;align-items:center}
+.fattore label{font-size:.8rem;color:var(--muted);display:grid;gap:2px}
+.punteggio{font-family:var(--f-mono);text-align:right;font-size:1.05rem;padding:4px 6px;border-radius:3px}
+.punteggio.crit{background:var(--crit-soft);color:var(--crit);font-weight:500}
+.punteggio.med{background:var(--warn-soft);color:var(--warn)}
+.esito{display:grid;gap:12px;align-content:start}
+.indice-box{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.indice-box .grande{font-family:var(--f-mono);font-size:2.4rem;line-height:1}
+.indice-box .su{color:var(--muted)}
+.allarme{padding:10px 12px;border-radius:3px;font-size:.92rem}
+.allarme.crit{background:var(--crit-soft);color:var(--ink);border-left:3px solid var(--crit)}
+.allarme.ok{background:var(--ok-soft);border-left:3px solid var(--ok)}
+.matrice svg{width:100%;max-width:300px;height:auto;display:block}
+.matrice text{font-family:var(--f-ui);fill:var(--muted);font-size:10px}
+.matrice .lett{fill:var(--ink);font-family:var(--f-mono);font-size:11px;font-weight:500}
+.preset{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.soglia{display:flex;align-items:center;gap:8px;font-size:.88rem}
+.soglia input{width:140px}
+.nota-piccola{font-size:.85rem;color:var(--muted);margin:0;max-width:60ch}
+
+/* Porter */
+.porter-g{display:grid;gap:18px}
+@media (min-width:860px){.porter-g{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+.forza{display:grid;gap:6px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.forza .riga{display:grid;grid-template-columns:minmax(0,1fr) 120px 36px;gap:10px;align-items:center}
+.forza .riga strong{font-weight:600}
+.radar svg{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.radar .griglia{fill:none;stroke:var(--rule)}
+.radar .area{fill:var(--petrol);fill-opacity:.22;stroke:var(--petrol);stroke-width:2}
+.radar .area-forte{fill:var(--crit)}
+.radar text{font-family:var(--f-ui);font-size:11px;fill:var(--ink)}
+
+/* VRIO */
+.vrio{min-width:620px}
+.vrio td{vertical-align:middle}
+.vrio .chk{text-align:center}
+.vrio input[type=checkbox]{width:18px;height:18px;accent-color:var(--petrol)}
+.esito-v{font-size:.85rem;padding:3px 8px;border-radius:12px;white-space:nowrap;display:inline-block}
+.e0{background:var(--crit-soft);color:var(--crit)}
+.e1{background:var(--paper);color:var(--muted);border:1px solid var(--rule)}
+.e2{background:var(--warn-soft);color:var(--warn)}
+.e3{background:var(--ochre-soft);color:var(--ochre)}
+.e4{background:var(--ok-soft);color:var(--ok)}
+
+/* A'WOT */
+.awot-g{display:grid;gap:18px}
+@media (min-width:860px){.awot-g{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}}
+.coppia{display:grid;grid-template-columns:90px minmax(0,1fr) 90px;gap:10px;align-items:center;padding:6px 0}
+.coppia .sx{text-align:right}
+.coppia .leggi{grid-column:1/-1;text-align:center;font-size:.82rem;color:var(--muted);margin-top:-4px}
+.pesi{display:grid;gap:8px}
+.peso{display:grid;grid-template-columns:110px minmax(0,1fr) 52px;gap:8px;align-items:center;font-size:.92rem}
+.barra{height:14px;background:var(--paper);border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.barra i{display:block;height:100%;background:var(--petrol)}
+
+/* BMC */
+.bmc{display:grid;gap:8px}
+.bmc .blk{border:1px solid var(--rule);border-radius:3px;padding:8px;display:grid;gap:4px;align-content:start;min-width:0}
+.bmc .blk label{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.bmc .blk.cuore{border-color:var(--petrol);background:var(--petrol-soft)}
+.bmc textarea{min-height:90px;background:var(--sheet)}
+@media (min-width:860px){
+  .bmc{grid-template-columns:repeat(10,minmax(0,1fr));grid-template-areas:
+   "pa pa at at pv pv re re se se"
+   "pa pa ri ri pv pv ca ca se se"
+   "co co co co co rv rv rv rv rv"}
+  .bmc textarea{height:calc(100% - 22px)}
+}
+
+/* 4C */
+.c4{min-width:560px}
+.c4 td.freccia{color:var(--ochre);font-family:var(--f-mono);text-align:center;vertical-align:middle;width:30px}
+.c4 strong{display:block;font-size:.85rem;margin-bottom:4px}
+
+/* dati */
+.dati-g{display:grid;gap:16px}
+@media (min-width:860px){.dati-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dati-g textarea{font-family:var(--f-mono);font-size:.78rem;min-height:220px}
+.azioni{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stato{font-size:.85rem;color:var(--muted)}
+.stato.err{color:var(--crit)}
+
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--muted);font-size:.85rem}
+footer .firma{font-family:var(--f-display);font-style:italic;color:var(--ink);font-size:1rem}
+.fonti{font-size:.85rem;color:var(--muted);max-width:80ch}
+.fonti p{margin:.3em 0}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <p class="eyebrow">Lo Zibaldino · strumenti</p>
+    <h1>Attorno allo SWOT</h1>
+    <p class="dek">Nove metodi d'analisi strategica: da dove vengono, a quale domanda rispondono, dove ingannano. Sotto ciascuno, un banco di prova per usarlo subito. I dati restano nel tuo browser e si portano via in JSON.</p>
+    <div class="caso"><label for="caso">Caso in esame</label><input type="text" id="caso"></div>
+  </header>
+
+  <div class="layout">
+    <nav class="indice" aria-label="Indice">
+      <ol>
+        <li class="grp">Premessa</li>
+        <li><a href="#famiglia">La famiglia</a></li>
+        <li class="grp">Lo snodo</li>
+        <li><a href="#swot">SWOT</a></li>
+        <li class="grp">Riempire i quadranti</li>
+        <li><a href="#pestel">PESTEL</a></li>
+        <li><a href="#porter">Cinque forze</a></li>
+        <li><a href="#vrio">VRIO</a></li>
+        <li class="grp">Incrociare e pesare</li>
+        <li><a href="#tows">TOWS</a></li>
+        <li><a href="#awot">A'WOT</a></li>
+        <li class="grp">Variante</li>
+        <li><a href="#soar">SOAR</a></li>
+        <li class="grp">Altre famiglie</li>
+        <li><a href="#bmc">Business Model Canvas</a></li>
+        <li><a href="#c4">4C</a></li>
+        <li class="grp">Strumenti</li>
+        <li><a href="#dati">I tuoi dati</a></li>
+      </ol>
+    </nav>
+
+    <main>
+      <!-- PREMESSA -->
+      <section class="premessa metodo" id="famiglia">
+        <div>
+          <p class="fam">Premessa</p>
+          <h2>Una famiglia con uno snodo al centro</h2>
+        </div>
+        <p>Questi metodi vengono spesso presentati come discendenti dello SWOT. Non lo sono quasi mai. PESTEL, Cinque forze e VRIO sono nati altrove, in tempi e scuole diverse. Funzionano però come fornitori dello SWOT: i primi due riempiono il lato esterno (opportunità e minacce), il terzo il lato interno (forze e debolezze). TOWS e A'WOT lavorano a valle, il primo incrociando i quadranti e il secondo pesandoli. SOAR è una variante. Business Model Canvas e 4C appartengono ad altre famiglie e si incontrano con lo SWOT solo nell'uso.</p>
+        <div class="mappa" role="img" aria-label="Mappa dei metodi attorno allo SWOT">
+          <svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="pt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ochre)"/></marker></defs>
+            <path class="freccia" d="M195,85 C250,85 260,150 305,160" marker-end="url(#pt)"/>
+            <path class="freccia" d="M195,225 C250,225 260,180 305,172" marker-end="url(#pt)"/>
+            <text class="etic" x="226" y="148">O / T</text>
+            <path class="freccia" d="M560,165 L457,165" marker-end="url(#pt)"/>
+            <text class="etic" x="486" y="156">S / W</text>
+            <path class="freccia" d="M350,200 L305,253" marker-end="url(#pt)"/>
+            <path class="freccia" d="M410,200 L455,253" marker-end="url(#pt)"/>
+            <path class="tenue" d="M380,130 L380,70"/>
+            <a href="#swot"><g class="nodo hub"><rect x="310" y="130" width="140" height="70" rx="4"/><text x="380" y="171" text-anchor="middle">SWOT</text></g></a>
+            <a href="#pestel"><g class="nodo"><rect x="40" y="60" width="155" height="50" rx="3"/><text x="117" y="83" text-anchor="middle">PESTEL</text><text class="sub" x="117" y="100" text-anchor="middle">macroambiente</text></g></a>
+            <a href="#porter"><g class="nodo"><rect x="40" y="200" width="155" height="50" rx="3"/><text x="117" y="223" text-anchor="middle">Cinque forze</text><text class="sub" x="117" y="240" text-anchor="middle">settore</text></g></a>
+            <a href="#vrio"><g class="nodo"><rect x="560" y="140" width="155" height="50" rx="3"/><text x="637" y="163" text-anchor="middle">VRIO</text><text class="sub" x="637" y="180" text-anchor="middle">risorse interne</text></g></a>
+            <a href="#soar"><g class="nodo"><rect x="315" y="22" width="130" height="48" rx="3"/><text x="380" y="44" text-anchor="middle">SOAR</text><text class="sub" x="380" y="60" text-anchor="middle">variante</text></g></a>
+            <a href="#tows"><g class="nodo"><rect x="235" y="255" width="130" height="48" rx="3"/><text x="300" y="277" text-anchor="middle">TOWS</text><text class="sub" x="300" y="293" text-anchor="middle">incrocia</text></g></a>
+            <a href="#awot"><g class="nodo"><rect x="395" y="255" width="130" height="48" rx="3"/><text x="460" y="277" text-anchor="middle">A'WOT</text><text class="sub" x="460" y="293" text-anchor="middle">pesa</text></g></a>
+            <a href="#bmc"><g class="nodo altra"><rect x="560" y="30" width="155" height="48" rx="3"/><text x="637" y="52" text-anchor="middle">Business Model Canvas</text><text class="sub" x="637" y="68" text-anchor="middle">altra famiglia</text></g></a>
+            <a href="#c4"><g class="nodo altra"><rect x="560" y="255" width="155" height="48" rx="3"/><text x="637" y="277" text-anchor="middle">4C</text><text class="sub" x="637" y="293" text-anchor="middle">altra famiglia</text></g></a>
+          </svg>
+        </div>
+        <p>Lo SWOT è molto più diffuso che validato. Nel 1997 Hill e Westbrook, esaminando decine di casi aziendali, trovarono elenchi lunghi, generici, senza priorità, e quasi mai ripresi nelle decisioni successive. Gli strumenti che seguono servono anche a questo: costringere l'elenco a diventare una scelta.</p>
+        <p class="principio">Un principio attraversa tutti i banchi di prova: soglia prima, somma poi. Un punteggio complessivo dice quanto è difficile la situazione. Il profilo dice dove intervenire, e un fattore critico resta critico qualunque sia il totale.</p>
+      </section>
+
+      <!-- SWOT -->
+      <section class="metodo" id="swot">
+        <div>
+          <p class="fam">Lo snodo</p>
+          <h2>SWOT <span class="sigla">Strengths · Weaknesses · Opportunities · Threats</span></h2>
+          <p class="domanda">Che cosa ho dentro, che cosa trovo fuori, e che cosa gioca a favore o contro?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Anni Sessanta. La scuola di Harvard (Learned, Christensen, Andrews, Guth, <i>Business Policy</i>, 1965) e lo Stanford Research Institute, con l'attribuzione ad Albert Humphrey, se ne contendono la paternità.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Fissa il perimetro: un'impresa, un prodotto, un progetto.</li><li>Riempi i quattro quadranti con frasi concrete, verificabili.</li><li>Tieni pochi elementi per quadrante: cinque bastano.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Lo stesso fatto può stare in due quadranti a seconda del punto di vista. L'elenco da solo non decide nulla: per arrivare a una scelta serve il TOWS o un sistema di pesi.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Gli elementi inseriti qui alimentano TOWS e A'WOT.</p></div>
+          <div class="quad" id="swot-quad"></div>
+        </div>
+      </section>
+
+      <!-- PESTEL -->
+      <section class="metodo" id="pestel">
+        <div>
+          <p class="fam">Riempire i quadranti · lato esterno</p>
+          <h2>PESTEL <span class="sigla">Politico · Economico · Sociale · Tecnologico · Ambientale · Legale</span></h2>
+          <p class="domanda">Quali forze del contesto generale premono su di me, e quanto?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Francis Aguilar, <i>Scanning the Business Environment</i>, 1967, con lo schema ETPS. Poi PEST, quindi PESTEL o PESTLE con l'aggiunta di ambiente e diritto.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Per ogni area elenca i fattori che toccano davvero il caso.</li><li>Stima impatto e probabilità su scala 1–5.</li><li>Guarda prima i fattori oltre soglia, poi l'indice.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Moltiplicare due giudizi ordinali è una convenzione, non una misura: 5×1 e 1×5 danno lo stesso 5, cioè un evento grave e improbabile pesa quanto un fastidio certo (Cox, 2008). La griglia qui sotto tiene le due dimensioni separate per questo.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3>
+            <div class="preset"><span class="nota-piccola">Carica un profilo d'esempio:</span><button class="sec" id="pr-diffuso">Pressione diffusa</button><button class="sec" id="pr-concentrato">Pressione concentrata</button></div>
+          </div>
+          <p class="nota-piccola">I due profili d'esempio danno lo stesso indice, 60 su 100. Caricali uno dopo l'altro e guarda che cosa cambia nella colonna di destra.</p>
+          <div class="pestel-g">
+            <div id="pestel-righe"></div>
+            <div class="esito">
+              <div class="soglia"><label for="soglia">Soglia di criticità</label><input type="range" id="soglia" min="5" max="25" step="1"><span class="num" id="soglia-v"></span></div>
+              <div class="indice-box"><span class="grande" id="pestel-indice"></span><span class="su">/ 100 · indice di pressione</span></div>
+              <div id="pestel-allarme"></div>
+              <div class="matrice" id="pestel-matrice"></div>
+              <p class="nota-piccola">Indice = somma dei sei prodotti impatto×probabilità, divisa per il massimo possibile (6×25 = 150) e portata a 100.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PORTER -->
+      <section class="metodo" id="porter">
+        <div>
+          <p class="fam">Riempire i quadranti · lato esterno</p>
+          <h2>Cinque forze di Porter</h2>
+          <p class="domanda">Quanto valore riesco a trattenere nel mio settore, e chi me lo porta via?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Michael Porter, «How Competitive Forces Shape Strategy», <i>Harvard Business Review</i>, 1979. Viene dall'economia industriale, non dallo SWOT.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Definisci il settore con precisione: chi vende che cosa a chi.</li><li>Valuta l'intensità di ciascuna forza da 1 (debole) a 5 (forte).</li><li>Le forze forti diventano minacce nello SWOT, quelle deboli possibili opportunità.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>È una fotografia del settore, pensata per mercati con confini chiari. Rende poco dove i confini si spostano o dove la cooperazione conta quanto la concorrenza.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Più ampia l'area, più il settore è ostile.</p></div>
+          <div class="porter-g">
+            <div id="porter-righe"></div>
+            <div class="radar"><div id="porter-radar"></div><div id="porter-sintesi" class="nota-piccola"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VRIO -->
+      <section class="metodo" id="vrio">
+        <div>
+          <p class="fam">Riempire i quadranti · lato interno</p>
+          <h2>VRIO <span class="sigla">Valore · Rarità · Inimitabilità · Organizzazione</span></h2>
+          <p class="domanda">Questa risorsa mi dà un vantaggio, e quanto dura?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Jay Barney, 1991, nella <i>resource-based view</i>: prima come VRIN, poi come VRIO con l'aggiunta dell'organizzazione.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Elenca risorse e competenze, una per riga.</li><li>Rispondi alle quattro domande in ordine: un «no» ferma la catena.</li><li>Solo le risorse che superano tutte e quattro sono vere forze durature.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Le risposte sono sì/no e nascondono le sfumature. Il passaggio più trascurato è l'ultimo: una risorsa rara che l'organizzazione non sa usare è un vantaggio lasciato sul tavolo.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>L'esito si aggiorna man mano che rispondi.</p></div>
+          <div class="scorre"><table class="vrio"><thead><tr><th>Risorsa</th><th class="chk">V</th><th class="chk">R</th><th class="chk">I</th><th class="chk">O</th><th>Esito</th><th><span hidden>Togli</span></th></tr></thead><tbody id="vrio-corpo"></tbody></table></div>
+          <form class="aggiungi" id="vrio-add"><input type="text" id="vrio-nuova" placeholder="Nuova risorsa o competenza" aria-label="Nuova risorsa"><button>Aggiungi</button></form>
+        </div>
+      </section>
+
+      <!-- TOWS -->
+      <section class="metodo" id="tows">
+        <div>
+          <p class="fam">Incrociare e pesare</p>
+          <h2>Matrice TOWS</h2>
+          <p class="domanda">Che cosa faccio, combinando quello che ho con quello che trovo?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Heinz Weihrich, «The TOWS Matrix», <i>Long Range Planning</i>, 1982. È il figlio più diretto dello SWOT.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Parti dallo SWOT già compilato.</li><li>In ogni incrocio scrivi una strategia che usi elementi di entrambi i lati.</li><li>Scegli: non tutte le caselle vanno perseguite insieme.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Se le strategie non citano elementi precisi dello SWOT, la matrice è solo un secondo elenco. Ogni casella dovrebbe nominare almeno una voce per lato.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Righe e colonne arrivano dallo SWOT qui sopra.</p></div>
+          <div class="scorre"><table class="tows" id="tows-tab"></table></div>
+        </div>
+      </section>
+
+      <!-- A'WOT -->
+      <section class="metodo" id="awot">
+        <div>
+          <p class="fam">Incrociare e pesare</p>
+          <h2>A'WOT <span class="sigla">AHP + SWOT</span></h2>
+          <p class="domanda">Quale dei quattro quadranti deve contare di più nella decisione?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Kurttila, Pesonen, Kangas e Kajanus, 2000, nella pianificazione forestale finlandese. Innesta sullo SWOT l'Analytic Hierarchy Process di Thomas Saaty (1980). Parente stretto: lo SWOT fuzzy, che sostituisce i punteggi netti con intervalli.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Confronta i quadranti a coppie: quale conta di più, e quanto (scala 1–9).</li><li>Dai confronti si ricavano i pesi.</li><li>Controlla la coerenza: sopra 0,10 i giudizi si contraddicono.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Il metodo completo pesa anche le singole voci dentro ogni quadrante; qui ci fermiamo al primo livello. Il peso misura il giudizio di chi compila, non la realtà: utile per rendere esplicite le preferenze di un gruppo.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Sposta il cursore verso il quadrante che consideri più importante.</p></div>
+          <div class="awot-g">
+            <div id="awot-coppie"></div>
+            <div class="esito"><div class="pesi" id="awot-pesi"></div><div id="awot-cr"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOAR -->
+      <section class="metodo" id="soar">
+        <div>
+          <p class="fam">Variante</p>
+          <h2>SOAR <span class="sigla">Strengths · Opportunities · Aspirations · Results</span></h2>
+          <p class="domanda">Su che cosa posso costruire, e dove voglio arrivare?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Jacqueline Stavros, David Cooperrider e Lynn Kelley, primi anni Duemila, dentro la <i>appreciative inquiry</i>.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Parti dalle forze e dalle opportunità, come nello SWOT.</li><li>Al posto di debolezze e minacce scrivi aspirazioni e risultati misurabili.</li><li>Usalo per avviare un lavoro di gruppo, non per valutare un rischio.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Toglie di proposito il lato negativo. Funziona per mobilitare un gruppo; usato da solo, rischia di non vedere quello che può andare storto.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Forze e opportunità sono indipendenti da quelle dello SWOT.</p></div>
+          <div class="quad" id="soar-quad"></div>
+        </div>
+      </section>
+
+      <!-- BMC -->
+      <section class="metodo" id="bmc">
+        <div>
+          <p class="fam">Altre famiglie</p>
+          <h2>Business Model Canvas</h2>
+          <p class="domanda">Come funziona il mio modo di creare e incassare valore, tutto su un foglio?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Alexander Osterwalder, tesi di dottorato del 2004; reso popolare da <i>Business Model Generation</i> (con Yves Pigneur, 2010).</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Parti dal centro: proposta di valore e segmenti di clientela.</li><li>A destra il lato cliente, a sinistra il lato operativo.</li><li>Chiudi con costi e ricavi, che devono tornare.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>È descrittivo, non diagnostico: mostra come funziona il modello, non se regge. Va affiancato da PESTEL e Cinque forze per vedere il contesto.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Nove blocchi nella disposizione canonica.</p></div>
+          <div class="bmc" id="bmc-griglia"></div>
+        </div>
+      </section>
+
+      <!-- 4C -->
+      <section class="metodo" id="c4">
+        <div>
+          <p class="fam">Altre famiglie</p>
+          <h2>Dalle 4P alle 4C</h2>
+          <p class="domanda">Come appare la mia offerta guardata dal lato di chi compra?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Robert Lauterborn, <i>Advertising Age</i>, 1990, come rilettura delle 4P di Jerome McCarthy (1960): prodotto, prezzo, distribuzione, promozione.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Scrivi ciascuna P come la vede l'impresa.</li><li>Riscrivila come la vede il cliente.</li><li>Dove le due colonne divergono, c'è un problema o un'occasione.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>È uno strumento di marketing, non di strategia complessiva. Utile soprattutto per verificare le voci «clienti» dello SWOT e del Canvas.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Ogni riga traduce una P in una C.</p></div>
+          <div class="scorre"><table class="c4" id="c4-tab"></table></div>
+        </div>
+      </section>
+
+      <!-- DATI -->
+      <section class="metodo" id="dati">
+        <div>
+          <p class="fam">Strumenti</p>
+          <h2>I tuoi dati</h2>
+          <p class="domanda">Tutto quello che scrivi nei banchi di prova sta in un unico file JSON.</p>
+        </div>
+        <div class="banco">
+          <div class="dati-g">
+            <div style="display:grid;gap:8px;min-width:0">
+              <label for="json-out"><strong>Esporta</strong> · copia il testo e salvalo come file .json</label>
+              <textarea id="json-out" readonly></textarea>
+              <div class="azioni"><button id="copia">Copia il JSON</button><span class="stato" id="copia-stato" aria-live="polite"></span></div>
+            </div>
+            <div style="display:grid;gap:8px;min-width:0">
+              <label for="json-in"><strong>Importa</strong> · incolla un JSON esportato in precedenza</label>
+              <textarea id="json-in" placeholder='{ "caso": "…", "swot": { … } }'></textarea>
+              <div class="azioni"><button id="carica">Carica</button><span class="stato" id="carica-stato" aria-live="polite"></span></div>
+            </div>
+          </div>
+          <div class="azioni"><button class="sec" id="esempio">Ripristina l'esempio</button><button class="sec" id="svuota">Svuota tutto</button><span class="stato" id="reset-stato" aria-live="polite"></span></div>
+          <p class="nota-piccola">I dati si salvano solo in questo browser. Per tenerli o passarli a qualcuno, esporta il JSON. L'esempio precaricato riguarda una cantina cooperativa immaginaria.</p>
+        </div>
+        <div class="fonti">
+          <p>Riferimenti citati: Aguilar 1967; Learned, Christensen, Andrews, Guth 1965; Porter 1979; Weihrich 1982; Lauterborn 1990; Barney 1991; Hill e Westbrook 1997; Kurttila et al. 2000; Stavros, Cooperrider, Kelley 2003; Osterwalder 2004 e 2010; Cox 2008; Saaty 1980.</p>
+          <p>Strumenti di avvicinamento ai metodi, non software di consulenza.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer><span class="firma">Paolo Carena &amp; Claude</span><span>Lo Zibaldino · ottobre 2026</span></footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY='attorno-swot-v1';
+const clone=o=>JSON.parse(JSON.stringify(o));
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const PEST=[['P','Politico'],['E','Economico'],['S','Sociale'],['T','Tecnologico'],['A','Ambientale'],['L','Legale']];
+const FORZE=[['rivalita','Rivalità tra concorrenti'],['entranti','Minaccia di nuovi entranti'],['sostituti','Minaccia di prodotti sostitutivi'],['fornitori','Potere dei fornitori'],['clienti','Potere dei clienti']];
+const BMC=[['partner','Partner chiave','pa'],['attivita','Attività chiave','at'],['risorse','Risorse chiave','ri'],['proposta','Proposta di valore','pv'],['relazioni','Relazioni con i clienti','re'],['canali','Canali','ca'],['segmenti','Segmenti di clientela','se'],['costi','Struttura dei costi','co'],['ricavi','Flussi di ricavo','rv']];
+const C4=[['prodotto','Prodotto','cliente','Cliente (il bisogno)'],['prezzo','Prezzo','costo','Costo (tutto ciò che paga il cliente)'],['distribuzione','Distribuzione','convenienza','Convenienza (quanto è facile averlo)'],['promozione','Promozione','comunicazione','Comunicazione (un dialogo, non un annuncio)']];
+const COPPIE=[['S','W'],['S','O'],['S','T'],['W','O'],['W','T'],['O','T']];
+const QN={S:'Forze',W:'Debolezze',O:'Opportunità',T:'Minacce'};
+
+const PROFILO_DIFFUSO={P:[3,5],E:[3,5],S:[3,5],T:[3,5],A:[3,5],L:[3,5]};
+const PROFILO_CONCENTRATO={P:[2,5],E:[2,5],S:[3,5],T:[1,5],A:[5,5],L:[5,5]};
+
+const ESEMPIO={
+  caso:'Cantina cooperativa di collina (esempio)',
+  swot:{
+    S:['Vigneti dei soci in zona a denominazione','Impianto di vinificazione già ammortizzato','Marchio noto nella grande distribuzione regionale'],
+    W:['Età media dei soci conferitori elevata','Prezzo medio a bottiglia basso','Presenza scarsa sui mercati esteri'],
+    O:['Domanda estera di bianchi di collina','Enoturismo in crescita nella zona','Bandi regionali per l’ammodernamento'],
+    T:['Calo del consumo interno di vino','Estati più calde, vendemmie anticipate','Dazi sui mercati di esportazione']
+  },
+  tows:{
+    SO:'Usare i vigneti in denominazione per una linea di bianchi destinata all’export.',
+    WO:'Supplire alla scarsa presenza estera con un importatore condiviso con altre cantine della zona.',
+    ST:'Spostare parte della produzione su parcelle esposte a nord e vitigni più resistenti al caldo.',
+    WT:'Piano di ricambio generazionale dei soci prima che il calo dei consumi riduca i margini.'
+  },
+  pestel:{soglia:20,fattori:{
+    P:{i:2,p:5,nota:'Bandi regionali, politica agricola comune'},
+    E:{i:2,p:5,nota:'Costo dell’energia e del vetro, tassi'},
+    S:{i:3,p:5,nota:'Calo dei consumi, moderazione alcolica'},
+    T:{i:1,p:5,nota:'Tracciabilità, vendita online'},
+    A:{i:5,p:5,nota:'Caldo e siccità in vendemmia'},
+    L:{i:5,p:5,nota:'Nuove regole di etichettatura sanitaria'}
+  }},
+  porter:{
+    rivalita:{v:4,nota:'Molte cantine nella stessa denominazione'},
+    entranti:{v:2,nota:'Vigneti e diritti d’impianto costosi'},
+    sostituti:{v:3,nota:'Birra artigianale, analcolici'},
+    fornitori:{v:3,nota:'Vetro ed energia concentrati in pochi fornitori'},
+    clienti:{v:5,nota:'La grande distribuzione detta prezzi e promozioni'}
+  },
+  vrio:[
+    {nome:'Vigneti dei soci in zona a denominazione',v:true,r:true,i:true,o:false},
+    {nome:'Impianto di vinificazione',v:true,r:false,i:false,o:false},
+    {nome:'Accordo di fornitura con la catena regionale',v:true,r:true,i:false,o:false},
+    {nome:'Marchio storico della cooperativa',v:true,r:true,i:true,o:true}
+  ],
+  awot:{'S-W':1,'S-O':-1,'S-T':-1,'W-O':-3,'W-T':-2,'O-T':0},
+  soar:{
+    S:['Conoscenza agronomica dei soci','Cantina attrezzata per l’accoglienza'],
+    O:['Turismo lento nelle colline','Ristorazione locale che cerca vini del territorio'],
+    A:['Diventare il riferimento della zona per i bianchi di collina'],
+    R:['Export al 25% del fatturato in tre anni','Diecimila visitatori l’anno in cantina']
+  },
+  bmc:{
+    partner:'Soci conferitori, enologo consulente, consorzio di tutela',
+    attivita:'Vinificazione, imbottigliamento, vendita alla distribuzione',
+    risorse:'Vigneti dei soci, impianto, marchio',
+    proposta:'Vino di denominazione affidabile a prezzo accessibile',
+    relazioni:'Rapporto stabile con i buyer della distribuzione; visite in cantina',
+    canali:'Grande distribuzione regionale, spaccio aziendale, negozio online',
+    segmenti:'Famiglie della regione; turisti in visita',
+    costi:'Uve pagate ai soci, energia, vetro, personale',
+    ricavi:'Vendita a bottiglia; sfuso; degustazioni'
+  },
+  c4:{
+    prodotto:'Bianco di collina, bottiglia da 0,75',
+    cliente:'Un vino da pasto affidabile, che non deluda a tavola',
+    prezzo:'6,90 € a scaffale',
+    costo:'Il prezzo più il rischio di sbagliare bottiglia',
+    distribuzione:'Grande distribuzione regionale',
+    convenienza:'Trovarlo dove fa già la spesa; online fuori regione',
+    promozione:'Volantino della catena',
+    comunicazione:'Racconto dei soci e delle vigne, accoglienza in cantina'
+  }
+};
+
+function vuoto(){
+  const f={};PEST.forEach(([k])=>f[k]={i:1,p:1,nota:''});
+  const po={};FORZE.forEach(([k])=>po[k]={v:1,nota:''});
+  const b={};BMC.forEach(([k])=>b[k]='');
+  const c={};C4.forEach(([a,,d])=>{c[a]='';c[d]='';});
+  const aw={};COPPIE.forEach(([x,y])=>aw[x+'-'+y]=0);
+  return {caso:'',swot:{S:[],W:[],O:[],T:[]},tows:{SO:'',WO:'',ST:'',WT:''},pestel:{soglia:20,fattori:f},porter:po,vrio:[],awot:aw,soar:{S:[],O:[],A:[],R:[]},bmc:b,c4:c};
+}
+function completa(d){
+  const base=vuoto(); if(!d||typeof d!=='object') return base;
+  for(const k in base){ if(d[k]===undefined) d[k]=base[k];
+    else if(base[k]&&typeof base[k]==='object'&&!Array.isArray(base[k])){ for(const j in base[k]) if(d[k][j]===undefined) d[k][j]=base[k][j]; } }
+  return d;
+}
+
+let S;
+try{const raw=localStorage.getItem(KEY); S=raw?completa(JSON.parse(raw)):clone(ESEMPIO);}catch(e){S=clone(ESEMPIO);}
+
+let tSalva;
+function salva(){ clearTimeout(tSalva); tSalva=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}},250); aggiornaExport(); }
+
+/* ---------- liste ---------- */
+function lista(el,arr,ph,dopo){
+  el.innerHTML='';
+  const ul=document.createElement('ul');ul.className='items';
+  arr.forEach((t,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML='<span>'+esc(t)+'</span>';
+    const b=document.createElement('button');b.className='min';b.type='button';b.textContent='×';b.setAttribute('aria-label','Togli: '+t);
+    b.onclick=()=>{arr.splice(i,1);salva();lista(el,arr,ph,dopo);dopo&&dopo();};
+    li.appendChild(b);ul.appendChild(li);
+  });
+  const f=document.createElement('form');f.className='aggiungi';
+  const inp=document.createElement('input');inp.type='text';inp.placeholder=ph;inp.setAttribute('aria-label',ph);
+  const btn=document.createElement('button');btn.textContent='Aggiungi';
+  f.append(inp,btn);
+  f.onsubmit=e=>{e.preventDefault();const v=inp.value.trim();if(!v)return;arr.push(v);salva();lista(el,arr,ph,dopo);dopo&&dopo();const n=el.querySelector('input');n&&n.focus();};
+  el.append(ul,f);
+}
+function quadranti(rootId,obj,def,dopo){
+  const root=$(rootId);root.innerHTML='';
+  def.forEach(([k,nome,tipo,cls])=>{
+    const box=document.createElement('div');box.className='q '+cls;
+    box.innerHTML='<h4>'+nome+' <small>'+tipo+'</small></h4>';
+    const area=document.createElement('div');box.appendChild(area);root.appendChild(box);
+    lista(area,obj[k],'Aggiungi a '+nome.toLowerCase(),dopo);
+  });
+}
+
+/* ---------- SWOT + TOWS ---------- */
+function renderSwot(){
+  quadranti('swot-quad',S.swot,[['S','Forze','interno · a favore','pos'],['W','Debolezze','interno · contro','neg'],['O','Opportunità','esterno · a favore','pos'],['T','Minacce','esterno · contro','neg']],renderTows);
+}
+function ul(arr){return arr.length?'<ul>'+arr.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'<ul><li><i>vuoto</i></li></ul>';}
+function renderTows(){
+  const t=$('tows-tab');
+  const cella=(k,etic)=>'<td><span class="tag">'+k+' · '+etic+'</span><textarea data-k="'+k+'" aria-label="Strategia '+k+'">'+esc(S.tows[k]||'')+'</textarea></td>';
+  t.innerHTML='<thead><tr><th style="width:22%"></th><th>Forze'+ul(S.swot.S)+'</th><th>Debolezze'+ul(S.swot.W)+'</th></tr></thead><tbody>'+
+    '<tr><th>Opportunità'+ul(S.swot.O)+'</th>'+cella('SO','usa le forze per cogliere')+cella('WO','supera le debolezze per cogliere')+'</tr>'+
+    '<tr><th>Minacce'+ul(S.swot.T)+'</th>'+cella('ST','usa le forze per difenderti')+cella('WT','riduci debolezze ed esposizione')+'</tr></tbody>';
+  t.querySelectorAll('textarea').forEach(ta=>ta.oninput=()=>{S.tows[ta.dataset.k]=ta.value;salva();});
+  renderAwot();
+}
+
+/* ---------- PESTEL ---------- */
+function renderPestel(){
+  const root=$('pestel-righe');root.innerHTML='';
+  PEST.forEach(([k,nome])=>{
+    const f=S.pestel.fattori[k];
+    const d=document.createElement('div');d.className='fattore';
+    d.innerHTML='<span class="nome">'+nome+'</span><input type="text" id="pn-'+k+'" aria-label="Fattore '+nome+'" placeholder="Che cosa preme, concretamente" value="'+esc(f.nota)+'">'+
+      '<div class="cursori"><label>Impatto <span class="num" id="pi-'+k+'-v">'+f.i+'</span><input type="range" min="1" max="5" step="1" id="pi-'+k+'" value="'+f.i+'"></label>'+
+      '<label>Probabilità <span class="num" id="pp-'+k+'-v">'+f.p+'</span><input type="range" min="1" max="5" step="1" id="pp-'+k+'" value="'+f.p+'"></label>'+
+      '<span class="punteggio" id="ps-'+k+'"></span></div>';
+    root.appendChild(d);
+    $('pn-'+k).oninput=e=>{f.nota=e.target.value;salva();};
+    $('pi-'+k).oninput=e=>{f.i=+e.target.value;$('pi-'+k+'-v').textContent=f.i;aggiornaPestel();salva();};
+    $('pp-'+k).oninput=e=>{f.p=+e.target.value;$('pp-'+k+'-v').textContent=f.p;aggiornaPestel();salva();};
+  });
+  $('soglia').value=S.pestel.soglia;
+  aggiornaPestel();
+}
+function aggiornaPestel(){
+  const sg=S.pestel.soglia; $('soglia-v').textContent=sg;
+  let tot=0;const sopra=[];
+  PEST.forEach(([k,nome])=>{const f=S.pestel.fattori[k];const v=f.i*f.p;tot+=v;
+    const el=$('ps-'+k);el.textContent=v;el.className='punteggio'+(v>=sg?' crit':v>=sg/2?' med':'');
+    if(v>=sg)sopra.push(nome+' ('+v+')');});
+  const ind=Math.round(tot/150*1000)/10;
+  $('pestel-indice').textContent=(Number.isInteger(ind)?ind:ind.toFixed(1)).toString().replace('.',',');
+  $('pestel-allarme').innerHTML=sopra.length
+    ?'<div class="allarme crit"><strong>'+sopra.length+(sopra.length===1?' fattore':' fattori')+' oltre soglia:</strong> '+esc(sopra.join(', '))+'. Vanno affrontati qualunque sia l’indice.</div>'
+    :'<div class="allarme ok">Nessun fattore oltre soglia. Qui l’indice descrive bene la situazione: la pressione è distribuita.</div>';
+  // matrice 5x5
+  const c=44,o=30,svg=[];
+  svg.push('<svg viewBox="0 0 '+(o+5*c+8)+' '+(5*c+38)+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Griglia impatto per probabilità">');
+  for(let pr=5;pr>=1;pr--)for(let im=1;im<=5;im++){const v=im*pr;const x=o+(im-1)*c,y=(5-pr)*c+4;
+    const fill=v>=sg?'var(--crit-soft)':v>=sg/2?'var(--warn-soft)':'var(--paper)';
+    svg.push('<rect x="'+x+'" y="'+y+'" width="'+(c-2)+'" height="'+(c-2)+'" fill="'+fill+'" stroke="var(--rule)"/>');
+    const qui=PEST.filter(([k])=>S.pestel.fattori[k].i===im&&S.pestel.fattori[k].p===pr).map(([k])=>k).join(' ');
+    if(qui)svg.push('<text class="lett" x="'+(x+(c-2)/2)+'" y="'+(y+(c-2)/2+4)+'" text-anchor="middle">'+qui+'</text>');}
+  for(let i=1;i<=5;i++){svg.push('<text x="'+(o+(i-1)*c+(c-2)/2)+'" y="'+(5*c+18)+'" text-anchor="middle">'+i+'</text>');svg.push('<text x="'+(o-8)+'" y="'+((5-i)*c+4+(c-2)/2+4)+'" text-anchor="end">'+i+'</text>');}
+  svg.push('<text x="'+(o+2.5*c)+'" y="'+(5*c+34)+'" text-anchor="middle">impatto →</text>');
+  svg.push('<text x="8" y="'+(2.5*c)+'" text-anchor="middle" transform="rotate(-90 8 '+(2.5*c)+')">probabilità →</text>');
+  svg.push('</svg>');
+  $('pestel-matrice').innerHTML=svg.join('');
+}
+$('soglia').oninput=e=>{S.pestel.soglia=+e.target.value;aggiornaPestel();salva();};
+function caricaProfilo(p){PEST.forEach(([k])=>{S.pestel.fattori[k].i=p[k][0];S.pestel.fattori[k].p=p[k][1];});salva();renderPestel();}
+$('pr-diffuso').onclick=()=>caricaProfilo(PROFILO_DIFFUSO);
+$('pr-concentrato').onclick=()=>caricaProfilo(PROFILO_CONCENTRATO);
+
+/* ---------- Porter ---------- */
+function renderPorter(){
+  const root=$('porter-righe');root.innerHTML='';
+  FORZE.forEach(([k,nome])=>{const f=S.porter[k];
+    const d=document.createElement('div');d.className='forza';
+    d.innerHTML='<div class="riga"><strong>'+nome+'</strong><input type="range" min="1" max="5" step="1" id="fo-'+k+'" value="'+f.v+'" aria-label="Intensità: '+nome+'"><span class="num" id="fo-'+k+'-v">'+f.v+'</span></div>'+
+      '<input type="text" id="fn-'+k+'" aria-label="Nota: '+nome+'" placeholder="Perché" value="'+esc(f.nota)+'">';
+    root.appendChild(d);
+    $('fo-'+k).oninput=e=>{f.v=+e.target.value;$('fo-'+k+'-v').textContent=f.v;aggiornaRadar();salva();};
+    $('fn-'+k).oninput=e=>{f.nota=e.target.value;salva();};
+  });
+  aggiornaRadar();
+}
+function aggiornaRadar(){
+  const cx=170,cy=150,R=100,n=5,ang=i=>-Math.PI/2+i*2*Math.PI/n;
+  const pt=(i,r)=>[cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))];
+  const brevi=['Rivalità','Entranti','Sostituti','Fornitori','Clienti'];
+  let s='<svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pentagono delle cinque forze">';
+  for(let l=1;l<=5;l++)s+='<polygon class="griglia" points="'+[0,1,2,3,4].map(i=>pt(i,R*l/5).join(',')).join(' ')+'"/>';
+  for(let i=0;i<n;i++){const [x,y]=pt(i,R);s+='<line class="griglia" x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'"/>';
+    const [lx,ly]=pt(i,R+22);s+='<text x="'+lx+'" y="'+(ly+4)+'" text-anchor="middle">'+brevi[i]+'</text>';}
+  const vals=FORZE.map(([k])=>S.porter[k].v);
+  s+='<polygon class="area" points="'+vals.map((v,i)=>pt(i,R*v/5).join(',')).join(' ')+'"/>';
+  vals.forEach((v,i)=>{const [x,y]=pt(i,R*v/5);s+='<circle cx="'+x+'" cy="'+y+'" r="4" fill="'+(v>=4?'var(--crit)':'var(--petrol)')+'"/>';});
+  s+='</svg>';$('porter-radar').innerHTML=s;
+  const forti=FORZE.filter(([k])=>S.porter[k].v>=4).map(([,n])=>n.toLowerCase());
+  const media=(vals.reduce((a,b)=>a+b,0)/5).toFixed(1).replace('.',',');
+  $('porter-sintesi').innerHTML='Intensità media <span class="num">'+media+'</span> su 5. '+(forti.length?'Forze forti, da portare tra le minacce dello SWOT: '+esc(forti.join(', '))+'.':'Nessuna forza oltre 3: settore relativamente favorevole.');
+}
+
+/* ---------- VRIO ---------- */
+const ESITI=[['Svantaggio competitivo','e0'],['Parità competitiva','e1'],['Vantaggio temporaneo','e2'],['Vantaggio non sfruttato','e3'],['Vantaggio sostenibile','e4']];
+function esitoVrio(r){if(!r.v)return 0;if(!r.r)return 1;if(!r.i)return 2;if(!r.o)return 3;return 4;}
+function renderVrio(){
+  const tb=$('vrio-corpo');tb.innerHTML='';
+  if(!S.vrio.length){tb.innerHTML='<tr><td colspan="7" class="nota-piccola">Nessuna risorsa. Aggiungine una qui sotto.</td></tr>';return;}
+  S.vrio.forEach((r,i)=>{
+    const tr=document.createElement('tr');
+    const chiavi=['v','r','i','o'];let attivo=true;let celle='';
+    chiavi.forEach(c=>{celle+='<td class="chk"><input type="checkbox" data-c="'+c+'" '+(r[c]?'checked ':'')+(attivo?'':'disabled ')+'aria-label="'+c.toUpperCase()+'"></td>';if(!r[c])attivo=false;});
+    const e=ESITI[esitoVrio(r)];
+    tr.innerHTML='<td><input type="text" value="'+esc(r.nome)+'" aria-label="Risorsa"></td>'+celle+'<td><span class="esito-v '+e[1]+'">'+e[0]+'</span></td><td><button class="min" type="button" aria-label="Togli risorsa">×</button></td>';
+    tr.querySelector('input[type=text]').oninput=ev=>{r.nome=ev.target.value;salva();};
+    tr.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.onchange=()=>{r[cb.dataset.c]=cb.checked;salva();renderVrio();});
+    tr.querySelector('button').onclick=()=>{S.vrio.splice(i,1);salva();renderVrio();};
+    tb.appendChild(tr);
+  });
+}
+$('vrio-add').onsubmit=e=>{e.preventDefault();const v=$('vrio-nuova').value.trim();if(!v)return;S.vrio.push({nome:v,v:false,r:false,i:false,o:false});$('vrio-nuova').value='';salva();renderVrio();};
+
+/* ---------- A'WOT ---------- */
+const val=i=>i>=0?i+1:1/(1-i);
+function leggiCoppia(a,b,i){const v=val(i);if(i===0)return QN[a]+' e '+QN[b]+' contano uguale';
+  return i>0?QN[a]+' '+(i+1)+' volte più importanti':QN[b]+' '+(1-i)+' volte più importanti';}
+function renderAwot(){
+  const root=$('awot-coppie');if(root.childElementCount)return aggiornaAwot();
+  COPPIE.forEach(([a,b])=>{const k=a+'-'+b;
+    const d=document.createElement('div');d.className='coppia';
+    d.innerHTML='<span class="sx">'+QN[a]+'</span><input type="range" min="-8" max="8" step="1" id="aw-'+k+'" value="'+(-S.awot[k])+'" aria-label="'+QN[a]+' contro '+QN[b]+'"><span>'+QN[b]+'</span><span class="leggi" id="aw-'+k+'-l"></span>';
+    root.appendChild(d);
+    // il cursore verso sinistra favorisce il primo termine
+    $('aw-'+k).oninput=e=>{S.awot[k]=-(+e.target.value);aggiornaAwot();salva();};
+  });
+  aggiornaAwot();
+}
+function aggiornaAwot(){
+  const Q=['S','W','O','T'],n=4,A=Q.map(()=>Q.map(()=>1));
+  COPPIE.forEach(([a,b])=>{const k=a+'-'+b,i=Q.indexOf(a),j=Q.indexOf(b),v=val(S.awot[k]);A[i][j]=v;A[j][i]=1/v;
+    const sl=$('aw-'+k);if(sl&&+sl.value!==-S.awot[k])sl.value=-S.awot[k];
+    const l=$('aw-'+k+'-l');if(l)l.textContent=leggiCoppia(a,b,S.awot[k]);});
+  const g=A.map(r=>Math.pow(r.reduce((x,y)=>x*y,1),1/n));const sg=g.reduce((x,y)=>x+y,0);const w=g.map(x=>x/sg);
+  const Aw=A.map(r=>r.reduce((s,x,j)=>s+x*w[j],0));const lam=Aw.reduce((s,x,i)=>s+x/w[i],0)/n;
+  const CI=(lam-n)/(n-1),CR=Math.max(0,CI/0.90);
+  $('awot-pesi').innerHTML=Q.map((q,i)=>'<div class="peso"><span>'+QN[q]+'</span><div class="barra"><i style="width:'+(w[i]*100).toFixed(1)+'%"></i></div><span class="num">'+(w[i]*100).toFixed(0)+'%</span></div>').join('');
+  const crs=CR.toFixed(2).replace('.',',');
+  $('awot-cr').innerHTML=CR<=0.10
+    ?'<div class="allarme ok">Rapporto di coerenza <span class="num">'+crs+'</span>: i giudizi stanno insieme.</div>'
+    :'<div class="allarme crit">Rapporto di coerenza <span class="num">'+crs+'</span>, oltre 0,10: alcuni confronti si contraddicono. Se A pesa più di B e B più di C, A deve pesare più di C.</div>';
+}
+
+/* ---------- SOAR ---------- */
+function renderSoar(){
+  quadranti('soar-quad',S.soar,[['S','Forze','su cui costruire','pos'],['O','Opportunità','da cogliere','pos'],['A','Aspirazioni','dove vogliamo arrivare','asp'],['R','Risultati','come lo misuriamo','asp']]);
+}
+
+/* ---------- BMC ---------- */
+function renderBmc(){
+  const g=$('bmc-griglia');g.innerHTML='';
+  BMC.forEach(([k,nome,area])=>{const d=document.createElement('div');d.className='blk'+(k==='proposta'?' cuore':'');d.style.gridArea=area;
+    d.innerHTML='<label for="bm-'+k+'">'+nome+'</label><textarea id="bm-'+k+'">'+esc(S.bmc[k]||'')+'</textarea>';
+    g.appendChild(d);$('bm-'+k).oninput=e=>{S.bmc[k]=e.target.value;salva();};});
+}
+
+/* ---------- 4C ---------- */
+function renderC4(){
+  const t=$('c4-tab');
+  t.innerHTML='<thead><tr><th>Lato impresa · 4P</th><th></th><th>Lato cliente · 4C</th></tr></thead><tbody>'+
+    C4.map(([p,pn,c,cn])=>'<tr><td><strong>'+pn+'</strong><input type="text" id="c4-'+p+'" aria-label="'+pn+'" value="'+esc(S.c4[p]||'')+'"></td><td class="freccia">→</td><td><strong>'+cn+'</strong><input type="text" id="c4-'+c+'" aria-label="'+cn+'" value="'+esc(S.c4[c]||'')+'"></td></tr>').join('')+'</tbody>';
+  C4.forEach(([p,,c])=>[p,c].forEach(k=>$('c4-'+k).oninput=e=>{S.c4[k]=e.target.value;salva();}));
+}
+
+/* ---------- dati ---------- */
+function aggiornaExport(){$('json-out').value=JSON.stringify(Object.assign({formato:'attorno-allo-swot',versione:1},S),null,2);}
+$('copia').onclick=()=>{const ta=$('json-out');const ok=()=>$('copia-stato').textContent='Copiato.';
+  const fb=()=>{ta.focus();ta.select();$('copia-stato').textContent='Testo selezionato: copialo con Ctrl+C o Cmd+C.';};
+  try{navigator.clipboard.writeText(ta.value).then(ok,fb);}catch(e){fb();}};
+$('carica').onclick=()=>{const st=$('carica-stato');st.className='stato';
+  try{const d=JSON.parse($('json-in').value);if(!d||typeof d!=='object'||!d.swot)throw new Error('manca la sezione swot');
+    delete d.formato;delete d.versione;S=completa(d);salva();tutto();st.textContent='Caricato.';$('json-in').value='';}
+  catch(e){st.className='stato err';st.textContent='Non riesco a leggerlo: '+e.message+'. Incolla un JSON esportato da questa pagina.';}};
+$('esempio').onclick=()=>{S=clone(ESEMPIO);salva();tutto();$('reset-stato').textContent='Esempio ripristinato.';};
+let armato=null;
+$('svuota').onclick=()=>{const b=$('svuota');
+  if(armato){clearTimeout(armato);armato=null;b.textContent='Svuota tutto';S=vuoto();salva();tutto();$('reset-stato').textContent='Tutto svuotato. «Ripristina l’esempio» lo riporta.';return;}
+  b.textContent='Conferma: svuota';$('reset-stato').textContent='Premi di nuovo per cancellare tutti i dati.';
+  armato=setTimeout(()=>{armato=null;b.textContent='Svuota tutto';$('reset-stato').textContent='';},4000);};
+
+$('caso').oninput=e=>{S.caso=e.target.value;salva();};
+function tutto(){$('caso').value=S.caso||'';renderSwot();renderTows();renderPestel();renderPorter();renderVrio();renderSoar();renderBmc();renderC4();aggiornaExport();}
+tutto();
+
+/* ---------- ospitato in iframe (Blogger): altezza e salti d'indice ---------- */
+if(window.parent!==window){
+  const invia=m=>{try{window.parent.postMessage(m,'*');}catch(e){}};
+  const altezza=()=>invia({tipo:'attorno-swot-altezza',h:document.documentElement.scrollHeight});
+  try{new ResizeObserver(altezza).observe(document.body);}catch(e){}
+  window.addEventListener('load',altezza);altezza();
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+    const t=document.getElementById(a.getAttribute('href').slice(1));if(!t)return;
+    e.preventDefault();invia({tipo:'attorno-swot-vai',y:t.getBoundingClientRect().top+window.pageYOffset});}));
+}
+})();
+</script>
+
+</body>
+</html>
