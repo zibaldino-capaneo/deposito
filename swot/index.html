@@ -214,6 +214,27 @@ th{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mu
 .c4 td.freccia{color:var(--ochre);font-family:var(--f-mono);text-align:center;vertical-align:middle;width:30px}
 .c4 strong{display:block;font-size:.85rem;margin-bottom:4px}
 
+/* tabelle in colonna stretta */
+.vrio .mini{display:none}
+@media (max-width:760px){
+  .tows,.c4,.vrio{min-width:0}
+  .tows,.tows thead,.tows tbody,.tows tr,.tows th,.tows td{display:block;width:auto!important}
+  .tows thead th:first-child{display:none}
+  .tows th{border-bottom:0;padding:10px 0 2px}
+  .tows td{padding:6px 0 10px}
+  .c4,.c4 tbody,.c4 tr,.c4 td{display:block}
+  .c4 thead,.c4 td.freccia{display:none}
+  .c4 tr{border-bottom:1px solid var(--rule);padding-block:6px}
+  .c4 td{border:0;padding:4px 0}
+  .vrio,.vrio tbody{display:block}
+  .vrio thead{display:none}
+  .vrio tr{display:grid;grid-template-columns:repeat(4,auto) minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .vrio td{border:0;padding:0}
+  .vrio td:first-child{grid-column:1/-1}
+  .vrio .chk label{display:inline-flex;align-items:center;gap:4px}
+  .vrio .mini{display:inline;font-family:var(--f-mono);font-size:.82rem;color:var(--muted)}
+}
+
 /* dati */
 .dati-g{display:grid;gap:16px}
 @media (min-width:860px){.dati-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -768,7 +789,7 @@ function renderVrio(){
   S.vrio.forEach((r,i)=>{
     const tr=document.createElement('tr');
     const chiavi=['v','r','i','o'];let attivo=true;let celle='';
-    chiavi.forEach(c=>{celle+='<td class="chk"><input type="checkbox" data-c="'+c+'" '+(r[c]?'checked ':'')+(attivo?'':'disabled ')+'aria-label="'+c.toUpperCase()+'"></td>';if(!r[c])attivo=false;});
+    chiavi.forEach(c=>{celle+='<td class="chk"><label><span class="mini">'+c.toUpperCase()+'</span><input type="checkbox" data-c="'+c+'" '+(r[c]?'checked ':'')+(attivo?'':'disabled ')+'aria-label="'+c.toUpperCase()+'"></label></td>';if(!r[c])attivo=false;});
     const e=ESITI[esitoVrio(r)];
     tr.innerHTML='<td><input type="text" value="'+esc(r.nome)+'" aria-label="Risorsa"></td>'+celle+'<td><span class="esito-v '+e[1]+'">'+e[0]+'</span></td><td><button class="min" type="button" aria-label="Togli risorsa">×</button></td>';
     tr.querySelector('input[type=text]').oninput=ev=>{r.nome=ev.target.value;salva();};
