@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="it">
 <head>
@@ -46,14 +45,16 @@ h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,5vw,3.4re
 /* impianto */
 .layout{display:grid;gap:32px;margin-top:28px}
 @media (min-width:960px){.layout{grid-template-columns:200px minmax(0,1fr)}}
-nav.indice{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--paper);padding-block:8px;overflow-x:auto}
-nav.indice ol{list-style:none;margin:0;padding:0;display:flex;gap:6px;white-space:nowrap}
+nav.indice{padding-block:8px}
+nav.indice ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+nav.indice li{white-space:nowrap}
 nav.indice .grp{display:none}
 nav.indice a{display:block;text-decoration:none;color:var(--ink);font-size:.95rem;padding:5px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--sheet)}
 nav.indice a:hover{border-color:var(--petrol);color:var(--petrol)}
 @media (min-width:960px){
-  nav.indice{align-self:start;top:calc(env(safe-area-inset-top,0px) + 16px);padding:0;overflow:visible}
-  nav.indice ol{flex-direction:column;gap:2px;white-space:normal}
+  nav.indice{position:sticky;z-index:2;align-self:start;top:calc(env(safe-area-inset-top,0px) + 16px);padding:0}
+  nav.indice ol{flex-direction:column;flex-wrap:nowrap;gap:2px}
+  nav.indice li{white-space:normal}
   nav.indice .grp{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
   nav.indice .grp:first-child{margin-top:0}
   nav.indice a{border:0;background:none;padding:3px 0 3px 10px;border-left:2px solid transparent}
