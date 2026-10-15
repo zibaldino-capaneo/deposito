@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studiolo — Mantegna: laboratorio comparativo v0.8</title>
+<style>
+:root{--paper:#f4efe3;--sheet:#fcfaf5;--ink:#302b23;--muted:#655e55;--line:#d5c8b4;--accent:#725238;--shadow:rgba(50,39,25,.1)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.52 Georgia,"Times New Roman",serif}main{max-width:1300px;margin:0 auto;padding:24px clamp(12px,2.7vw,34px) 60px}h1{font-size:clamp(25px,3vw,37px);font-weight:500;line-height:1.19;margin:5px 0 13px}h2{font-size:21px;font-weight:500;margin:0 0 11px}h3{font-size:17px;font-weight:500;margin:20px 0 7px}p{margin:10px 0}.eyebrow{letter-spacing:.14em;font-size:12px;text-transform:uppercase;color:var(--accent);font-family:system-ui,sans-serif}.lead{font-size:18px;max-width:980px}.small{font-size:13px;color:var(--muted)}.columns{display:grid;grid-template-columns:minmax(250px,310px) minmax(0,1fr);gap:18px;align-items:start;margin-top:24px}.paper{background:var(--sheet);border:1px solid var(--line);padding:20px;border-radius:5px;box-shadow:0 2px 13px var(--shadow)}.settings{position:sticky;top:12px}.control{margin:17px 0}.control>label{display:flex;justify-content:space-between;gap:12px;font-size:14px;font-family:system-ui,sans-serif}.control output{font-weight:650;color:var(--accent);font-variant-numeric:tabular-nums}input[type=range]{display:block;width:100%;accent-color:var(--accent);cursor:pointer;margin-top:9px}select{width:100%;padding:9px 10px;border:1px solid #bdb09d;background:#fffdf7;color:var(--ink);border-radius:4px;font:14px system-ui,sans-serif;margin-top:6px}button,.upload-label{font:13px system-ui,sans-serif;padding:8px 11px;background:#ebe4d8;border:1px solid #bdb09d;border-radius:4px;color:var(--ink);cursor:pointer}button:hover,.upload-label:hover{background:#e1d5c4}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #a17646;outline-offset:2px}.presets{display:flex;gap:7px;flex-wrap:wrap}.compare{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.frame{border:1px solid #c6bba8;background:#e5dccd;border-radius:4px;overflow:hidden;position:relative;min-width:0}.frame-title{font:600 13px system-ui,sans-serif;text-align:center;padding:7px 3px;background:#f6f1e9;border-bottom:1px solid var(--line)}.scene{width:100%;aspect-ratio:1.10;position:relative;background:radial-gradient(circle at 50% 40%,#eee7dc 0%,#d9cdbc 100%);overflow:hidden}.scene.tall{aspect-ratio:.80}.scene.wide{aspect-ratio:1.5}.plane{position:absolute;transform-origin:0 0;will-change:transform}.art{width:100%;height:100%;display:block;object-fit:fill;background:#b2a18d}.mark{position:absolute;left:38%;width:24%;border-top:4px solid rgba(250,214,88,.95);box-shadow:0 1px 1px #29221a;pointer-events:none;display:none}.show-marks .mark{display:block}.mark-upper{top:15%}.mark-lower{top:85%;border-color:rgba(85,211,219,.95)}.legend{font:12px/1.4 system-ui,sans-serif;padding:8px 12px;color:var(--muted)}.results{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.metric{border:1px solid var(--line);padding:10px;background:#f8f4ed;min-width:0}.metric .val{font:650 clamp(18px,2.3vw,27px)/1.2 system-ui,sans-serif;color:#5f4830;font-variant-numeric:tabular-nums}.metric .lbl{display:block;font:12px/1.35 system-ui,sans-serif;color:#766a58;margin-top:3px}.method{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.note{border-left:3px solid #ae9472;padding-left:14px}.warning{margin-top:12px;border:1px solid #c6a78e;background:#f8eee4;padding:12px 14px;font-size:14px}.fallback{display:none;position:absolute;inset:12% 8%;text-align:center;align-items:center;justify-content:center;padding:20px;background:rgba(254,250,243,.95);border:1px solid var(--line);font:13px/1.5 system-ui,sans-serif;color:#433629}.missing .fallback{display:flex}.sources{margin-top:20px}.sources a{color:#745236;overflow-wrap:anywhere}td,th{border-bottom:1px solid #d5c8b4;text-align:left;padding:9px 7px}th{font-weight:600;color:#6a513b}table{border-collapse:collapse;width:100%;font:13px/1.45 system-ui,sans-serif}footer{margin-top:27px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font:12px system-ui,sans-serif}.miniinfo{padding:5px 0;font:12px system-ui,sans-serif;color:var(--muted)}.check{font:13px system-ui,sans-serif;display:flex;gap:8px;align-items:center;margin:13px 0}.pick{display:inline-block;margin-top:8px}.pick input{display:none}.cond{font-size:13px;color:#6b563e}.tag{display:inline-block;font:12px system-ui,sans-serif;border:1px solid var(--line);border-radius:3px;padding:2px 6px;color:var(--accent)}.status{font:12px system-ui,sans-serif;color:var(--muted);margin-top:5px}strong{font-weight:650}
+.image-leds{padding:9px 10px;background:#f8f3ea;border:1px solid var(--line);border-radius:4px;font:12px/1.45 system-ui,sans-serif;color:var(--ink)}
+.image-led{display:flex;align-items:center;gap:7px;margin:4px 0}.led{flex:none;display:inline-block;width:9px;height:9px;border-radius:50%;background:#a43e35;box-shadow:0 0 0 1px rgba(42,30,20,.12)}
+.led.ready{background:#29864b}.led.loading{background:#b14c42;animation:ledPulse 1.5s ease-in-out infinite}.led.failed{background:#a43e35}
+@keyframes ledPulse{50%{opacity:.45}}@media(prefers-reduced-motion:reduce){.led.loading{animation:none}}
+.retry{margin-top:6px;padding:4px 7px;font-size:11px}.reset-all{margin-top:13px;width:100%;padding:11px 12px;background:#ded0bc;border-color:#a28a6d;font-weight:650}.reset-all:hover{background:#d4bf9f}.reset-feedback{min-height:1.4em;margin:6px 0 0}
+
+
+/* Quaderno metrico: punti scelti dall'operatore sull'immagine sorgente. */
+.measure-lab{margin-top:20px}.measure-layout{display:grid;grid-template-columns:minmax(270px,1.25fr) minmax(235px,1fr);gap:18px;align-items:start}
+.annot-view{position:relative;display:inline-block;width:min(100%,620px);line-height:0;background:#e4d7c4;border:1px solid var(--line);min-height:54px;cursor:crosshair;touch-action:manipulation}
+.annot-view img{display:block;width:100%;height:auto}.annot-mark{position:absolute;width:20px;height:20px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #322a20,0 1px 5px #0008;background:#3f83b4;color:white;text-align:center;font:700 10px/16px system-ui,sans-serif;transform:translate(-50%,-50%);pointer-events:none;line-height:16px}.annot-mark.active{background:#a84d28;outline:2px solid #f1c85c;outline-offset:2px}
+.annot-guide{font:13px/1.5 system-ui,sans-serif}.anchor-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin:10px 0}.anchor-buttons button{font:12px system-ui,sans-serif;text-align:left;padding:7px 6px}.anchor-buttons button.done{background:#e2f0e4;border-color:#83ac89}.anchor-buttons button.active{outline:2px solid #ad7247;outline-offset:0;background:#f9e2bd}.annot-tools{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.annotation-table{font-variant-numeric:tabular-nums}.annotation-table td,.annotation-table th{padding:9px 7px}.annotation-table td:not(:first-child){text-align:right}.annotation-table th:not(:first-child){text-align:right}.state-note{font:13px/1.5 system-ui,sans-serif;padding:10px 12px;background:#f0e9dc;border-left:3px solid #94765c;margin-top:10px}.annot-placeholder{font:13px/1.5 system-ui,sans-serif;padding:18px;background:#f5ebdb}
+@media(max-width:750px){.measure-layout{grid-template-columns:1fr}}
+
+@media(max-width:875px){.columns{grid-template-columns:1fr}.settings{position:static}.method{grid-template-columns:1fr}}@media(max-width:580px){.compare{grid-template-columns:1fr}.results{grid-template-columns:1fr 1fr}.results .metric:last-child{grid-column:1/-1}main{padding:15px 10px 40px}.paper{padding:13px}}
+</style>
+</head>
+<body><main>
+<p class="small" style="margin:0 0 10px"><a href="./index.html" style="color:#725238">← Torna alla pagina dello Studiolo</a></p>
+<div class="eyebrow">Studiolo · laboratorio prospettico · 15 ottobre 2026 · v0.8</div>
+<h1>Il quadro inclinato: Mantegna e i controlli</h1>
+<p class="lead">Il <em>Cristo morto</em> presenta uno scorcio anomalo. L'inclinazione della superficie può attenuarlo, oppure peggiorarlo? Confrontiamo <strong>due controlli scelti prima del risultato</strong>: il <em>San Sebastiano</em> di Mantegna (figura intera) e il <em>Cristo morto</em> di Zaganelli (scorcio in un allestimento d'altare documentato). La <em>Flagellazione</em> di Piero resta come quarto confronto facoltativo.</p>
+<div class="columns">
+<aside class="paper settings">
+<h2>Dipinto e assetto</h2>
+<div class="control"><label for="painting">Opera esaminata</label><select id="painting"><option value="mantegna">Mantegna — Cristo morto (ipotesi)</option><option value="sebastiano">Mantegna — San Sebastiano (controllo 1)</option><option value="zaganelli">Zaganelli — Cristo morto (controllo 2)</option><option value="piero">Piero — Flagellazione (controllo supplementare)</option></select><div id="dimensions" class="miniinfo"></div></div>
+<div class="image-leds" role="group" aria-label="Stato delle immagini precaricate">
+  <div class="image-led"><span class="led loading" id="led-mantegna" aria-hidden="true"></span><span><strong>Mantegna</strong> · <span id="led-text-mantegna">In caricamento…</span></span></div>
+  <div class="image-led"><span class="led loading" id="led-sebastiano" aria-hidden="true"></span><span><strong>Sebastiano</strong> · <span id="led-text-sebastiano">In caricamento…</span></span></div>
+  <div class="image-led"><span class="led loading" id="led-zaganelli" aria-hidden="true"></span><span><strong>Zaganelli</strong> · <span id="led-text-zaganelli">In caricamento…</span></span></div>
+  <div class="image-led"><span class="led loading" id="led-piero" aria-hidden="true"></span><span><strong>Piero</strong> · <span id="led-text-piero">In caricamento…</span></span></div>
+  <button class="retry" id="retryImages" type="button">Riprova immagini</button>
+</div>
+<p class="small">Le quote spaziali sono ipotesi di laboratorio, <strong>non dati sugli allestimenti storici</strong>. A e B condividono la posizione dell’occhio. Il dipinto viene ruotato attorno al bordo inferiore.</p>
+<div class="control"><label for="angle">Inclinazione della superficie <output id="angleOut">35°</output></label><input id="angle" type="range" min="-55" max="65" step="1" value="35"><p class="small">Angolo positivo: bordo superiore lontano dall’occhio. Negativo: bordo superiore verso l’occhio.</p></div>
+<div class="control"><label for="distance">Distanza dell'occhio dal bordo inferiore <output id="distanceOut">1,00 m</output></label><input id="distance" type="range" min="0.5" max="3.6" value="1" step="0.1"></div>
+<div class="control"><label for="eye">Altezza dell'occhio dal pavimento <output id="eyeOut">1,20 m</output></label><input id="eye" type="range" min="0.8" max="1.8" value="1.2" step="0.05"></div>
+<div class="control"><label for="bottom">Altezza del bordo inferiore <output id="bottomOut">0,70 m</output></label><input id="bottom" type="range" min="0.3" max="1.1" value="0.7" step="0.05"></div>
+<h3>Prove rapide</h3>
+<div class="presets"><button data-preset="near" type="button">Ravvicinata</button><button data-preset="mid" type="button">A un metro</button><button data-preset="far" type="button">A distanza</button><button data-preset="reset" type="button">Verticale</button></div>
+<button class="reset-all" id="resetInitial" type="button" title="Torna all’opera Mantegna, 35°, distanza 1 metro, occhio 1,20 metri e bordo 0,70 metri">↺ Ripristina condizioni iniziali</button>
+<p class="small reset-feedback" id="resetFeedback" role="status" aria-live="polite">Ripristina anche l’opera selezionata e disattiva i due confronti opzionali.</p>
+<label class="check"><input type="checkbox" id="marks"> Mostra campioni equivalenti (alto / basso)</label>
+<label class="check"><input type="checkbox" id="normalized"> Confronta a distanza relativa alla <strong>dimensione del dipinto</strong></label>
+<p class="small">Se selezionato, distanza e altezza dell’occhio si scalano insieme al formato dell'opera, mantenendo la posizione relativa. Utile per distinguere gli effetti delle dimensioni da quelli dell'immagine.</p>
+<p class="small">Le quattro riproduzioni sono precaricate subito, anche quando non sono selezionate. La <strong>spia verde</strong> indica il completamento effettivo del caricamento; la <strong>rossa</strong> segnala attesa o errore.</p>
+<label class="upload-label pick" for="localImage">Carica immagine dal computer<input id="localImage" type="file" accept="image/*"></label><p class="small" style="margin-top:8px">Per scaricarla: <a id="artLink" href="https://commons.wikimedia.org" target="_blank" rel="noopener noreferrer">apri la riproduzione su Wikimedia Commons</a> e salva l’immagine, quindi caricala qui.</p>
+<div class="status" id="sourceStatus" role="status" aria-live="polite"></div>
+</aside>
+<section class="paper">
+<h2>Confronto visivo <span class="tag" id="paintingTag">Mantegna</span></h2>
+<div class="compare">
+<div class="frame"><div class="frame-title">A — Tela verticale (0°)</div><div class="scene" id="scene0"><div class="plane" id="plane0"><img class="art" id="img0" alt="Opera selezionata, tela verticale"><div class="mark mark-upper"></div><div class="mark mark-lower"></div></div><div class="fallback">Caricamento dell’immagine… Se non compare, usa «Carica immagine dal computer».</div></div><div class="legend">Riferimento verticale: non assumiamo che sia storicamente la posizione originaria.</div></div>
+<div class="frame"><div class="frame-title">B — Tela inclinata (<span id="tiltTitle">35</span>°)</div><div class="scene" id="scene1"><div class="plane" id="plane1"><img class="art" id="img1" alt="Opera selezionata, tela inclinata"><div class="mark mark-upper"></div><div class="mark mark-lower"></div></div><div class="fallback">Caricamento dell’immagine… Se non compare, usa «Carica immagine dal computer».</div></div><div class="legend">Stessa immagine e stesso occhio, senza alcuna modifica ai personaggi dipinti.</div></div>
+</div>
+<div class="results">
+<div class="metric"><div class="val" id="baseRatio">—</div><span class="lbl">Scala locale basso/alto — verticale</span></div>
+<div class="metric"><div class="val" id="tiltRatio">—</div><span class="lbl">Stessa scala — inclinata</span></div>
+<div class="metric"><div class="val" id="gain">—</div><span class="lbl">Variazione dovuta all'inclinazione</span></div>
+</div>
+<p class="small">I numeri misurano l'ingrandimento relativo di <strong>segmenti orizzontali uguali al 15% e all'85% dell'altezza</strong>. Non misurano errori anatomici, né il grado di plausibilità visiva dei personaggi. I dipinti sono proiettati sulle rispettive dimensioni reali; il modello non modifica i pigmenti.</p>
+<div class="warning" id="conclusion" aria-live="polite">—</div>
+</section>
+</div>
+
+<section class="paper measure-lab" id="anatomyLab">
+<h2>Misura del torso e delle gambe · prova v0.8</h2>
+<p><strong>La tua osservazione:</strong> il torso del <em>Cristo morto</em> sembra largo e corto. L'inclinazione riduce davvero il rapporto fra larghezza e lunghezza apparenti? Per non suggerire una conclusione, il programma non preimposta alcun punto anatomico: li scegliamo sull'immagine, e i medesimi punti vengono proiettati a 0° e all'angolo scelto.</p>
+<div class="measure-layout">
+  <div>
+    <p class="small">Immagine sorgente non inclinata · clicca i punti richiesti. Le coordinate sono relative all'immagine, non dedotte automaticamente da un corpo tridimensionale.</p>
+    <div class="annot-view" id="annotView" title="Fai clic sull'immagine per segnare il punto selezionato">
+      <div id="annotPlaceholder" class="annot-placeholder">Attendo la riproduzione: usa le spie o carica un'immagine dal computer.</div>
+      <img id="annotImg" alt="Dipinto originale per segnare i riferimenti anatomici" style="display:none">
+      <div id="annotMarks" aria-hidden="true"></div>
+    </div>
+    <p class="small">Per correggere un punto, seleziona il relativo pulsante e clicca di nuovo. Non servono i punti delle gambe per calcolare il torso.</p>
+  </div>
+  <div class="annot-guide">
+    <div class="state-note" role="status" aria-live="polite" id="pointPrompt">Primo punto: spalla sinistra della figura.</div>
+    <div class="anchor-buttons" id="anchorButtons"></div>
+    <div class="annot-tools">
+      <button type="button" id="undoPoint">↶ Annulla ultimo</button>
+      <button type="button" id="clearPoints">Cancella punti</button>
+      <button type="button" id="savePoints">Salva sessione completa .json</button>
+    </div>
+    <label class="upload-label pick" for="importPoints">Importa sessione o coordinate .json<input id="importPoints" type="file" accept="application/json,.json"></label>
+    <p class="small">I punti sono separati per ciascuna opera e restano disponibili mentre la pagina è aperta. Puoi esportare l’intera sessione (punti e inclinazione) per riprendere lo Studiolo in seguito.</p>
+  </div>
+</div>
+<h3>Tre indici di proporzione apparente</h3>
+<table class="annotation-table"><thead><tr><th>Rapporto fra segmenti proiettati</th><th>0°</th><th>Angolo scelto</th><th>Variazione</th></tr></thead><tbody>
+<tr><td><strong>Spalle / lunghezza torso</strong><br><span class="small">Più basso = torso apparentemente meno largo rispetto alla sua lunghezza</span></td><td id="awA">—</td><td id="awB">—</td><td id="awDelta">—</td></tr>
+<tr><td><strong>Bacino / lunghezza torso</strong><br><span class="small">Controllo sulla parte inferiore del busto</span></td><td id="ahA">—</td><td id="ahB">—</td><td id="ahDelta">—</td></tr>
+<tr><td><strong>Gambe / lunghezza torso</strong><br><span class="small">Lunghezza per due segmenti (bacino→ginocchia→caviglie)</span></td><td id="alA">—</td><td id="alB">—</td><td id="alDelta">—</td></tr>
+</tbody></table>
+<div class="state-note" id="anatomyResult" aria-live="polite">Segna le due spalle e i due lati del bacino per iniziare il confronto.</div>
+<p class="small"><strong>Limite essenziale:</strong> queste sono misure bidimensionali <em>apparenti</em> sul piano dell'osservatore, non lunghezze ossee o misure anatomiche tridimensionali. Un rapporto che diminuisce non è automaticamente una correzione: valutiamo se più indici convergono e usiamo i controlli. I risultati dipendono dai punti scelti e dal ritaglio della fotografia. La nostra ipotesi non riceve punti automatici di vantaggio.</p>
+</section>
+
+<div class="method">
+<section class="paper">
+<h2>Controllo geometrico fra i dipinti</h2>
+<p class="small">Lo stesso angolo è applicato a tutti. A scelta, stessa distanza in metri oppure stessa distanza rispetto all'altezza del dipinto.</p>
+<table><thead><tr><th>Dipinto</th><th>Formato</th><th>Variazione basso/alto</th></tr></thead><tbody>
+<tr><td>Mantegna · Cristo</td><td>81 × 68 cm</td><td id="gainM">—</td></tr>
+<tr><td>Mantegna · Sebastiano</td><td>140 × 255 cm</td><td id="gainS">—</td></tr>
+<tr><td>Zaganelli · Cristo</td><td>202,5 × 98,1 cm</td><td id="gainZ">—</td></tr>
+<tr><td>Piero · Flagellazione</td><td>81,5 × 58,3 cm</td><td id="gainP">—</td></tr></tbody></table>
+<p class="cond"><strong>Attenzione:</strong> le percentuali non valutano la correttezza pittorica. Dipendono dalle dimensioni e dalla geometria di visione. Se sostituiamo le figure senza modificare la superficie, la percentuale non cambia.</p>
+</section>
+<section class="paper">
+<h2>Che cosa stiamo cercando?</h2>
+<p><strong>Controllo 1 — San Sebastiano.</strong> Una figura intera, dello stesso Mantegna: l'inclinazione peggiora un'anatomia già leggibile?</p>
+<p><strong>Controllo 2 — Zaganelli.</strong> Un Cristo scorciato, con un altare storicamente documentato. La National Gallery descrive le gambe e la lastra come proiettate verso lo spettatore; <strong>l'inclinazione del pannello non è documentata</strong>.</p>
+<p><strong>Controllo supplementare — Piero.</strong> La prospettiva architettonica della <em>Flagellazione</em> ci aiuta a vedere eventuali distorsioni delle linee.</p>
+<p class="cond">Questo programma mette alla prova la <em>possibilità ottica</em>, non ricostruisce ancora la nicchia o il catafalco (ipotesi H5). La nuova sezione produce misure 2D ripetibili, ma non un indice oggettivo di errore anatomico 3D.</p>
+</section>
+</div>
+<section class="paper sources">
+<h2>Fonti e metodo</h2>
+<table><thead><tr><th>Documento</th><th>Dato impiegato</th></tr></thead><tbody>
+<tr><td><a href="https://pinacotecabrera.org/collezioni/collezione-on-line/cristo-morto-nel-sepolcro-e-tre-dolenti/" target="_blank" rel="noopener noreferrer">Pinacoteca di Brera — Cristo morto</a></td><td>81 × 68 cm; tempera su tela; nessuna inclinazione originaria dimostrata.</td></tr>
+<tr><td><a href="https://collections.louvre.fr/ark:/53355/cl010064796" target="_blank" rel="noopener noreferrer">Louvre — San Sebastiano di Mantegna</a></td><td>255 × 140 cm; figura intera; controllo anatomico dello stesso autore.</td></tr>
+<tr><td><a href="https://www.nationalgallery.org.uk/paintings/francesco-zaganelli-the-dead-christ-with-angels" target="_blank" rel="noopener noreferrer">National Gallery — Cristo morto con angeli (Zaganelli)</a></td><td>1514; 98,1 × 202,5 cm; lunetta di pala d'altare, angolo del montaggio non documentato.</td></tr>
+<tr><td><a href="https://commons.wikimedia.org/wiki/File:Andrea_Mantegna_088.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons — San Sebastiano</a></td><td>Riproduzione da opera in pubblico dominio.</td></tr>
+<tr><td><a href="https://commons.wikimedia.org/wiki/File:Francesco_Zaganelli_(c.1470-c.1532)_-_The_Dead_Christ_with_Angels_-_NG3892.2_-_National_Gallery.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons — Zaganelli</a></td><td>Riproduzione fotografica, superficie pittorica a lunetta.</td></tr>
+<tr><td><a href="https://www.movio.beniculturali.it/pmmar/eccellenzegallerianazionaledellemarche/it/33/piero-della-francesca-flagellazione" target="_blank" rel="noopener noreferrer">Galleria Nazionale delle Marche — Flagellazione</a></td><td>Superficie dipinta 81,5 × 58,3 cm (la tavola completa è più grande).</td></tr>
+<tr><td><a href="https://commons.wikimedia.org/wiki/File:The_dead_Christ_and_three_mourners,_by_Andrea_Mantegna.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons — Mantegna</a></td><td>Riproduzione in pubblico dominio; possibile lieve differenza fra inquadratura fotografica e dimensioni pittoriche.</td></tr>
+<tr><td><a href="https://commons.wikimedia.org/wiki/File:Piero_della_Francesca_Flagellazione-gndm-full.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons — Piero</a></td><td>Riproduzione in pubblico dominio; link alternativo e caricamento locale se Wikimedia non risponde.</td></tr>
+<tr><td><a href="https://uvadoc.uva.es/handle/10324/66764" target="_blank" rel="noopener noreferrer">Álvaro Tordesillas, Linares García (2011)</a></td><td>Studio geometrico su Mantegna da confrontare in un successivo esperimento anatomico, non prova dell'ipotesi dell'inclinazione.</td></tr>
+</tbody></table>
+<p class="small"><strong>Nota tecnica.</strong> Proiezione centrale di un rettangolo nello spazio; omografia calcolata dalle sue quattro estremità. L'occhio non viene spostato né ruotato fra A e B; solo il dipinto ruota intorno al proprio bordo inferiore, allontanando la parte alta. Le proiezioni vengono ricentrate per impaginarle affiancate, senza alterare i rapporti interni di scala. L’immagine è trattata come superficie rettangolare; per Zaganelli la lunetta originale ha profilo curvo. La nuova sezione misura soltanto rapporti 2D tra segmenti marcati dall’utente; non determina la correttezza anatomica 3D. Per ora non è modellata alcuna nicchia o architettura esterna.</p>
+</section>
+<footer>Lo Zibaldino di Capaneo · Studiolo — Paolo + ChatGPT · laboratorio v0.8, 15/10/2026. Esperimento di geometria ottica, non ricostruzione storica dell'allestimento. Nessun tracciamento; immagini caricate via Wikimedia Commons (con indirizzi alternativi) o localmente.</footer>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),RAD=Math.PI/180;
+const PICTURES={
+ mantegna:{name:'Mantegna · Cristo morto',short:'Mantegna',w:.81,h:.68,
+  urls:[
+   'https://upload.wikimedia.org/wikipedia/commons/f/f4/The_dead_Christ_and_three_mourners%2C_by_Andrea_Mantegna.jpg',
+   'https://commons.wikimedia.org/wiki/Special:FilePath/The_dead_Christ_and_three_mourners%2C_by_Andrea_Mantegna.jpg?width=1200',
+   'https://commons.wikimedia.org/wiki/Special:FilePath/The_dead_Christ_and_three_mourners_(by_Andrea_Mantegna)_%E2%80%93_Pinacoteca_di_Brera.jpg?width=1200'
+  ],page:'https://commons.wikimedia.org/wiki/File:The_dead_Christ_and_three_mourners,_by_Andrea_Mantegna.jpg',caption:'Cristo morto — 81 × 68 cm · Brera'},
+ sebastiano:{name:'Mantegna · San Sebastiano',short:'Sebastiano',w:1.40,h:2.55,
+  urls:[
+   'https://commons.wikimedia.org/wiki/Special:FilePath/Andrea_Mantegna_088.jpg?width=960',
+   'https://upload.wikimedia.org/wikipedia/commons/c/c1/Andrea_Mantegna_088.jpg',
+   'https://commons.wikimedia.org/wiki/Special:FilePath/Andrea_Mantegna_-_St_Sebastian_-_WGA13975.jpg?width=960'
+  ],page:'https://commons.wikimedia.org/wiki/File:Andrea_Mantegna_088.jpg',caption:'San Sebastiano — 140 × 255 cm · Louvre'},
+ zaganelli:{name:'Zaganelli · Cristo morto',short:'Zaganelli',w:2.025,h:.981,
+  urls:[
+   'https://commons.wikimedia.org/wiki/Special:FilePath/Francesco_Zaganelli_%28c.1470-c.1532%29_-_The_Dead_Christ_with_Angels_-_NG3892.2_-_National_Gallery.jpg?width=1200',
+   'https://upload.wikimedia.org/wikipedia/commons/c/c0/Francesco_Zaganelli_%28c.1470-c.1532%29_-_The_Dead_Christ_with_Angels_-_NG3892.2_-_National_Gallery.jpg',
+   'https://commons.wikimedia.org/wiki/Special:FilePath/Francesco_Zaganelli_-_Cristo_morto_tra_due_angeli.jpg?width=1200'
+  ],page:'https://commons.wikimedia.org/wiki/File:Francesco_Zaganelli_(c.1470-c.1532)_-_The_Dead_Christ_with_Angels_-_NG3892.2_-_National_Gallery.jpg',caption:'Cristo morto con angeli — 202,5 × 98,1 cm · National Gallery'},
+ piero:{name:'Piero · Flagellazione',short:'Piero',w:.815,h:.583,
+  urls:[
+   'https://commons.wikimedia.org/wiki/Special:FilePath/Piero_della_Francesca_Flagellazione-gndm-full.jpg?width=1280',
+   'https://upload.wikimedia.org/wikipedia/commons/9/9d/Piero_della_Francesca_Flagellazione-gndm-full.jpg',
+   'https://commons.wikimedia.org/wiki/Special:FilePath/Piero_della_Francesca_042_Flagellation.jpg?width=1200'
+  ],page:'https://commons.wikimedia.org/wiki/File:Piero_della_Francesca_Flagellazione-gndm-full.jpg',caption:'Flagellazione — 81,5 × 58,3 cm · Urbino'}
+};
+const inputs=['angle','distance','eye','bottom'];
+const INITIAL={painting:'mantegna',angle:35,distance:1,eye:1.2,bottom:.7,marks:false,normalized:false};
+const PX=1000;
+const imageCache={
+ mantegna:{state:'loading',url:null,source:'',image:null,task:null},
+ piero:{state:'loading',url:null,source:'',image:null,task:null},
+ sebastiano:{state:'loading',url:null,source:'',image:null,task:null},
+ zaganelli:{state:'loading',url:null,source:'',image:null,task:null}
+};
+const localURLs={};
+let current='mantegna';
+function showStatus(message){$('sourceStatus').textContent=message;}
+function updateLed(key,state,caption){
+ const entry=imageCache[key];entry.state=state;
+ const led=$('led-'+key);led.className='led '+(state==='ready'?'ready':state==='failed'?'failed':'loading');
+ const text=caption||(state==='ready'?'Pronta':state==='failed'?'Non disponibile':'In caricamento…');
+ $('led-text-'+key).textContent=text;
+ led.parentElement.title=PICTURES[key].name+' — '+text;
+}
+function clearDisplayed(){
+ for(let i=0;i<2;i++){
+  $('img'+i).removeAttribute('src');
+  $('scene'+i).classList.add('missing');
+ }
+}
+function displayReady(key){
+ if(key!==current)return;
+ const e=imageCache[key];
+ if(e.state!=='ready' || !e.url)return;
+ // La riproduzione è già stata caricata da un oggetto Image e quindi è in cache.
+ for(let i=0;i<2;i++){
+  $('img'+i).src=e.url;
+  $('scene'+i).classList.remove('missing');
+ }
+ showStatus('Immagine pronta — '+e.source+'.');
+ syncAnnotationImage();
+}
+function showFailureIfSelected(key){
+ if(key!==current)return;
+ for(let i=0;i<2;i++)$('scene'+i).classList.add('missing');
+ showStatus('Immagine non disponibile dopo i tentativi di caricamento. Usa «Riprova immagini» oppure carica un file dal computer.');
+ syncAnnotationImage();
+}
+function imageAsPromise(url,timeoutMs=7500){
+ return new Promise(resolve=>{
+  const candidate=new Image();let done=false;
+  const timeout=setTimeout(()=>finish(false),timeoutMs);
+  function finish(ok){
+   if(done)return;
+   done=true;clearTimeout(timeout);
+   candidate.onload=null;candidate.onerror=null;
+   resolve(ok?candidate:null);
+  }
+  candidate.onload=()=>finish(candidate.naturalWidth>0&&candidate.naturalHeight>0);
+  candidate.onerror=()=>finish(false);
+  candidate.src=url;
+  // Alcuni browser completano immediatamente l'immagine già in cache.
+  if(candidate.complete && candidate.naturalWidth>0)finish(true);
+ });
+}
+async function preloadImage(key,force=false){
+ const e=imageCache[key];
+ if(e.task && !force)return e.task;
+ if(e.state==='ready'&&!force)return;
+ // Ogni nuovo tentativo riceve un identificativo: risposte vecchie non cambiano le spie.
+ const generation=(e.generation||0)+1;e.generation=generation;
+ const isLocal=!!localURLs[key];
+ const sequence=isLocal?[localURLs[key]]:PICTURES[key].urls;
+ updateLed(key,'loading','Caricamento…');
+ if(key===current)showStatus('Precaricamento '+PICTURES[key].name+'…');
+ const job=(async()=>{
+  for(let idx=0;idx<sequence.length;idx++){
+   const url=sequence[idx];
+   const loaded=await imageAsPromise(url,isLocal?10000:7500);
+   if(e.generation!==generation)return;
+   if(loaded){
+    e.url=url;e.image=loaded;
+    e.source=isLocal?'file locale':'sorgente '+(idx+1)+'/'+sequence.length;
+    updateLed(key,'ready','Pronta');
+    displayReady(key);
+    return;
+   }
+   if(key===current)showStatus('Tentativo '+(idx+1)+'/'+sequence.length+' non riuscito; provo l’alternativa…');
+  }
+  if(e.generation!==generation)return;
+  e.url=null;e.image=null;
+  updateLed(key,'failed','Caricamento fallito');
+  showFailureIfSelected(key);
+ })();
+ e.task=job;
+ await job;
+ if(e.task===job)e.task=null;
+}
+function setArt(key){
+ current=key;
+ const work=PICTURES[key],v=work.h/work.w*PX;
+ $('dimensions').textContent=work.caption+' · le proporzioni del supporto restano quelle dell’opera selezionata.';
+ $('paintingTag').textContent=work.name;
+ $('artLink').href=work.page;
+ for(let i=0;i<2;i++){$('scene'+i).classList.toggle('tall',work.h/work.w>1.25);$('scene'+i).classList.toggle('wide',work.w/work.h>1.6);}
+ for(let i=0;i<2;i++){
+  const plane=$('plane'+i),img=$('img'+i);
+  plane.style.width=PX+'px';plane.style.height=v+'px';
+  img.alt=work.name+(i?' con tela inclinata':' con tela verticale');
+ }
+ clearDisplayed();render();
+ syncAnnotationImage();refreshAnnotationMarks();updateAnatomy();
+ if(imageCache[key].state==='ready')displayReady(key);
+ else if(imageCache[key].state==='failed')showFailureIfSelected(key);
+ else showStatus('Precaricamento '+work.name+' in corso…');
+}
+for(let i=0;i<2;i++){
+ const img=$('img'+i),sc=$('scene'+i);
+ img.addEventListener('error',()=>{
+  // La spia segnala l'esito del precaricamento; qui segnaliamo un errore della vista.
+  sc.classList.add('missing');
+  showStatus('Il file era precaricato, ma la visualizzazione non è riuscita. Usa «Riprova immagini» o un file locale.');
+ });
+ img.addEventListener('load',()=>sc.classList.remove('missing'));
+}
+$('painting').addEventListener('change',e=>setArt(e.target.value));
+$('localImage').addEventListener('change',e=>{
+ const f=e.target.files&&e.target.files[0];if(!f)return;
+ if(!f.type.startsWith('image/')){showStatus('Seleziona un file immagine.');return;}
+ if(localURLs[current])URL.revokeObjectURL(localURLs[current]);
+ localURLs[current]=URL.createObjectURL(f);
+ preloadImage(current,true);
+});
+$('retryImages').addEventListener('click',()=>{
+ Object.keys(PICTURES).forEach(k=>preloadImage(k,true));
+});
+const presets={near:{angle:45,distance:.6,eye:1.2,bottom:.7},mid:{angle:30,distance:1.0,eye:1.2,bottom:.7},far:{angle:30,distance:3.3,eye:1.2,bottom:.7},reset:{angle:0,distance:1,eye:1.2,bottom:.7}};
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>{const p=presets[b.dataset.preset];for(const k of inputs)$(k).value=p[k];render();}));
+$('resetInitial').addEventListener('click',()=>{
+ for(const k of inputs)$(k).value=INITIAL[k];
+ $('painting').value=INITIAL.painting;
+ $('normalized').checked=INITIAL.normalized;
+ $('marks').checked=INITIAL.marks;
+ for(let i=0;i<2;i++)$('scene'+i).classList.toggle('show-marks',INITIAL.marks);
+ setArt(INITIAL.painting);
+ $('resetFeedback').textContent='Condizioni iniziali ripristinate (immagini precaricate conservate).';
+});
+for(const k of inputs)$(k).addEventListener('input',render);
+$('normalized').addEventListener('change',render);
+$('marks').addEventListener('change',()=>{for(let i=0;i<2;i++)$('scene'+i).classList.toggle('show-marks',$('marks').checked)});
+window.addEventListener('resize',render);
+// Punto sul piano: x laterale, y profondità (positivo lontano dallo spettatore), z quota.
+// La camera è situata in (0,-D,eye), e il suo asse rimane fisso verso il centro della tela VERTICALE.
+function point(u,v,a,p,work){
+ const top=1-v/(PX*work.h/work.w);
+ const x=(u/PX-.5)*work.w,y=top*work.h*Math.sin(a),z=p.bottom+top*work.h*Math.cos(a);
+ const dy=p.distance,dz=p.bottom+work.h/2-p.eye,mag=Math.hypot(dy,dz),fy=dy/mag,fz=dz/mag;
+ const depth=fy*(p.distance+y)+fz*(z-p.eye);
+ return {x:x/depth,y:(-fz*(p.distance+y)+fy*(z-p.eye))/depth,depth};
+}
+function corners(a,p,work){const H=PX*work.h/work.w;return [[0,0],[PX,0],[PX,H],[0,H]].map(q=>point(q[0],q[1],a,p,work));}
+// Risolutore Gauss per omografia 2D (4 punti).
+function solve(src,dst){const A=[];for(let i=0;i<4;i++){
+ const [x,y]=src[i],[U,V]=dst[i];A.push([x,y,1,0,0,0,-U*x,-U*y,U],[0,0,0,x,y,1,-V*x,-V*y,V]);}
+ for(let i=0;i<8;i++){let im=i;for(let j=i+1;j<8;j++)if(Math.abs(A[j][i])>Math.abs(A[im][i]))im=j;
+ [A[i],A[im]]=[A[im],A[i]];let d=A[i][i];if(Math.abs(d)<1e-12)return null;
+ for(let k=i;k<=8;k++)A[i][k]/=d;
+ for(let j=0;j<8;j++)if(j!==i){let f=A[j][i];for(let k=i;k<=8;k++)A[j][k]-=f*A[i][k];}
+ }return A.map(row=>row[8]);
+}
+function matrix(h){return `matrix3d(${[h[0],h[3],0,h[6],h[1],h[4],0,h[7],0,0,1,0,h[2],h[5],0,1].join(',')})`;}
+// Indice indipendente dal contenuto pittorico: due piccole barre orizzontali, alto/basso.
+function scale(a,p,work,fraction){const yy=PX*work.h/work.w*fraction,q1=point(PX*.45,yy,a,p,work),q2=point(PX*.55,yy,a,p,work);return Math.hypot(q2.x-q1.x,q2.y-q1.y);}
+function ratio(a,p,work){return scale(a,p,work,.85)/scale(a,p,work,.15);}
+function pct(p,work){return 100*(ratio(p.angle*RAD,p,work)/ratio(0,p,work)-1);}
+function pLabel(n){return n>0?'+'+n:String(n);}
+function paramsFor(key,values){const k=$('normalized').checked ? PICTURES[key].h/PICTURES.mantegna.h : 1;return {...values,distance:values.distance*k,bottom:values.bottom*k,eye:values.eye*k};}
+function render(){
+ const userP={};for(const k of inputs){userP[k]=Number($(k).value);$(k+'Out').textContent=k==='angle'?pLabel(userP[k])+'°':userP[k].toFixed(2).replace('.',',')+' m';}
+ const p=paramsFor(current,userP);
+ const work=PICTURES[current],a=p.angle*RAD; $('tiltTitle').textContent=p.angle;
+ const arr=[corners(0,p,work),corners(a,p,work)],sc=[$('scene0'),$('scene1')];
+ const all=arr.flat(),sx=Math.max(...all.map(x=>Math.abs(x.x))),sy=Math.max(...all.map(x=>Math.abs(x.y)));
+ const cw=Math.min(sc[0].clientWidth,sc[1].clientWidth),ch=Math.min(sc[0].clientHeight,sc[1].clientHeight);
+ if(cw>0&&ch>0&&sx>0&&sy>0){const fit=Math.min((cw-18)/(2*sx),(ch-18)/(2*sy));
+  const H=PX*work.h/work.w,src=[[0,0],[PX,0],[PX,H],[0,H]];
+  for(let i=0;i<2;i++){
+   const dst=arr[i].map(q=>[sc[i].clientWidth/2+q.x*fit,sc[i].clientHeight/2-q.y*fit]);
+   const h=solve(src,dst);if(h)$('plane'+i).style.transform=matrix(h);
+  }
+ }
+ const r0=ratio(0,p,work),r1=ratio(a,p,work),g=pct(p,work);
+ const fmt=n=>(n>=0?'+':'')+n.toFixed(1).replace('.',',')+'%';
+ $('baseRatio').textContent=r0.toFixed(3).replace('.',',')+'×';$('tiltRatio').textContent=r1.toFixed(3).replace('.',',')+'×';$('gain').textContent=fmt(g);
+ for(const [key,id] of [['mantegna','gainM'],['sebastiano','gainS'],['zaganelli','gainZ'],['piero','gainP']]){const work=PICTURES[key];$(''+id).textContent=fmt(pct(paramsFor(key,userP),work));}
+ const c=$('conclusion');c.textContent='';
+ const b=document.createElement('strong');b.textContent='Esito geometrico: ';c.append(b);
+ c.append(`l’inclinazione di ${p.angle}° modifica il rapporto di scala locale basso/alto di ${fmt(g)} per ${work.name}. `);
+ const b2=document.createElement('strong');b2.textContent='Questo valore non dice se il dipinto sia diventato più corretto o più deformato: ';c.append(b2);
+ c.append('è indipendente da ciò che è raffigurato. Per verificare una compensazione intenzionale occorre un criterio prospettico o anatomico esterno.');
+ updateAnatomy();
+}
+
+// TRACCIAMENTO ANATOMICO. Nessun punto predefinito o scelta automatica a favore della tesi.
+// Una coppia per ogni giuntura; l'asse centrale è la media dei due lati.
+const ANCHORS=[
+ ['spallaL','1 · Spalla sinistra'],['spallaR','2 · Spalla destra'],
+ ['ancaL','3 · Bacino sinistra'],['ancaR','4 · Bacino destra'],
+ ['ginL','5 · Ginocchio sinistro'],['ginR','6 · Ginocchio destro'],
+ ['cavL','7 · Caviglia sinistra'],['cavR','8 · Caviglia destra']
+];
+const annotationPoints=Object.fromEntries(Object.keys(PICTURES).map(key=>[key,{}]));
+let activeAnchor=0;
+const formatIndex=value=>Number.isFinite(value)?value.toFixed(3).replace('.',','):'—';
+function pointCount(){return ANCHORS.filter(([key])=>annotationPoints[current][key]).length;}
+function firstMissing(){const p=annotationPoints[current];return ANCHORS.findIndex(([key])=>!p[key]);}
+function setActiveAnchor(idx){activeAnchor=idx;refreshAnnotationMarks();}
+function syncAnnotationImage(){
+ const e=imageCache[current],img=$('annotImg'),placeholder=$('annotPlaceholder');
+ if(e.state==='ready' && e.url){
+  if(img.getAttribute('src')!==e.url) img.src=e.url;
+  img.style.display='block';placeholder.style.display='none';
+ } else {
+  img.removeAttribute('src');img.style.display='none';placeholder.style.display='block';
+  placeholder.textContent=e.state==='failed'?'Immagine non disponibile. Premi «Riprova immagini» o scegli un file locale.':'Immagine in precaricamento…';
+ }
+}
+function refreshAnnotationMarks(){
+ const p=annotationPoints[current],buttons=$('anchorButtons'),marks=$('annotMarks');
+ buttons.replaceChildren();marks.replaceChildren();
+ ANCHORS.forEach(([key,label],idx)=>{
+  const b=document.createElement('button');b.type='button';
+  b.textContent=(p[key]?'● ':'○ ')+label;
+  b.className=(p[key]?'done ':'')+(idx===activeAnchor?'active':'');
+  b.setAttribute('aria-pressed',String(idx===activeAnchor));
+  b.addEventListener('click',()=>setActiveAnchor(idx));buttons.append(b);
+  if(p[key]){
+   const mark=document.createElement('span');mark.className='annot-mark'+(idx===activeAnchor?' active':'');
+   mark.style.left=(p[key].x*100)+'%';mark.style.top=(p[key].y*100)+'%';
+   mark.textContent=String(idx+1);mark.title=label;marks.append(mark);
+  }
+ });
+ const next=ANCHORS[activeAnchor];
+ $('pointPrompt').textContent=`${pointCount()}/8 punti segnati · ${next[1]}. Seleziona un punto per riposizionarlo.`;
+}
+$('annotView').addEventListener('click',event=>{
+ const img=$('annotImg');if(img.style.display==='none'||!img.complete||!img.naturalWidth)return;
+ const r=img.getBoundingClientRect();
+ const x=(event.clientX-r.left)/r.width,y=(event.clientY-r.top)/r.height;
+ if(x<0||x>1||y<0||y>1)return;
+ annotationPoints[current][ANCHORS[activeAnchor][0]]={x,y};
+ const next=firstMissing();
+ if(next!==-1)activeAnchor=next;
+ else if(activeAnchor<ANCHORS.length-1)activeAnchor++;
+ refreshAnnotationMarks();updateAnatomy();
+});
+$('undoPoint').addEventListener('click',()=>{
+ const p=annotationPoints[current];
+ const present=ANCHORS.map(([k],i)=>p[k]?i:-1).filter(i=>i>=0);
+ if(!present.length)return;
+ const last=present.at(-1);delete p[ANCHORS[last][0]];activeAnchor=last;
+ refreshAnnotationMarks();updateAnatomy();
+});
+$('clearPoints').addEventListener('click',()=>{
+ annotationPoints[current]={};activeAnchor=0;refreshAnnotationMarks();updateAnatomy();
+});
+$('savePoints').addEventListener('click',()=>{
+ const settings={painting:current};for(const k of inputs)settings[k]=Number($(k).value);
+ settings.marks=$('marks').checked;settings.normalized=$('normalized').checked;
+ const payload=JSON.stringify({schema:'studiolo-mantegna-session-v2',savedAt:new Date().toISOString(),settings,points:annotationPoints[current]},null,2);
+ const blob=new Blob([payload],{type:'application/json'}),url=URL.createObjectURL(blob);
+ const a=document.createElement('a');a.href=url;a.download='sessione_'+current+'_mantegna_v08.json';a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+ $('pointPrompt').textContent='Sessione esportata: dipinto, angolo, distanze, opzioni e '+pointCount()+' punti.';
+});
+$('importPoints').addEventListener('change',async(event)=>{
+ const file=event.target.files?.[0];if(!file)return;
+ try{
+  const obj=JSON.parse(await file.text());
+  const v2=obj.schema==='studiolo-mantegna-session-v2';
+  const v1=obj.schema==='studiolo-mantegna-landmarks-v1';
+  if(!v1&&!v2)throw new Error('schema non riconosciuto');
+  const key=v2?obj.settings?.painting:obj.painting;
+  if(!PICTURES[key]||!obj.points)throw new Error('dipinto o punti non riconosciuti');
+  const clean={};for(const [label] of ANCHORS){const xy=obj.points[label];
+   if(xy&&Number.isFinite(xy.x)&&Number.isFinite(xy.y)&&xy.x>=0&&xy.x<=1&&xy.y>=0&&xy.y<=1)clean[label]={x:xy.x,y:xy.y};}
+  annotationPoints[key]=clean;
+  if(v2){
+   const s=obj.settings;
+   for(const name of inputs){const v=Number(s[name]);const control=$(name);
+    if(Number.isFinite(v))control.value=Math.max(Number(control.min),Math.min(Number(control.max),v));}
+   $('normalized').checked=Boolean(s.normalized);$('marks').checked=Boolean(s.marks);
+   for(let i=0;i<2;i++)$('scene'+i).classList.toggle('show-marks',$('marks').checked);
+  }
+  $('painting').value=key;activeAnchor=0;setArt(key);
+  $('pointPrompt').textContent=v2?'Sessione completa ripristinata: dipinto, parametri e punti.':'Coordinate v0.7 importate (l’angolo non era salvato nella versione precedente).';
+ }catch(err){$('pointPrompt').textContent='Impossibile importare il file: '+err.message;}
+ event.target.value='';
+});
+function projectedKey(key,a,p,work){
+ const xy=annotationPoints[current][key];
+ return point(xy.x*PX,xy.y*PX*work.h/work.w,a,p,work);
+}
+function midpoint(v1,v2){return{x:(v1.x+v2.x)/2,y:(v1.y+v2.y)/2};}
+function dist(v1,v2){return Math.hypot(v2.x-v1.x,v2.y-v1.y);}
+function anatomyValues(angle,p,work){
+ const pt=k=>projectedKey(k,angle,p,work);
+ const sL=pt('spallaL'),sR=pt('spallaR'),hL=pt('ancaL'),hR=pt('ancaR');
+ const S=midpoint(sL,sR),H=midpoint(hL,hR),torso=dist(S,H);
+ if(torso<1e-8)return null;
+ const out={shoulder:dist(sL,sR)/torso,hip:dist(hL,hR)/torso,legs:null};
+ if(['ginL','ginR','cavL','cavR'].every(k=>annotationPoints[current][k])){
+  const K=midpoint(pt('ginL'),pt('ginR')),A=midpoint(pt('cavL'),pt('cavR'));
+  out.legs=(dist(H,K)+dist(K,A))/torso;
+ }
+ return out;
+}
+function updateAnatomy(){
+ if(!$('anatomyResult'))return;
+ const p0=annotationPoints[current];
+ const basic=['spallaL','spallaR','ancaL','ancaR'].every(k=>p0[k]);
+ const names=[['shoulder','aw'],['hip','ah'],['legs','al']];
+ if(!basic){
+  for(const [,stem] of names)for(const end of ['A','B','Delta'])$(stem+end).textContent='—';
+  $('anatomyResult').textContent=`${pointCount()}/8 punti. Per misurare il torso, segna almeno le due spalle e i due lati del bacino.`;
+  return;
+ }
+ const values={};for(const k of inputs)values[k]=Number($(k).value);
+ const w=PICTURES[current],p=paramsFor(current,values);
+ const A=anatomyValues(0,p,w),B=anatomyValues(values.angle*RAD,p,w);
+ if(!A||!B){$('anatomyResult').textContent='Punti sovrapposti: riposiziona i marcatori sulle spalle e sul bacino.';return;}
+ const deltas={};
+ for(const [key,stem] of names){
+  const a=A[key],b=B[key];
+  $(stem+'A').textContent=a==null?'—':formatIndex(a);
+  $(stem+'B').textContent=b==null?'—':formatIndex(b);
+  const delta=a&&b!=null?(b/a-1)*100:null;deltas[key]=delta;
+  $(stem+'Delta').textContent=delta==null?'—':(delta>0?'+':'')+delta.toFixed(1).replace('.',',')+'%';
+ }
+ const fmt=v=>(v>0?'+':'')+v.toFixed(1).replace('.',',')+'%';
+ const width=deltas.shoulder<-.25?'si riduce':deltas.shoulder>.25?'aumenta':'resta quasi invariata';
+ const legs=deltas.legs==null?'Completa ginocchia e caviglie per l’indice delle gambe.':
+  deltas.legs>.25?'Le gambe risultano relativamente più lunghe.':deltas.legs<-.25?'Le gambe risultano relativamente più corte.':'Lunghezza relativa delle gambe quasi invariata.';
+ $('anatomyResult').textContent=`Con ${values.angle}° la larghezza delle spalle rispetto alla lunghezza apparente del torso ${width} (${fmt(deltas.shoulder)}). ${legs} Non è ancora una valutazione di correttezza anatomica.`;
+}
+
+refreshAnnotationMarks();
+setArt('mantegna');
+// Le due immagini vengono richieste subito; non occorre prima aprire il menu.
+Object.keys(PICTURES).forEach(k=>preloadImage(k));
+</script>
+</body></html>
