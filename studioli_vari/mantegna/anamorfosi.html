@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light"><meta name="description" content="Il teschio anamorfico di Holbein: osserva la deformazione e la ricomposizione prospettica su una riproduzione del dipinto.">
+<title>Il teschio che appare | La stanza che non c'era</title>
+<style>
+:root{--paper:#f3eddf;--ink:#2b2720;--muted:#665e55;--brown:#77543b;--line:#d7c9b6;--dark:#161412;--pale:#ebe1d3;--gold:#d7b88f}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Georgia,'Times New Roman',serif}a{color:#6d4b30;text-underline-offset:3px}a:hover{color:#412c1d}button,input{font:inherit}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #a76d42;outline-offset:3px}
+.page{width:min(1280px,100%);margin:auto;padding:0 clamp(16px,3vw,38px) 75px}
+.top{display:flex;gap:12px;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:20px 0;font:12px/1.4 system-ui,sans-serif;color:var(--muted)}.top a{text-decoration:none}.edition{color:#8b5938;text-transform:uppercase;letter-spacing:.14em;font-weight:600}
+.hero{padding:36px 0 25px;max-width:950px}.kicker{display:block;color:#97633e;text-transform:uppercase;letter-spacing:.16em;font:12px/1.45 system-ui,sans-serif}h1{font-weight:500;letter-spacing:-.025em;line-height:1.1;font-size:clamp(38px,5.3vw,67px);margin:12px 0 15px}.lede{font:clamp(18px,2vw,22px)/1.55 Georgia,serif;color:#4d4034;margin:0}.intro{margin:13px 0;color:#62574e;max-width:850px}.strong{color:#513922}
+.stage{background:var(--dark);color:#f3eadc;border:1px solid #7c6854;box-shadow:0 11px 24px #44322522;overflow:hidden}.stage-head{padding:16px 20px;border-bottom:1px solid #67594a;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.stage-head b{font:600 13px system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}.hint{font:12px/1.45 system-ui,sans-serif;color:#c7b5a0}.pair{display:grid;grid-template-columns:1fr 1fr;gap:0}.pane{min-width:0;padding:15px 15px 10px}.pane:first-child{border-right:1px solid #695848}.pane h2{font:600 12px/1.5 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#dbc6ac;margin:0 0 11px}.image-frame{width:100%;aspect-ratio:900/600;background:#090807;overflow:hidden;position:relative;display:flex;align-items:center}.image-frame img,.image-frame canvas{display:block;width:100%;height:100%;object-fit:contain}.image-frame canvas{image-rendering:auto}.corner-note{position:absolute;bottom:12px;left:12px;background:#100f0bd1;color:#efe1cb;padding:5px 10px;font:12px/1.4 system-ui,sans-serif;border:1px solid #83715d}.subtle{margin:10px 0 0;font:12px/1.5 system-ui,sans-serif;color:#c9b8a4}
+.controls{padding:19px 24px 23px;border-top:1px solid #6a5949;background:#231e19}.ctrlbar{display:flex;align-items:center;gap:17px;flex-wrap:wrap}.ctrlbar label{font:600 13px system-ui,sans-serif;color:#e5d7c5;white-space:nowrap}.ctrlbar input[type=range]{flex:1;min-width:170px;accent-color:#d1a478;cursor:pointer}.pct{min-width:52px;text-align:right;color:#f4d5aa;font:600 18px Georgia,serif}.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.buttons button{cursor:pointer;border:1px solid #b49779;border-radius:3px;background:#eadac4;color:#372517;padding:10px 15px;font:600 13px system-ui,sans-serif}.buttons button:hover{background:#f6e7d0}.buttons .ghost{background:transparent;color:#e9d8c4}.buttons .ghost:hover{background:#443629}.stage-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;font:12px/1.4 system-ui,sans-serif;color:#c9b7a2}.status{color:#f4d4ad}
+.method-note{margin-top:22px;padding:21px 24px;border-left:4px solid #8c6c4d;background:#fbf8f1;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.method-note h2{font-size:23px;font-weight:500;line-height:1.25;margin:0 0 9px}.method-note p{margin:0 0 9px}.method-note p:last-child{margin-bottom:0}.after{margin-top:27px;display:grid;grid-template-columns:1fr 1fr;gap:20px}.card{padding:20px 24px;border:1px solid var(--line);background:#faf7ef}.card h2{font-size:24px;font-weight:500;margin:0 0 10px;line-height:1.25}.card p{margin:0 0 12px}.credit{margin-top:28px;padding-top:17px;border-top:1px solid var(--line);font:13px/1.65 system-ui,sans-serif;color:var(--muted)}.credit a{font-weight:600}
+@media(max-width:760px){.top{flex-direction:column;align-items:start}.pair,.after{grid-template-columns:1fr}.pane:first-child{border-right:0;border-bottom:1px solid #695848}.image-frame{aspect-ratio:900/600}.hero{padding:26px 0}.stage-head{padding:14px}.pane{padding:12px}.controls{padding:16px}.buttons button{flex:1}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="top"><div><span class="edition">Lo Zibaldino di Capaneo</span> · Studiolo / Prologo anamorfosi</div><div><a href="./index.html">← La stanza che non c’era</a> · Paolo + ChatGPT (Geep)</div></header>
+<main>
+<section class="hero"><span class="kicker">Holbein · Gli ambasciatori · 1533</span>
+<h1>Un teschio che non c’era.<br>Finché non cambi sguardo.</h1>
+<p class="lede">Non guardare un disegno schematico. Guarda una parte vera degli <em>Ambasciatori</em> di Holbein: quella macchia diagonale, vista frontalmente, nasconde un teschio.</p>
+<p class="intro">Premi <strong class="strong">«Rivela»</strong> o muovi il cursore. Il frammento viene deformato digitalmente in modo progressivo: vedrai apparire il teschio, senza che ciò rappresenti una ricostruzione dello sguardo originario.</p></section>
+<section class="stage" aria-labelledby="stage-title">
+<div class="stage-head"><b id="stage-title">Il dipinto e la sua possibile ricomposizione</b><span class="hint">Riproduzione reale · rettifica digitale dimostrativa</span></div>
+<div class="pair">
+<div class="pane"><h2>A · Frontalmente, come in museo</h2><div class="image-frame"><img src="./immagini/holbein_teschio_dettaglio.webp" alt="Dettaglio degli Ambasciatori di Holbein: una forma pallida, allungata e obliqua sul pavimento a mosaico"><span class="corner-note">L’enigma</span></div><p class="subtle">A sinistra l’immagine resta ferma, per confrontare ciò che cambia a destra.</p></div>
+<div class="pane"><h2>B · La rettifica sotto i tuoi occhi</h2><div class="image-frame"><canvas id="revealCanvas" width="900" height="600" role="img" aria-label="Simulazione animata della rettifica prospettica del teschio di Holbein"></canvas><span class="corner-note" id="revealLabel">La macchia</span></div><p class="subtle">Trasformazione affine stimata dal dettaglio; il punto di vista storico esatto non è ricostruito qui.</p></div>
+</div>
+<div class="controls"><div class="ctrlbar"><label for="scrub">Rettifica progressiva</label><input type="range" id="scrub" min="0" max="100" step="1" value="0" aria-label="Intensità della rettifica, da zero a cento percento"><output class="pct" id="amountOut" for="scrub">0%</output></div>
+<div class="buttons"><button id="reveal" type="button">Rivela il teschio ↗</button><button id="reverse" class="ghost" type="button">Ritorna alla macchia ↶</button><button id="pause" class="ghost" type="button" disabled>Pausa</button></div>
+<div class="stage-bottom"><span id="message" class="status" aria-live="polite">Premi «Rivela» per cominciare.</span><span>La geometria cambia; i pigmenti rimangono gli stessi.</span></div></div>
+</section>
+<section class="method-note" aria-labelledby="che-cosa-mostriamo">
+<h2 id="che-cosa-mostriamo">Che cosa mostriamo — e che cosa non mostriamo</h2>
+<p><strong>Questa è una dimostrazione visiva del significato di <em>anamorfosi</em>, non un modello della costruzione prospettica di Holbein.</strong> Abbiamo usato una riproduzione bidimensionale autentica e applicato una trasformazione geometrica digitale, scelta per far emergere la figura del teschio.</p>
+<p>Non stiamo ruotando fisicamente il quadro in uno spazio tridimensionale; non abbiamo ricostruito né misurato il punto di vista previsto dall'artista. Il cursore mostra un effetto illustrativo, non una verifica sperimentale dell'opera.</p>
+<p>Per vedere la vera anamorfosi degli <em>Ambasciatori</em>, bisogna andare davanti al dipinto alla <a href="https://www.nationalgallery.org.uk/paintings/hans-holbein-the-younger-the-ambassadors" target="_blank" rel="noopener noreferrer">National Gallery di Londra</a>. <strong>Qui rendiamo comprensibile il principio, non sostituiamo l'esperienza dell'originale.</strong></p>
+</section>
+<section class="after">
+<div class="card"><h2>Perché un’immagine apparentemente sbagliata?</h2><p>Il teschio è dipinto per essere guardato da un punto obliquo, non da quello frontale nel quale il resto dell’opera è perfettamente leggibile. La <a href="https://www.nationalgallery.org.uk/paintings/hans-holbein-the-younger-the-ambassadors" target="_blank" rel="noopener noreferrer">National Gallery</a> conferma che il teschio si rivela da una posizione vicina al lato destro del dipinto.</p><p><strong>Una figura deformata sul supporto può essere il progetto accurato di un’immagine da vedere altrove.</strong></p></div>
+<div class="card"><h2>E Mantegna?</h2><p>Non stiamo dicendo che il <em>Cristo morto</em> funzioni come questo teschio. Stiamo mostrando il principio tecnico che rende sensata una domanda: la vista frontale è sempre quella prevista?</p><p>La nostra ipotesi sull’inclinazione e sull’eventuale spazio architettonico resta aperta alle verifiche. <a href="./laboratorio.html">Ora possiamo tornare ai controlli e alle misure ↗</a></p></div>
+</section>
+</main>
+<footer class="credit">Immagine di partenza: dettaglio di <em>Gli ambasciatori</em> (1533), Hans Holbein il Giovane, National Gallery, Londra; frammento fornito nello Studiolo. La rettifica è una <strong>trasformazione affine dimostrativa su questa riproduzione</strong>: non riproduce esattamente la prospettiva ottica né il metodo con cui Holbein disegnò il teschio. Riferimento: <a href="https://www.nationalgallery.org.uk/paintings/catalogues/foister-2024/the-ambassadors" target="_blank" rel="noopener noreferrer">National Gallery, catalogo scientifico</a>. <span>Dimostrazione v0.13 · Paolo + ChatGPT (Geep).</span></footer>
+</div>
+<script>
+(()=>{
+'use strict';
+const can=document.getElementById('revealCanvas'),ctx=can.getContext('2d');
+const scrub=document.getElementById('scrub'), amount=document.getElementById('amountOut'), lab=document.getElementById('revealLabel'), message=document.getElementById('message');
+const reveal=document.getElementById('reveal'),reverse=document.getElementById('reverse'),pause=document.getElementById('pause');
+const img=new Image();img.src='./immagini/holbein_teschio_dettaglio.webp';
+let current=0,raf=0,start=null,from=0,to=1,duration=2200,animating=false;
+const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Modello affine sperimentale ricavato dalla riproduzione caricata.
+// A(t): coordinate di destinazione -> coordinate del frammento sorgente.
+// Gli elementi di A e il centro vengono interpolati senza cambiare l’immagine originale.
+const A0=[937/900,0,0,645/600], A1=[.189,-2.812,.385,1.406];
+function draw(t){
+ ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#090807';ctx.fillRect(0,0,900,600);
+ if(!img.complete||!img.naturalWidth)return;
+ const a=A0[0]+(A1[0]-A0[0])*t, b=A0[1]+(A1[1]-A0[1])*t;
+ const c=A0[2]+(A1[2]-A0[2])*t, d=A0[3]+(A1[3]-A0[3])*t;
+ const sourceCX=img.naturalWidth/2 +(470-img.naturalWidth/2)*t;
+ const sourceCY=img.naturalHeight/2 +(320-img.naturalHeight/2)*t;
+ const e=sourceCX-a*450-b*300, f=sourceCY-c*450-d*300;
+ const det=a*d-b*c;if(Math.abs(det)<.00001)return;
+ const ia=d/det, ib=-b/det, ic=-c/det, id=a/det;
+ ctx.setTransform(ia,ic,ib,id,-ia*e-ib*f,-ic*e-id*f);
+ ctx.drawImage(img,0,0);
+ ctx.setTransform(1,0,0,1,0,0);
+}
+function put(v){current=Math.min(1,Math.max(0,v));scrub.value=Math.round(100*current);amount.textContent=Math.round(current*100)+'%';lab.textContent=current<.05?'La macchia':current>.96?'Il teschio': 'L’immagine si trasforma';draw(current)}
+function stop(){if(raf)cancelAnimationFrame(raf);raf=0;animating=false;start=null;pause.disabled=true;pause.textContent='Pausa'}
+function go(target){stop();from=current;to=target;duration=Math.max(500,2200*Math.abs(to-from));if(reduced){put(target);return}animating=true;pause.disabled=false;message.textContent=target>from?'Segui la trasformazione…':'Il teschio torna a nascondersi…';raf=requestAnimationFrame(tick)}
+function tick(time){if(!animating)return;if(start===null)start=time;const p=Math.min(1,(time-start)/duration), ease=p*p*(3-2*p);put(from+(to-from)*ease);if(p<1){raf=requestAnimationFrame(tick)}else{stop();message.textContent=to>0.95?'Il teschio è ricomposto: confronta con il frammento originale.':'È tornata la macchia.'}}
+function load(){put(current);message.textContent='Immagine caricata. Premi «Rivela».'}
+img.addEventListener('load',load);img.addEventListener('error',()=>{message.textContent='Immagine non caricata: controlla la cartella immagini su GitHub.'});if(img.complete&&img.naturalWidth)load();
+scrub.addEventListener('input',()=>{stop();put(Number(scrub.value)/100);message.textContent='Puoi fermarti in qualsiasi punto della trasformazione.'});
+reveal.addEventListener('click',()=>go(1));reverse.addEventListener('click',()=>go(0));pause.addEventListener('click',()=>{if(animating){stop();message.textContent='Animazione in pausa: puoi usare il cursore.'}});
+})();
+</script>
+</body></html>

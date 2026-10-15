@@ -67,3 +67,12 @@ Nella sezione «Misura del torso e delle gambe» compare il pulsante «Inserisci
 Nel riquadro espandibile si può incollare un JSON di sessione v2, di coordinate v1 o un semplice oggetto di punti; premere «Carica punti dal testo». Di norma vengono caricati solo i punti, preservando i cursori correnti. Attivando la casella di spunta si possono ripristinare anche le impostazioni, quando il JSON le comprende. L'importazione tradizionale da file continua a ripristinare l'intera sessione v2.
 
 **Metodo:** il preset non è una verifica indipendente e non costituisce un modello anatomico vero: è la riproduzione della scelta manuale di un osservatore. Occorre utilizzare gli stessi punti per i confronti e provare anche controlli e osservatori diversi.
+
+
+## Prologo anamorfosi v0.12
+`anamorfosi.html` mostra il dettaglio autentico degli Ambasciatori da screenshot fornito dall’utente, con rettifica digitale affine illustrativa (non correzione ottica storica certificata). `immagini/holbein_teschio_dettaglio.webp` è necessario. Il modulo è indipendente e non cambia il laboratorio di misura.
+
+
+## v0.13 — nota di trasparenza sul modulo Holbein
+
+Il modulo `anamorfosi.html` è una dimostrazione visiva su una riproduzione 2D, con trasformazione affine orientata a rendere riconoscibile il teschio. Non è la ricostruzione del punto di osservazione di Holbein; la dichiarazione metodologica ora appare subito sotto il visualizzatore. Il laboratorio Mantegna non è stato modificato in questa revisione.
