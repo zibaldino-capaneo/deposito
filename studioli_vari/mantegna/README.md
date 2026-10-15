@@ -14,7 +14,7 @@ deposito/
   studioli_vari/
     mantegna/
       index.html             pagina dello Studiolo
-      laboratorio.html       laboratorio interattivo v0.8
+      laboratorio.html       laboratorio interattivo v0.9
       dati/
         punti_mantegna_v07.json
       documenti/
@@ -56,3 +56,6 @@ Si può inserire nella pagina Blogger un breve testo di presentazione con un lin
 ## Nota pratica per il caricamento sul sito GitHub
 
 Apri la radice del repository `deposito`, seleziona **Add file → Upload files**, poi trascina la cartella `studioli_vari` **estratta** dal pacchetto (non lo ZIP). Controlla che le anteprime dei percorsi inizino con `studioli_vari/mantegna/` e conferma il commit. GitHub creerà le directory necessarie. Nessun file alla radice del repository deve essere sostituito.
+
+
+Aggiornamento v0.9: griglia 3×3×3 inclinazione/distanza/occhio, indice di convergenza e forma della cornice, quota teorica di compensazione, confronti anatomici rispetto a una visione frontale. L’HTML Blogger esistente resta invariato: incorpora sempre `laboratorio.html`.

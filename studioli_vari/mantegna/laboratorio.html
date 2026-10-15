@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Studiolo — Mantegna: laboratorio comparativo v0.8</title>
+<title>Studiolo — Mantegna: laboratorio comparativo v0.9</title>
 <style>
 :root{--paper:#f4efe3;--sheet:#fcfaf5;--ink:#302b23;--muted:#655e55;--line:#d5c8b4;--accent:#725238;--shadow:rgba(50,39,25,.1)}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.52 Georgia,"Times New Roman",serif}main{max-width:1300px;margin:0 auto;padding:24px clamp(12px,2.7vw,34px) 60px}h1{font-size:clamp(25px,3vw,37px);font-weight:500;line-height:1.19;margin:5px 0 13px}h2{font-size:21px;font-weight:500;margin:0 0 11px}h3{font-size:17px;font-weight:500;margin:20px 0 7px}p{margin:10px 0}.eyebrow{letter-spacing:.14em;font-size:12px;text-transform:uppercase;color:var(--accent);font-family:system-ui,sans-serif}.lead{font-size:18px;max-width:980px}.small{font-size:13px;color:var(--muted)}.columns{display:grid;grid-template-columns:minmax(250px,310px) minmax(0,1fr);gap:18px;align-items:start;margin-top:24px}.paper{background:var(--sheet);border:1px solid var(--line);padding:20px;border-radius:5px;box-shadow:0 2px 13px var(--shadow)}.settings{position:sticky;top:12px}.control{margin:17px 0}.control>label{display:flex;justify-content:space-between;gap:12px;font-size:14px;font-family:system-ui,sans-serif}.control output{font-weight:650;color:var(--accent);font-variant-numeric:tabular-nums}input[type=range]{display:block;width:100%;accent-color:var(--accent);cursor:pointer;margin-top:9px}select{width:100%;padding:9px 10px;border:1px solid #bdb09d;background:#fffdf7;color:var(--ink);border-radius:4px;font:14px system-ui,sans-serif;margin-top:6px}button,.upload-label{font:13px system-ui,sans-serif;padding:8px 11px;background:#ebe4d8;border:1px solid #bdb09d;border-radius:4px;color:var(--ink);cursor:pointer}button:hover,.upload-label:hover{background:#e1d5c4}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #a17646;outline-offset:2px}.presets{display:flex;gap:7px;flex-wrap:wrap}.compare{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.frame{border:1px solid #c6bba8;background:#e5dccd;border-radius:4px;overflow:hidden;position:relative;min-width:0}.frame-title{font:600 13px system-ui,sans-serif;text-align:center;padding:7px 3px;background:#f6f1e9;border-bottom:1px solid var(--line)}.scene{width:100%;aspect-ratio:1.10;position:relative;background:radial-gradient(circle at 50% 40%,#eee7dc 0%,#d9cdbc 100%);overflow:hidden}.scene.tall{aspect-ratio:.80}.scene.wide{aspect-ratio:1.5}.plane{position:absolute;transform-origin:0 0;will-change:transform}.art{width:100%;height:100%;display:block;object-fit:fill;background:#b2a18d}.mark{position:absolute;left:38%;width:24%;border-top:4px solid rgba(250,214,88,.95);box-shadow:0 1px 1px #29221a;pointer-events:none;display:none}.show-marks .mark{display:block}.mark-upper{top:15%}.mark-lower{top:85%;border-color:rgba(85,211,219,.95)}.legend{font:12px/1.4 system-ui,sans-serif;padding:8px 12px;color:var(--muted)}.results{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.metric{border:1px solid var(--line);padding:10px;background:#f8f4ed;min-width:0}.metric .val{font:650 clamp(18px,2.3vw,27px)/1.2 system-ui,sans-serif;color:#5f4830;font-variant-numeric:tabular-nums}.metric .lbl{display:block;font:12px/1.35 system-ui,sans-serif;color:#766a58;margin-top:3px}.method{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.note{border-left:3px solid #ae9472;padding-left:14px}.warning{margin-top:12px;border:1px solid #c6a78e;background:#f8eee4;padding:12px 14px;font-size:14px}.fallback{display:none;position:absolute;inset:12% 8%;text-align:center;align-items:center;justify-content:center;padding:20px;background:rgba(254,250,243,.95);border:1px solid var(--line);font:13px/1.5 system-ui,sans-serif;color:#433629}.missing .fallback{display:flex}.sources{margin-top:20px}.sources a{color:#745236;overflow-wrap:anywhere}td,th{border-bottom:1px solid #d5c8b4;text-align:left;padding:9px 7px}th{font-weight:600;color:#6a513b}table{border-collapse:collapse;width:100%;font:13px/1.45 system-ui,sans-serif}footer{margin-top:27px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font:12px system-ui,sans-serif}.miniinfo{padding:5px 0;font:12px system-ui,sans-serif;color:var(--muted)}.check{font:13px system-ui,sans-serif;display:flex;gap:8px;align-items:center;margin:13px 0}.pick{display:inline-block;margin-top:8px}.pick input{display:none}.cond{font-size:13px;color:#6b563e}.tag{display:inline-block;font:12px system-ui,sans-serif;border:1px solid var(--line);border-radius:3px;padding:2px 6px;color:var(--accent)}.status{font:12px system-ui,sans-serif;color:var(--muted);margin-top:5px}strong{font-weight:650}
@@ -21,11 +21,20 @@
 @media(max-width:750px){.measure-layout{grid-template-columns:1fr}}
 
 @media(max-width:875px){.columns{grid-template-columns:1fr}.settings{position:static}.method{grid-template-columns:1fr}}@media(max-width:580px){.compare{grid-template-columns:1fr}.results{grid-template-columns:1fr 1fr}.results .metric:last-child{grid-column:1/-1}main{padding:15px 10px 40px}.paper{padding:13px}}
+
+/* Prove controllate su inclinazione, distanza e quota dell'occhio. */
+.trial-lab{margin-top:20px}.trial-main{display:grid;grid-template-columns:minmax(230px,1fr) minmax(260px,1.1fr);gap:15px;align-items:start}
+.trial-status{border-left:3px solid #a68a66;background:#f5eee1;padding:11px 13px;font:13px/1.5 system-ui,sans-serif}
+.trial-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}
+.trial-actions button{font-weight:600}.trial-table-scroll{max-height:390px;overflow:auto;border:1px solid var(--line)}
+.trial-table{white-space:nowrap;width:100%;font-size:12px}.trial-table th{position:sticky;top:0;background:#ebe2d2;z-index:1}.trial-table tr:hover{background:#eee4d6}.trial-table tr.active-trial{background:#ecdbbd}.trial-table button{padding:4px 6px;font-size:11px}
+.frame-indices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.frame-indices div{border:1px solid var(--line);padding:10px;background:#f9f5ee;font:13px/1.35 system-ui,sans-serif}.frame-indices strong{display:block;font:650 22px/1.3 system-ui,sans-serif;color:var(--accent)}
+@media(max-width:780px){.trial-main{grid-template-columns:1fr}}
 </style>
 </head>
 <body><main>
 <p class="small" style="margin:0 0 10px"><a href="./index.html" style="color:#725238">← Torna alla pagina dello Studiolo</a></p>
-<div class="eyebrow">Studiolo · laboratorio prospettico · 15 ottobre 2026 · v0.8</div>
+<div class="eyebrow">Studiolo · laboratorio prospettico · 15 ottobre 2026 · v0.9</div>
 <h1>Il quadro inclinato: Mantegna e i controlli</h1>
 <p class="lead">Il <em>Cristo morto</em> presenta uno scorcio anomalo. L'inclinazione della superficie può attenuarlo, oppure peggiorarlo? Confrontiamo <strong>due controlli scelti prima del risultato</strong>: il <em>San Sebastiano</em> di Mantegna (figura intera) e il <em>Cristo morto</em> di Zaganelli (scorcio in un allestimento d'altare documentato). La <em>Flagellazione</em> di Piero resta come quarto confronto facoltativo.</p>
 <div class="columns">
@@ -42,7 +51,7 @@
 <p class="small">Le quote spaziali sono ipotesi di laboratorio, <strong>non dati sugli allestimenti storici</strong>. A e B condividono la posizione dell’occhio. Il dipinto viene ruotato attorno al bordo inferiore.</p>
 <div class="control"><label for="angle">Inclinazione della superficie <output id="angleOut">35°</output></label><input id="angle" type="range" min="-55" max="65" step="1" value="35"><p class="small">Angolo positivo: bordo superiore lontano dall’occhio. Negativo: bordo superiore verso l’occhio.</p></div>
 <div class="control"><label for="distance">Distanza dell'occhio dal bordo inferiore <output id="distanceOut">1,00 m</output></label><input id="distance" type="range" min="0.5" max="3.6" value="1" step="0.1"></div>
-<div class="control"><label for="eye">Altezza dell'occhio dal pavimento <output id="eyeOut">1,20 m</output></label><input id="eye" type="range" min="0.8" max="1.8" value="1.2" step="0.05"></div>
+<div class="control"><label for="eye">Altezza dell'occhio dal pavimento <output id="eyeOut">1,20 m</output></label><input id="eye" type="range" min="0.5" max="2.5" value="1.2" step="0.05"></div>
 <div class="control"><label for="bottom">Altezza del bordo inferiore <output id="bottomOut">0,70 m</output></label><input id="bottom" type="range" min="0.3" max="1.1" value="0.7" step="0.05"></div>
 <h3>Prove rapide</h3>
 <div class="presets"><button data-preset="near" type="button">Ravvicinata</button><button data-preset="mid" type="button">A un metro</button><button data-preset="far" type="button">A distanza</button><button data-preset="reset" type="button">Verticale</button></div>
@@ -70,6 +79,30 @@
 <div class="warning" id="conclusion" aria-live="polite">—</div>
 </section>
 </div>
+
+<section class="paper trial-lab" id="trialLab">
+<h2>Prove controllate: inclinazione, distanza, altezza dell'occhio · v0.9</h2>
+<p>La domanda ora è più precisa: possiamo <strong>compensare il trapezio prospettico</strong> muovendo l'osservatore, pur mantenendo la tela inclinata? E che cosa cambia contemporaneamente nei rapporti anatomici? Teniamo fissa la quota del bordo inferiore durante ciascuna scansione: è il nostro <strong>quarto parametro, di collocazione</strong>.</p>
+<div class="trial-main">
+<div>
+<h3>1 · Regolarità della cornice</h3>
+<div class="frame-indices"><div><strong id="convIndex">—</strong>Convergenza alto/basso (0% = uguale larghezza apparente)</div><div><strong id="formIndex">—</strong>Scarto del rapporto altezza/larghezza (0% = rapporto originale)</div></div>
+<p class="small" id="compensationTarget">—</p>
+<div class="trial-actions"><button type="button" id="applyCompensation">Porta l'occhio alla quota di compensazione</button></div>
+<p class="small">La quota proposta annulla geometricamente la convergenza e recupera il rapporto della cornice <em>per il modello attuale</em>. Non prova che l'allestimento fosse quello e non dimostra una correzione dell'anatomia dipinta.</p>
+</div>
+<div>
+<h3>2 · Scansione imparziale delle tre variabili</h3>
+<p class="small">Una griglia dichiarata prima dell'esito: <strong>angoli −35°, 0°, +35°</strong>; <strong>distanze 0,7, 1,0, 1,8 m</strong>; <strong>occhio a 1,20, 1,60, 2,00 m</strong>. Sono 27 combinazioni, con il bordo inferiore fissato al valore corrente. Non sono posizioni storiche attestate.</p>
+<div class="trial-actions"><button type="button" id="runScan">Calcola le 27 prove</button><button type="button" id="exportScan" disabled>Esporta griglia .csv</button><span class="small" id="scanStamp" role="status" aria-live="polite">Non ancora calcolate.</span></div>
+<p class="small">Un clic su «Applica» porta i tre cursori a quella combinazione. Se sono stati segnati almeno quattro punti, compare anche la variazione dell'indice <em>spalle/torso</em> rispetto all'immagine osservata frontalmente; con otto punti compare anche <em>gambe/torso</em>. Nessun indice è chiamato automaticamente «miglioramento».</p>
+</div>
+</div>
+<div class="trial-table-scroll" tabindex="0" aria-label="Tabella delle 27 prove prospettiche">
+<table class="trial-table"><thead><tr><th>Angolo</th><th>Distanza</th><th>Occhio</th><th>Convergenza</th><th>Forma</th><th>Δ spalle/torso</th><th>Δ gambe/torso</th><th>Vista</th></tr></thead><tbody id="scanBody"><tr><td colspan="8">Premi «Calcola le 27 prove».</td></tr></tbody></table>
+</div>
+<div id="scanNote" class="trial-status" role="status">Un risultato con cornice regolare è soltanto una condizione di osservazione geometrica: non equivale all'esistenza di una nicchia né a una figura anatomicamente corretta.</div>
+</section>
 
 <section class="paper measure-lab" id="anatomyLab">
 <h2>Misura del torso e delle gambe · prova v0.8</h2>
@@ -140,7 +173,7 @@
 </tbody></table>
 <p class="small"><strong>Nota tecnica.</strong> Proiezione centrale di un rettangolo nello spazio; omografia calcolata dalle sue quattro estremità. L'occhio non viene spostato né ruotato fra A e B; solo il dipinto ruota intorno al proprio bordo inferiore, allontanando la parte alta. Le proiezioni vengono ricentrate per impaginarle affiancate, senza alterare i rapporti interni di scala. L’immagine è trattata come superficie rettangolare; per Zaganelli la lunetta originale ha profilo curvo. La nuova sezione misura soltanto rapporti 2D tra segmenti marcati dall’utente; non determina la correttezza anatomica 3D. Per ora non è modellata alcuna nicchia o architettura esterna.</p>
 </section>
-<footer>Lo Zibaldino di Capaneo · Studiolo — Paolo + ChatGPT · laboratorio v0.8, 15/10/2026. Esperimento di geometria ottica, non ricostruzione storica dell'allestimento. Nessun tracciamento; immagini caricate via Wikimedia Commons (con indirizzi alternativi) o localmente.</footer>
+<footer>Lo Zibaldino di Capaneo · Studiolo — Paolo + ChatGPT · laboratorio v0.9, 15/10/2026. Esperimento di geometria ottica, non ricostruzione storica dell'allestimento. Nessun tracciamento; immagini caricate via Wikimedia Commons (con indirizzi alternativi) o localmente.</footer>
 </main>
 <script>
 'use strict';
@@ -343,6 +376,93 @@ function ratio(a,p,work){return scale(a,p,work,.85)/scale(a,p,work,.15);}
 function pct(p,work){return 100*(ratio(p.angle*RAD,p,work)/ratio(0,p,work)-1);}
 function pLabel(n){return n>0?'+'+n:String(n);}
 function paramsFor(key,values){const k=$('normalized').checked ? PICTURES[key].h/PICTURES.mantegna.h : 1;return {...values,distance:values.distance*k,bottom:values.bottom*k,eye:values.eye*k};}
+// PROVE A TRE PARAMETRI: indici della cornice e riferimenti indipendenti dalla tesi.
+// Cornice: nessun punto anatomico, soltanto le quattro estremità dell'opera.
+function quadIndices(a,p,w){
+ const q=corners(a,p,w); // TL, TR, BR, BL
+ if(q.some(v=>!Number.isFinite(v.x)||!Number.isFinite(v.y)||v.depth<=0))return null;
+ const tw=dist(q[0],q[1]),bw=dist(q[3],q[2]);
+ const vh=(dist(q[0],q[3])+dist(q[1],q[2]))/2;
+ const ww=(tw+bw)/2;
+ if(tw<=0||bw<=0||vh<=0||ww<=0)return null;
+ return {conv:(bw/tw-1)*100,form:(vh/ww/(w.h/w.w)-1)*100};
+}
+// Se le profondità dei bordi coincidono, il piano della tela è parallelo
+// al piano dell'immagine virtuale: l'immagine originale mantiene la sua forma.
+function eyeForParallelPlane(p,w){return p.bottom+w.h/2+p.distance*Math.tan(p.angle*RAD);}
+function fmtSigned(x){return Number.isFinite(x)?(x>0?'+':'')+x.toFixed(1).replace('.',',')+'%':'—';}
+function frontalAnatomy(w){return anatomyValues(0,{bottom:0,eye:w.h/2,distance:1},w);}
+function scanReadout(){
+ const u={};for(const k of inputs)u[k]=Number($(k).value);
+ const w=PICTURES[current],p=paramsFor(current,u),q=quadIndices(p.angle*RAD,p,w);
+ $('convIndex').textContent=q?fmtSigned(q.conv):'Fuori vista';
+ $('formIndex').textContent=q?fmtSigned(q.form):'Fuori vista';
+ const targetPhysical=eyeForParallelPlane(p,w);
+ const factor=$('normalized').checked?w.h/PICTURES.mantegna.h:1;
+ const target=targetPhysical/factor;
+ const inside=Number.isFinite(target)&&target>=Number($('eye').min)&&target<=Number($('eye').max);
+ $('applyCompensation').disabled=!inside||!q;
+ $('compensationTarget').textContent=Number.isFinite(target)?
+  `Per questa inclinazione e distanza, la quota teorica dell'occhio è ${target.toFixed(2).replace('.',',')} m${inside?' (entro il cursore).':' (fuori dai limiti del cursore).'} A 35°, 1 metro e bordo a 0,70 m, per Mantegna vale circa 1,74 m.`:
+  'Non esiste una quota calcolabile in questa configurazione.';
+}
+$('applyCompensation').addEventListener('click',()=>{
+ const u={};for(const k of inputs)u[k]=Number($(k).value);
+ const w=PICTURES[current],p=paramsFor(current,u),factor=$('normalized').checked?w.h/PICTURES.mantegna.h:1;
+ const target=eyeForParallelPlane(p,w)/factor;
+ if(!Number.isFinite(target)||target<Number($('eye').min)||target>Number($('eye').max))return;
+ // Con grana di 5 cm, non si finge precisione al centimetro: mostrarla come quota suggerita.
+ $('eye').value=Math.round(target/Number($('eye').step))*Number($('eye').step);
+ render();
+ $('scanNote').textContent='Quota dell’occhio portata al passo più vicino del cursore (5 cm). Puoi ancora rifinire a mano; la convergenza nulla indica regolarità della cornice, non dell’anatomia.';
+});
+let scanSnapshot=null;
+function calculateScan(){
+ const bod=$('scanBody');bod.replaceChildren();
+ const angles=[-35,0,35],ds=[.7,1,1.8],eyes=[1.2,1.6,2.0];
+ const bottom=Number($('bottom').value),w=PICTURES[current];
+ const hasBasic=['spallaL','spallaR','ancaL','ancaR'].every(k=>annotationPoints[current][k]);
+ const common=hasBasic?frontalAnatomy(w):null; // riferimento frontale solo con punti disponibili.
+ const array=[];
+ for(const a of angles)for(const d of ds)for(const eye of eyes){
+  const sliderP={angle:a,distance:d,eye,bottom};
+  const p=paramsFor(current,sliderP);
+  const q=quadIndices(a*RAD,p,w);
+  const anatomy=q&&common&&annotationPoints[current].spallaL&&annotationPoints[current].spallaR&&annotationPoints[current].ancaL&&annotationPoints[current].ancaR?anatomyValues(a*RAD,p,w):null;
+  const shoulder=anatomy&&common.shoulder?(anatomy.shoulder/common.shoulder-1)*100:null;
+  const legs=anatomy&&anatomy.legs!=null&&common.legs?(anatomy.legs/common.legs-1)*100:null;
+  array.push({a,d,eye,bottom,q,shoulder,legs});
+ }
+ scanSnapshot={key:current,bottom,normalized:$('normalized').checked,rows:array};
+ $('exportScan').disabled=false;
+ for(const test of array){
+  const tr=document.createElement('tr');
+  const values=[(test.a>0?'+':'')+test.a+'°',test.d.toFixed(1).replace('.',',')+' m',test.eye.toFixed(2).replace('.',',')+' m',test.q?fmtSigned(test.q.conv):'—',test.q?fmtSigned(test.q.form):'—',test.shoulder==null?'—':fmtSigned(test.shoulder),test.legs==null?'—':fmtSigned(test.legs)];
+  for(const val of values){const td=document.createElement('td');td.textContent=val;tr.append(td);}
+  const td=document.createElement('td');const b=document.createElement('button');b.type='button';b.textContent='Applica';
+  b.addEventListener('click',()=>{
+   for(const [k,v] of Object.entries({angle:test.a,distance:test.d,eye:test.eye,bottom:test.bottom}))$(k).value=v;
+   // Se il check di normalizzazione è cambiato rispetto alla scansione, ripristinarlo esplicitamente.
+   $('normalized').checked=scanSnapshot.normalized;
+   for(const row of bod.querySelectorAll('tr'))row.classList.remove('active-trial');tr.classList.add('active-trial');
+   render();
+   $('scanNote').textContent=`Applicata la combinazione ${test.a}°, distanza ${test.d.toFixed(1)} m, occhio ${test.eye.toFixed(2)} m. Confronta le due figure, senza attribuire valore anatomico al solo riallineamento della cornice.`;
+  });td.append(b);tr.append(td);bod.append(tr);
+ }
+ $('scanStamp').textContent='27 combinazioni calcolate per '+w.name+' · bordo '+bottom.toFixed(2).replace('.',',')+' m.';
+ $('scanNote').textContent='Gli scarti geometrici sono rispetto alla cornice originale; quelli anatomici, se presenti, rispetto all’immagine osservata frontalmente. La tabella non cerca un «vincitore».';
+}
+$('runScan').addEventListener('click',calculateScan);
+$('exportScan').addEventListener('click',()=>{
+ if(!scanSnapshot)return;
+ const headers=['opera','angolo_gradi','distanza_m','occhio_m','bordo_m','normalizzato','convergenza_percento','forma_percento','spalle_torso_vs_frontale_percento','gambe_torso_vs_frontale_percento'];
+ const cell=x=>x==null?'':String(x);
+ const lines=[headers.join(',')];
+ for(const r of scanSnapshot.rows)lines.push([scanSnapshot.key,r.a,r.d,r.eye,r.bottom,scanSnapshot.normalized,r.q?.conv??null,r.q?.form??null,r.shoulder,r.legs].map(cell).join(','));
+ const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+ const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='mantegna_griglia_27_prove_v09.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+ $('scanStamp').textContent='Griglia CSV esportata (27 prove).';
+});
 function render(){
  const userP={};for(const k of inputs){userP[k]=Number($(k).value);$(k+'Out').textContent=k==='angle'?pLabel(userP[k])+'°':userP[k].toFixed(2).replace('.',',')+' m';}
  const p=paramsFor(current,userP);
@@ -366,7 +486,7 @@ function render(){
  c.append(`l’inclinazione di ${p.angle}° modifica il rapporto di scala locale basso/alto di ${fmt(g)} per ${work.name}. `);
  const b2=document.createElement('strong');b2.textContent='Questo valore non dice se il dipinto sia diventato più corretto o più deformato: ';c.append(b2);
  c.append('è indipendente da ciò che è raffigurato. Per verificare una compensazione intenzionale occorre un criterio prospettico o anatomico esterno.');
- updateAnatomy();
+ updateAnatomy();scanReadout();
 }
 
 // TRACCIAMENTO ANATOMICO. Nessun punto predefinito o scelta automatica a favore della tesi.
@@ -437,7 +557,7 @@ $('savePoints').addEventListener('click',()=>{
  settings.marks=$('marks').checked;settings.normalized=$('normalized').checked;
  const payload=JSON.stringify({schema:'studiolo-mantegna-session-v2',savedAt:new Date().toISOString(),settings,points:annotationPoints[current]},null,2);
  const blob=new Blob([payload],{type:'application/json'}),url=URL.createObjectURL(blob);
- const a=document.createElement('a');a.href=url;a.download='sessione_'+current+'_mantegna_v08.json';a.click();
+ const a=document.createElement('a');a.href=url;a.download='sessione_'+current+'_mantegna_v09.json';a.click();
  setTimeout(()=>URL.revokeObjectURL(url),2000);
  $('pointPrompt').textContent='Sessione esportata: dipinto, angolo, distanze, opzioni e '+pointCount()+' punti.';
 });

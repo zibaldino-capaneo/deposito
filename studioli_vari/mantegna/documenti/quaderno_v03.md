@@ -64,3 +64,30 @@ Il codice della v0.7 è stato provato in Chromium con una **figura di prova sint
 ## Prossimo controllo
 
 Marcare gli stessi punti sulla fotografia del *Cristo morto* e sui due controlli, conservando il JSON per ripetibilità. Verificare quanto cambia il risultato spostando ciascun punto di pochi pixel, poi confrontare gli intervalli degli angoli per cui i tre indici mostrano un cambiamento coerente, senza scegliere retrospettivamente i casi migliori.
+
+
+## Appendice operativa — v0.9 (15 ottobre 2026)
+
+### Tre variabili di osservazione e una quarta di collocazione
+
+La griglia di prova usa tre valori prefissati per ciascuna variabile:
+
+- angolo della tela: −35°, 0°, +35° (attorno al bordo inferiore);
+- distanza dell'occhio: 0,7 m, 1,0 m, 1,8 m;
+- altezza dell'occhio: 1,20 m, 1,60 m, 2,00 m.
+
+La quota del bordo inferiore è **fissa all'interno di ciascuna griglia**: può essere modificata fra le scansioni, ma non è uno dei tre fattori del disegno 3 × 3 × 3. I valori sono convenzioni, non misure storiche.
+
+### Indici indipendenti dalla tesi
+
+Convergenza della cornice = (larghezza apparente del bordo inferiore / larghezza del bordo superiore − 1) × 100.
+
+Scarto di forma = (rapporto altezza/larghezza apparente medio / rapporto altezza/larghezza reale della tela − 1) × 100.
+
+Condizione di vista frontale dell'opera inclinata secondo la camera virtuale del laboratorio: altezza occhio = quota bordo inferiore + metà altezza dell'opera + distanza × tan(angolo). Il recupero dell'immagine originale è una previsione geometrica e non evidenzia una correzione pittorica. Il comando arrotonda ai 5 cm del cursore.
+
+Gli indici anatomici nella tabella delle 27 prove sono confrontati con **l'immagine sorgente vista frontalmente**, non con una tela verticale vista obliquamente. Se un rapporto migliora secondo l'occhio, occorre comunque valutarne la plausibilità e le linee architettoniche. Non è assegnato un punteggio automatico di «naturalezza».
+
+### Stop rule
+
+L'allineamento della cornice e l'eventuale sovrapposizione di percentuali non dimostrano una nicchia perduta né la destinazione devozionale. Una ricostruzione storica richiederà evidenze materiali indipendenti; eventuali confronti percettivi richiederanno valutazioni in cieco.
