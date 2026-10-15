@@ -59,3 +59,11 @@ Apri la radice del repository `deposito`, seleziona **Add file → Upload files*
 
 
 Aggiornamento v0.9: griglia 3×3×3 inclinazione/distanza/occhio, indice di convergenza e forma della cornice, quota teorica di compensazione, confronti anatomici rispetto a una visione frontale. L’HTML Blogger esistente resta invariato: incorpora sempre `laboratorio.html`.
+
+## Aggiornamento v0.10 — punti già rilevati e importazione da testo
+
+Nella sezione «Misura del torso e delle gambe» compare il pulsante «Inserisci gli 8 punti di Paolo (15/10)». I dati provengono dalla sessione v0.8 del 15 ottobre e sono riproducibili anche da `dati/punti_mantegna_20261015.json`. Il pulsante non cambia i parametri di osservazione e i punti restano modificabili a mano.
+
+Nel riquadro espandibile si può incollare un JSON di sessione v2, di coordinate v1 o un semplice oggetto di punti; premere «Carica punti dal testo». Di norma vengono caricati solo i punti, preservando i cursori correnti. Attivando la casella di spunta si possono ripristinare anche le impostazioni, quando il JSON le comprende. L'importazione tradizionale da file continua a ripristinare l'intera sessione v2.
+
+**Metodo:** il preset non è una verifica indipendente e non costituisce un modello anatomico vero: è la riproduzione della scelta manuale di un osservatore. Occorre utilizzare gli stessi punti per i confronti e provare anche controlli e osservatori diversi.

@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Studiolo — Mantegna: laboratorio comparativo v0.9</title>
+<title>Studiolo — Mantegna: laboratorio comparativo v0.10</title>
 <style>
 :root{--paper:#f4efe3;--sheet:#fcfaf5;--ink:#302b23;--muted:#655e55;--line:#d5c8b4;--accent:#725238;--shadow:rgba(50,39,25,.1)}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.52 Georgia,"Times New Roman",serif}main{max-width:1300px;margin:0 auto;padding:24px clamp(12px,2.7vw,34px) 60px}h1{font-size:clamp(25px,3vw,37px);font-weight:500;line-height:1.19;margin:5px 0 13px}h2{font-size:21px;font-weight:500;margin:0 0 11px}h3{font-size:17px;font-weight:500;margin:20px 0 7px}p{margin:10px 0}.eyebrow{letter-spacing:.14em;font-size:12px;text-transform:uppercase;color:var(--accent);font-family:system-ui,sans-serif}.lead{font-size:18px;max-width:980px}.small{font-size:13px;color:var(--muted)}.columns{display:grid;grid-template-columns:minmax(250px,310px) minmax(0,1fr);gap:18px;align-items:start;margin-top:24px}.paper{background:var(--sheet);border:1px solid var(--line);padding:20px;border-radius:5px;box-shadow:0 2px 13px var(--shadow)}.settings{position:sticky;top:12px}.control{margin:17px 0}.control>label{display:flex;justify-content:space-between;gap:12px;font-size:14px;font-family:system-ui,sans-serif}.control output{font-weight:650;color:var(--accent);font-variant-numeric:tabular-nums}input[type=range]{display:block;width:100%;accent-color:var(--accent);cursor:pointer;margin-top:9px}select{width:100%;padding:9px 10px;border:1px solid #bdb09d;background:#fffdf7;color:var(--ink);border-radius:4px;font:14px system-ui,sans-serif;margin-top:6px}button,.upload-label{font:13px system-ui,sans-serif;padding:8px 11px;background:#ebe4d8;border:1px solid #bdb09d;border-radius:4px;color:var(--ink);cursor:pointer}button:hover,.upload-label:hover{background:#e1d5c4}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #a17646;outline-offset:2px}.presets{display:flex;gap:7px;flex-wrap:wrap}.compare{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.frame{border:1px solid #c6bba8;background:#e5dccd;border-radius:4px;overflow:hidden;position:relative;min-width:0}.frame-title{font:600 13px system-ui,sans-serif;text-align:center;padding:7px 3px;background:#f6f1e9;border-bottom:1px solid var(--line)}.scene{width:100%;aspect-ratio:1.10;position:relative;background:radial-gradient(circle at 50% 40%,#eee7dc 0%,#d9cdbc 100%);overflow:hidden}.scene.tall{aspect-ratio:.80}.scene.wide{aspect-ratio:1.5}.plane{position:absolute;transform-origin:0 0;will-change:transform}.art{width:100%;height:100%;display:block;object-fit:fill;background:#b2a18d}.mark{position:absolute;left:38%;width:24%;border-top:4px solid rgba(250,214,88,.95);box-shadow:0 1px 1px #29221a;pointer-events:none;display:none}.show-marks .mark{display:block}.mark-upper{top:15%}.mark-lower{top:85%;border-color:rgba(85,211,219,.95)}.legend{font:12px/1.4 system-ui,sans-serif;padding:8px 12px;color:var(--muted)}.results{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.metric{border:1px solid var(--line);padding:10px;background:#f8f4ed;min-width:0}.metric .val{font:650 clamp(18px,2.3vw,27px)/1.2 system-ui,sans-serif;color:#5f4830;font-variant-numeric:tabular-nums}.metric .lbl{display:block;font:12px/1.35 system-ui,sans-serif;color:#766a58;margin-top:3px}.method{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.note{border-left:3px solid #ae9472;padding-left:14px}.warning{margin-top:12px;border:1px solid #c6a78e;background:#f8eee4;padding:12px 14px;font-size:14px}.fallback{display:none;position:absolute;inset:12% 8%;text-align:center;align-items:center;justify-content:center;padding:20px;background:rgba(254,250,243,.95);border:1px solid var(--line);font:13px/1.5 system-ui,sans-serif;color:#433629}.missing .fallback{display:flex}.sources{margin-top:20px}.sources a{color:#745236;overflow-wrap:anywhere}td,th{border-bottom:1px solid #d5c8b4;text-align:left;padding:9px 7px}th{font-weight:600;color:#6a513b}table{border-collapse:collapse;width:100%;font:13px/1.45 system-ui,sans-serif}footer{margin-top:27px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font:12px system-ui,sans-serif}.miniinfo{padding:5px 0;font:12px system-ui,sans-serif;color:var(--muted)}.check{font:13px system-ui,sans-serif;display:flex;gap:8px;align-items:center;margin:13px 0}.pick{display:inline-block;margin-top:8px}.pick input{display:none}.cond{font-size:13px;color:#6b563e}.tag{display:inline-block;font:12px system-ui,sans-serif;border:1px solid var(--line);border-radius:3px;padding:2px 6px;color:var(--accent)}.status{font:12px system-ui,sans-serif;color:var(--muted);margin-top:5px}strong{font-weight:650}
@@ -30,11 +30,23 @@
 .trial-table{white-space:nowrap;width:100%;font-size:12px}.trial-table th{position:sticky;top:0;background:#ebe2d2;z-index:1}.trial-table tr:hover{background:#eee4d6}.trial-table tr.active-trial{background:#ecdbbd}.trial-table button{padding:4px 6px;font-size:11px}
 .frame-indices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.frame-indices div{border:1px solid var(--line);padding:10px;background:#f9f5ee;font:13px/1.35 system-ui,sans-serif}.frame-indices strong{display:block;font:650 22px/1.3 system-ui,sans-serif;color:var(--accent)}
 @media(max-width:780px){.trial-main{grid-template-columns:1fr}}
+
+/* Punti ripetibili, importazione da testo senza caricare file */
+.annotation-load{padding:12px 13px;margin-top:12px;background:#f9f4eb;border:1px solid var(--line);border-radius:4px}
+.annotation-load>p:first-child{margin:0 0 4px}
+.annotation-load .annot-tools{align-items:center}
+.json-import{margin:8px 0 1px;border-top:1px solid var(--line);padding-top:9px}
+.json-import summary{cursor:pointer;color:#65472e;font:600 13px/1.5 system-ui,sans-serif}
+.json-import label.small{display:block;margin:12px 0 5px}
+.json-import textarea{display:block;width:100%;max-width:100%;min-height:105px;padding:9px 10px;border:1px solid #bdb09d;border-radius:4px;background:#fffdf9;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink);resize:vertical}
+.json-import textarea:focus-visible{outline:3px solid #a17646;outline-offset:2px}
+.json-import .check{align-items:flex-start;margin:9px 0}
+.annotation-load a{color:#65472e}
 </style>
 </head>
 <body><main>
 <p class="small" style="margin:0 0 10px"><a href="./index.html" style="color:#725238">← Torna alla pagina dello Studiolo</a></p>
-<div class="eyebrow">Studiolo · laboratorio prospettico · 15 ottobre 2026 · v0.9</div>
+<div class="eyebrow">Studiolo · laboratorio prospettico · 15 ottobre 2026 · v0.10</div>
 <h1>Il quadro inclinato: Mantegna e i controlli</h1>
 <p class="lead">Il <em>Cristo morto</em> presenta uno scorcio anomalo. L'inclinazione della superficie può attenuarlo, oppure peggiorarlo? Confrontiamo <strong>due controlli scelti prima del risultato</strong>: il <em>San Sebastiano</em> di Mantegna (figura intera) e il <em>Cristo morto</em> di Zaganelli (scorcio in un allestimento d'altare documentato). La <em>Flagellazione</em> di Piero resta come quarto confronto facoltativo.</p>
 <div class="columns">
@@ -81,7 +93,7 @@
 </div>
 
 <section class="paper trial-lab" id="trialLab">
-<h2>Prove controllate: inclinazione, distanza, altezza dell'occhio · v0.9</h2>
+<h2>Prove controllate: inclinazione, distanza, altezza dell'occhio · v0.10</h2>
 <p>La domanda ora è più precisa: possiamo <strong>compensare il trapezio prospettico</strong> muovendo l'osservatore, pur mantenendo la tela inclinata? E che cosa cambia contemporaneamente nei rapporti anatomici? Teniamo fissa la quota del bordo inferiore durante ciascuna scansione: è il nostro <strong>quarto parametro, di collocazione</strong>.</p>
 <div class="trial-main">
 <div>
@@ -105,8 +117,8 @@
 </section>
 
 <section class="paper measure-lab" id="anatomyLab">
-<h2>Misura del torso e delle gambe · prova v0.8</h2>
-<p><strong>La tua osservazione:</strong> il torso del <em>Cristo morto</em> sembra largo e corto. L'inclinazione riduce davvero il rapporto fra larghezza e lunghezza apparenti? Per non suggerire una conclusione, il programma non preimposta alcun punto anatomico: li scegliamo sull'immagine, e i medesimi punti vengono proiettati a 0° e all'angolo scelto.</p>
+<h2>Misura del torso e delle gambe · prova v0.10</h2>
+<p><strong>La tua osservazione:</strong> il torso del <em>Cristo morto</em> sembra largo e corto. L'inclinazione riduce davvero il rapporto fra larghezza e lunghezza apparenti? Non preimpostiamo punti anatomici alla partenza: puoi segnarli a mano oppure richiamare gli otto punti rilevati da Paolo il 15 ottobre 2026. Il preset è una <strong>misurazione dell'operatore, non una verità anatomica</strong>. I medesimi punti vengono proiettati a 0° e all'angolo scelto.</p>
 <div class="measure-layout">
   <div>
     <p class="small">Immagine sorgente non inclinata · clicca i punti richiesti. Le coordinate sono relative all'immagine, non dedotte automaticamente da un corpo tridimensionale.</p>
@@ -124,6 +136,25 @@
       <button type="button" id="undoPoint">↶ Annulla ultimo</button>
       <button type="button" id="clearPoints">Cancella punti</button>
       <button type="button" id="savePoints">Salva sessione completa .json</button>
+    </div>
+    <div class="annotation-load" aria-label="Importa o richiama punti anatomici">
+      <p><strong>Rilevamento già disponibile</strong></p>
+      <div class="annot-tools" style="margin:5px 0">
+        <button type="button" id="loadPaoloPoints">● Inserisci gli 8 punti di Paolo (15/10)</button>
+        <a class="small" href="./dati/punti_mantegna_20261015.json" download>Scarica coordinate originali ↓</a>
+      </div>
+      <p class="small" style="margin:5px 0 10px">I punti vengono disegnati sull'immagine sorgente e si possono spostare. Non cambiano i cursori o la scelta degli angoli.</p>
+      <details class="json-import">
+        <summary>Oppure incolla qui un JSON di punti o di sessione</summary>
+        <label for="jsonPaste" class="small">Testo JSON (coordinate v0.7, sessione v0.8/v0.9 o oggetto di punti)</label>
+        <textarea id="jsonPaste" rows="7" spellcheck="false" placeholder='{ "schema": "studiolo-mantegna-session-v2", "settings": {…}, "points": {…} }' aria-label="Incolla coordinate o sessione JSON"></textarea>
+        <label class="check"><input type="checkbox" id="restoreJsonSettings"> Ripristina anche angolo, distanza, altezza dell'occhio e altre impostazioni, se il JSON le contiene</label>
+        <div class="annot-tools">
+          <button type="button" id="applyPastedJson">Carica punti dal testo</button>
+          <button type="button" id="clearJsonText">Svuota testo</button>
+        </div>
+        <p class="small" id="jsonMessage" role="status" aria-live="polite">Incolla un JSON e premi «Carica punti dal testo».</p>
+      </details>
     </div>
     <label class="upload-label pick" for="importPoints">Importa sessione o coordinate .json<input id="importPoints" type="file" accept="application/json,.json"></label>
     <p class="small">I punti sono separati per ciascuna opera e restano disponibili mentre la pagina è aperta. Puoi esportare l’intera sessione (punti e inclinazione) per riprendere lo Studiolo in seguito.</p>
@@ -173,7 +204,7 @@
 </tbody></table>
 <p class="small"><strong>Nota tecnica.</strong> Proiezione centrale di un rettangolo nello spazio; omografia calcolata dalle sue quattro estremità. L'occhio non viene spostato né ruotato fra A e B; solo il dipinto ruota intorno al proprio bordo inferiore, allontanando la parte alta. Le proiezioni vengono ricentrate per impaginarle affiancate, senza alterare i rapporti interni di scala. L’immagine è trattata come superficie rettangolare; per Zaganelli la lunetta originale ha profilo curvo. La nuova sezione misura soltanto rapporti 2D tra segmenti marcati dall’utente; non determina la correttezza anatomica 3D. Per ora non è modellata alcuna nicchia o architettura esterna.</p>
 </section>
-<footer>Lo Zibaldino di Capaneo · Studiolo — Paolo + ChatGPT · laboratorio v0.9, 15/10/2026. Esperimento di geometria ottica, non ricostruzione storica dell'allestimento. Nessun tracciamento; immagini caricate via Wikimedia Commons (con indirizzi alternativi) o localmente.</footer>
+<footer>Lo Zibaldino di Capaneo · Studiolo — Paolo + ChatGPT · laboratorio v0.10, 15/10/2026. Esperimento di geometria ottica, non ricostruzione storica dell'allestimento. Nessun tracciamento; immagini caricate via Wikimedia Commons (con indirizzi alternativi) o localmente.</footer>
 </main>
 <script>
 'use strict';
@@ -460,7 +491,7 @@ $('exportScan').addEventListener('click',()=>{
  const lines=[headers.join(',')];
  for(const r of scanSnapshot.rows)lines.push([scanSnapshot.key,r.a,r.d,r.eye,r.bottom,scanSnapshot.normalized,r.q?.conv??null,r.q?.form??null,r.shoulder,r.legs].map(cell).join(','));
  const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
- const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='mantegna_griglia_27_prove_v09.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+ const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='mantegna_griglia_27_prove_v010.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
  $('scanStamp').textContent='Griglia CSV esportata (27 prove).';
 });
 function render(){
@@ -505,6 +536,7 @@ function firstMissing(){const p=annotationPoints[current];return ANCHORS.findInd
 function setActiveAnchor(idx){activeAnchor=idx;refreshAnnotationMarks();}
 function syncAnnotationImage(){
  const e=imageCache[current],img=$('annotImg'),placeholder=$('annotPlaceholder');
+ $('annotMarks').style.visibility=(e.state==='ready'&&e.url)?'visible':'hidden';
  if(e.state==='ready' && e.url){
   if(img.getAttribute('src')!==e.url) img.src=e.url;
   img.style.display='block';placeholder.style.display='none';
@@ -557,32 +589,66 @@ $('savePoints').addEventListener('click',()=>{
  settings.marks=$('marks').checked;settings.normalized=$('normalized').checked;
  const payload=JSON.stringify({schema:'studiolo-mantegna-session-v2',savedAt:new Date().toISOString(),settings,points:annotationPoints[current]},null,2);
  const blob=new Blob([payload],{type:'application/json'}),url=URL.createObjectURL(blob);
- const a=document.createElement('a');a.href=url;a.download='sessione_'+current+'_mantegna_v09.json';a.click();
+ const a=document.createElement('a');a.href=url;a.download='sessione_'+current+'_mantegna_v010.json';a.click();
  setTimeout(()=>URL.revokeObjectURL(url),2000);
  $('pointPrompt').textContent='Sessione esportata: dipinto, angolo, distanze, opzioni e '+pointCount()+' punti.';
 });
-$('importPoints').addEventListener('change',async(event)=>{
- const file=event.target.files?.[0];if(!file)return;
- try{
-  const obj=JSON.parse(await file.text());
-  const v2=obj.schema==='studiolo-mantegna-session-v2';
-  const v1=obj.schema==='studiolo-mantegna-landmarks-v1';
-  if(!v1&&!v2)throw new Error('schema non riconosciuto');
-  const key=v2?obj.settings?.painting:obj.painting;
-  if(!PICTURES[key]||!obj.points)throw new Error('dipinto o punti non riconosciuti');
-  const clean={};for(const [label] of ANCHORS){const xy=obj.points[label];
-   if(xy&&Number.isFinite(xy.x)&&Number.isFinite(xy.y)&&xy.x>=0&&xy.x<=1&&xy.y>=0&&xy.y<=1)clean[label]={x:xy.x,y:xy.y};}
-  annotationPoints[key]=clean;
-  if(v2){
-   const s=obj.settings;
-   for(const name of inputs){const v=Number(s[name]);const control=$(name);
-    if(Number.isFinite(v))control.value=Math.max(Number(control.min),Math.min(Number(control.max),v));}
-   $('normalized').checked=Boolean(s.normalized);$('marks').checked=Boolean(s.marks);
-   for(let i=0;i<2;i++)$('scene'+i).classList.toggle('show-marks',$('marks').checked);
+// Le coordinate preesistenti sono un tracciamento dichiarato dell'operatore,
+// non valori anatomici predefiniti dall'algoritmo.
+const PAOLO_POINTS_20261015 = {"spallaL":{"x":0.3302069134135503,"y":0.23001490443748673},"spallaR":{"x":0.590671438157998,"y":0.24375169257452708},"ancaL":{"x":0.31119490430811614,"y":0.47040869683569264},"ancaR":{"x":0.6477074654743006,"y":0.4795665555937195},"ginL":{"x":0.3834405389087659,"y":0.5940397900690556},"ginR":{"x":0.6210906527266927,"y":0.5940397900690556},"cavL":{"x":0.3625273288927883,"y":0.797802147435154},"cavR":{"x":0.6210906527266927,"y":0.8046705415036741}};
+function applyImportedPoints(obj,restoreSettings=false){
+ if(!obj||typeof obj!=='object'||Array.isArray(obj))throw new Error('il contenuto deve essere un oggetto JSON');
+ const v2=obj.schema==='studiolo-mantegna-session-v2';
+ const v1=obj.schema==='studiolo-mantegna-landmarks-v1';
+ const rawPoints=v2||v1?obj.points:(obj.points&&typeof obj.points==='object'?obj.points:obj);
+ const key=v2?obj.settings?.painting:(v1?obj.painting:(obj.painting||current));
+ if(!PICTURES[key])throw new Error('opera non riconosciuta');
+ if(!rawPoints||typeof rawPoints!=='object')throw new Error('punti assenti o non riconosciuti');
+ const clean={};
+ for(const [label] of ANCHORS){
+  const xy=rawPoints[label];
+  if(xy&&typeof xy==='object'&&Number.isFinite(xy.x)&&Number.isFinite(xy.y)&&xy.x>=0&&xy.x<=1&&xy.y>=0&&xy.y<=1)
+   clean[label]={x:xy.x,y:xy.y};
+ }
+ const count=Object.keys(clean).length;
+ if(!count)throw new Error('nessuna coordinata valida: attesi punti {x,y} fra 0 e 1');
+ annotationPoints[key]=clean;
+ if(v2&&restoreSettings){
+  const settings=obj.settings;
+  if(!settings||typeof settings!=='object')throw new Error('impostazioni della sessione mancanti');
+  for(const name of inputs){
+   const v=Number(settings[name]),control=$(name);
+   if(Number.isFinite(v)&&settings[name]!=null)control.value=Math.max(Number(control.min),Math.min(Number(control.max),v));
   }
-  $('painting').value=key;activeAnchor=0;setArt(key);
-  $('pointPrompt').textContent=v2?'Sessione completa ripristinata: dipinto, parametri e punti.':'Coordinate v0.7 importate (l’angolo non era salvato nella versione precedente).';
- }catch(err){$('pointPrompt').textContent='Impossibile importare il file: '+err.message;}
+  $('normalized').checked=Boolean(settings.normalized);
+  $('marks').checked=Boolean(settings.marks);
+  for(let i=0;i<2;i++)$('scene'+i).classList.toggle('show-marks',$('marks').checked);
+ }
+ $('painting').value=key;activeAnchor=0;setArt(key);
+ const msg=`${count}/8 punti importati su ${PICTURES[key].name}. `+(v2&&restoreSettings?'Anche i parametri sono stati ripristinati.':'I cursori sono rimasti invariati.');
+ $('pointPrompt').textContent=msg;
+ $('jsonMessage').textContent=msg;
+ return count;
+}
+$('loadPaoloPoints').addEventListener('click',()=>{
+ try{
+  applyImportedPoints({schema:'studiolo-mantegna-landmarks-v1',painting:'mantegna',points:PAOLO_POINTS_20261015},false);
+  const notice='Otto punti del rilevamento del 15 ottobre caricati: modificabili sull’immagine, nessun cursore modificato.';
+  $('pointPrompt').textContent=notice;$('jsonMessage').textContent=notice;
+ }catch(err){$('pointPrompt').textContent='Impossibile richiamare i punti: '+err.message;}
+});
+$('applyPastedJson').addEventListener('click',()=>{
+ try{
+  const txt=$('jsonPaste').value.trim();
+  if(!txt)throw new Error('incolla prima un JSON');
+  applyImportedPoints(JSON.parse(txt),$('restoreJsonSettings').checked);
+ }catch(err){$('jsonMessage').textContent='Impossibile caricare il JSON: '+err.message;}
+});
+$('clearJsonText').addEventListener('click',()=>{$('jsonPaste').value='';$('jsonMessage').textContent='Testo cancellato; i punti già caricati rimangono disponibili.';});
+$('importPoints').addEventListener('change',async event=>{
+ const file=event.target.files?.[0];if(!file)return;
+ try{applyImportedPoints(JSON.parse(await file.text()),true);}
+ catch(err){$('pointPrompt').textContent='Impossibile importare il file: '+err.message;}
  event.target.value='';
 });
 function projectedKey(key,a,p,work){
