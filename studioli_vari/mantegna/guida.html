@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Studiolo sul Cristo morto di Mantegna: ipotesi di inclinazione, laboratorio interattivo e dati replicabili. Paolo + ChatGPT.">
+<title>Guida all’ambiente | La stanza che non c’era</title>
+<style>
+:root{--paper:#f3eddf;--cream:#fcfaf5;--ink:#2b2720;--muted:#665e55;--brown:#74543b;--line:#d7c9b6;--pale:#e9dfd0;--focus:#8c603b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font:17px/1.65 Georgia,"Times New Roman",serif}
+a{color:#6d4b30;text-decoration-thickness:1px;text-underline-offset:3px}a:hover{color:#402c1e}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.page{width:min(1040px,100%);margin:auto;padding:0 clamp(16px,3.5vw,44px) 90px}
+.top{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:24px 0 16px;border-bottom:1px solid var(--line);font:13px/1.4 system-ui,sans-serif;color:var(--muted)}.top a{text-decoration:none}.edition{letter-spacing:.1em;text-transform:uppercase;color:#805a3e;font-weight:600}
+.hero{padding:42px 0 42px;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;border-bottom:1px solid var(--line)}.eyebrow{font:12px/1.4 system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#835b3e}h1{font-size:clamp(35px,5.4vw,66px);line-height:1.08;font-weight:500;letter-spacing:-.028em;margin:12px 0 17px}h2{font-size:clamp(25px,3vw,34px);line-height:1.18;font-weight:500;margin:0 0 13px}h3{font-size:21px;font-weight:500;margin:0 0 7px}.intro{font-size:clamp(18px,1.75vw,22px);line-height:1.55;color:#473b2e}.small{font:13px/1.5 system-ui,sans-serif;color:var(--muted)}p{margin:10px 0 16px}.hero-art{background:#e8dfcf;border:1px solid var(--line);padding:20px 16px 12px;box-shadow:5px 7px 0 #d2c5b5}.hero-art svg{width:100%;height:auto;display:block}.hero-art p{font:12px/1.5 system-ui,sans-serif;color:var(--muted);margin:7px 0 0}.tag{font:12px/1.4 system-ui,sans-serif;color:#6f5038}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 8px}.button{display:inline-flex;align-items:center;justify-content:center;border:1px solid #77583f;border-radius:3px;background:#715038;color:#fff;padding:11px 16px;text-decoration:none;font:600 14px/1.3 system-ui,sans-serif}.button:hover{background:#553a27;color:#fff}.button.secondary{color:#67472e;background:transparent}.button.secondary:hover{background:#eadccb;color:#412c1b}
+.section{padding:38px 0;border-bottom:1px solid var(--line)}.section-lead{font-size:19px;max-width:800px}.number{display:inline-block;font:11px system-ui,sans-serif;letter-spacing:.1em;border:1px solid var(--line);padding:3px 7px;border-radius:2px;color:#795a42;margin-right:8px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}.block{background:var(--cream);border:1px solid var(--line);padding:23px 24px}.block p:last-child{margin-bottom:0}.key{font-weight:700;color:#65452e}.muted{color:var(--muted)}.hypotheses{display:grid;gap:10px}details{border:1px solid var(--line);background:#fbf8f1;padding:0 18px}summary{cursor:pointer;list-style:none;font-size:18px;padding:13px 1px}summary::-webkit-details-marker{display:none}summary:after{content:'+';float:right;color:var(--brown);font:22px system-ui,sans-serif}details[open] summary:after{content:'−'}details p{margin:0 0 17px;font-size:16px;max-width:860px}.resources{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.resource{background:var(--cream);border:1px solid var(--line);padding:21px;min-width:0}.resource .type{font:11px/1.4 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--brown)}.resource p{font-size:15px;margin:8px 0}.resource a{font:600 14px/1.4 system-ui,sans-serif}.source-list{padding-left:20px;max-width:950px}.source-list li{margin-bottom:9px}.source-list li::marker{color:var(--brown)}.credits{padding-top:26px;font:13px/1.6 system-ui,sans-serif;color:var(--muted)}.plain-box{padding:18px 20px;border-left:3px solid #ae987d;background:#f7f2e9;margin:20px 0}.plain-box p{margin:0}.result{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}.result div{border-top:2px solid var(--line);padding:10px 6px;font:14px/1.45 system-ui,sans-serif}.result b{display:block;font-size:23px;font-weight:550;color:var(--brown);margin-bottom:3px}
+@media(max-width:780px){.hero{grid-template-columns:1fr}.hero-art{max-width:500px}.resources{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}}@media(max-width:540px){.resources,.result{grid-template-columns:1fr}.top{align-items:start;flex-direction:column;gap:4px}.hero{padding-top:30px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="top"><div><span class="edition">Lo Zibaldino di Capaneo</span> <span>· Studiolo / Guida all’ambiente</span></div><div>Paolo + ChatGPT (Geep) · 15 ottobre 2026</div></header>
+<nav aria-label="Navigazione dello Studiolo" style="padding-top:14px;font:13px/1.45 system-ui,sans-serif"><a href="./index.html">← Indice dello Studiolo</a></nav>
+<main>
+<section class="hero" aria-labelledby="title">
+<div><span class="eyebrow">Una domanda, cinque ipotesi, un esperimento</span>
+<h1 id="title">La stanza che<br>non c'era</h1>
+<p class="intro">Mantegna, il <em>Cristo morto</em> e la possibilità che una deformazione pittorica fosse destinata a essere vista in condizioni diverse da quelle del museo.</p>
+<p>Davanti allo scorcio del corpo di Cristo nasce una domanda semplice: perché un maestro della prospettiva avrebbe lasciato gambe apparentemente corte e un torso apparentemente largo? Forse è una scelta espressiva; forse la geometria dell'immagine doveva incontrare un'altra geometria, quella del suo allestimento.</p>
+
+<p class="small">Questo è un cantiere pubblico, non un'attribuzione storica: nessun allestimento inclinato di Mantegna è stato dimostrato.</p></div>
+<div class="hero-art"><svg viewBox="0 0 500 360" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">Ipotesi di nicchia prospettica e tela inclinata</title><desc id="diagram-desc">Schema concettuale, non una ricostruzione storica: una cornice, un pavimento che converge e una superficie leggermente inclinata.</desc>
+<rect x="10" y="10" width="480" height="340" rx="2" fill="#eee7d9" stroke="#bba98e"/>
+<path d="M70 65 L430 65 L382 287 L118 287 Z" fill="#e0d1bd" stroke="#725a46" stroke-width="2.5"/>
+<path d="M70 65 L175 120 L175 240 L118 287 M430 65 L325 120 L325 240 L382 287" fill="none" stroke="#8f765e" stroke-width="2"/>
+<path d="M175 120 L325 120 L325 240 L175 240 Z" fill="#c9b399" stroke="#725a46" stroke-width="2.5"/>
+<path d="M90 315 L175 240 L325 240 L410 315 M135 315 L200 240 M365 315 L300 240 M90 315 L410 315" stroke="#927c64" stroke-width="2" fill="none"/>
+<path d="M185 210 L315 210 L298 150 L202 150 Z" fill="#73563c" fill-opacity=".58" stroke="#553e30" stroke-width="2"/>
+<path d="M215 197 Q225 181 244 182 L258 181 Q275 183 280 197" stroke="#fff8ed" stroke-width="9" stroke-linecap="round" fill="none"/>
+<path d="M250 330 L250 307" stroke="#73543c" stroke-width="2"/><circle cx="250" cy="332" r="7" fill="#73543c"/><path d="M245 325 L250 307 L255 325" fill="none" stroke="#73543c" stroke-width="2"/>
+<text x="250" y="29" text-anchor="middle" fill="#70513a" font-family="Georgia" font-size="15">NICCHIA · PIANO · IMMAGINE</text>
+</svg><p>Schema di un possibile dispositivo prospettico: è un'ipotesi da verificare, non un ambiente di Mantegna documentato.</p></div>
+</section>
+<section class="section" id="domanda"><span class="number">01</span><h2>Che cosa stiamo verificando?</h2>
+<div class="cols"><div class="block"><h3>La possibilità geometrica</h3><p>Se incliniamo una tela ruotandola intorno al bordo inferiore, la sua proiezione retinica cambia. La regione dei piedi può acquistare importanza relativa rispetto a quella della testa.</p><p>Ma questo accade con <em>qualsiasi</em> dipinto. Non basta a dimostrare una compensazione intenzionale.</p></div><div class="block"><h3>La specificità percettiva</h3><p>Abbiamo scelto otto punti anatomici per seguire le variazioni apparenti delle proporzioni: spalle, bacino, ginocchia e caviglie. Il laboratorio distingue larghezza relativa del torso e lunghezza relativa delle gambe.</p><p>Un mutamento dei numeri non equivale automaticamente a una figura «più corretta».</p></div></div>
+<div class="plain-box"><p><strong>Il nostro criterio:</strong> non vogliamo far tornare Mantegna a ogni costo. Vogliamo vedere se una configurazione coerente attenua più anomalie insieme senza imporre correzioni arbitrarie, e se i dipinti di controllo si comportano diversamente.</p></div>
+</section>
+
+<section class="section" id="anamorfosi"><span class="number">02</span><h2>Un prologo: che cos’è un’anamorfosi?</h2>
+<p class="section-lead">Prima di tornare a Mantegna, può essere utile vedere un caso semplificato. Se un’immagine deve risultare leggibile da un punto di vista obliquo, può essere necessario deformarla sul supporto. Il principio è noto in modo celebre con il teschio degli <em>Ambasciatori</em> di Holbein; qui lo presentiamo in una versione didattica ridotta.</p>
+<div class="cols"><div class="block"><h3>Perché introdurlo qui</h3><p>Se il <em>Cristo morto</em> fosse soltanto un quadro “strano”, potremmo registrare l’anomalia e passare oltre. Ma proprio perché Mantegna è un maestro della costruzione prospettica, l’anomalia basta a giustificare una domanda: esiste una condizione volontaria capace di rendere intelligibile ciò che oggi appare inspiegabile?</p><p>Questa non è una prova: è una ragione sufficiente per iniziare l’indagine.</p></div><div class="block"><h3>Uno stesso ambiente di gusto</h3><p>Il Rinascimento ama fabbricare spazi apparenti: la <em>Camera degli Sposi</em> di Mantegna, il finto coro di Bramante a San Satiro e, più tardi, le vie del Teatro Olimpico mostrano che superfici, volumi ridotti e punti di vista privilegiati possono costruire ambienti più profondi di quanto lo spazio reale consenta.</p><p>Non dimostrano il nostro sepolcro prospettico, ma mostrano che ci muoviamo in un orizzonte culturale compatibile.</p></div></div>
+<div class="actions"><a class="button" href="./anamorfosi.html">Guarda il teschio vero che si ricompone ↗</a></div>
+<p class="small">La rettifica del dettaglio di Holbein è dimostrativa, non una misura della sua ottica originale. Serve a mostrare il principio generale, non a identificare il <em>Cristo morto</em> con un’anamorfosi classica.</p>
+</section>
+<section class="section" id="ipotesi"><span class="number">03</span><h2>Le ipotesi sul tavolo</h2><p class="section-lead">Non sono cinque conclusioni. Sono cinque modi di formulare domande verificabili, con livelli molto diversi di sostegno documentario.</p>
+<div class="hypotheses">
+<details><summary><strong>H1</strong> · Correzione pittorica autonoma</summary><p>Mantegna modifica le proporzioni per guidare la lettura del corpo e mantenere visibile il volto; non è necessario un supporto particolare. È l'alternativa da prendere sul serio, non un'ipotesi residuale.</p></details>
+<details><summary><strong>H2</strong> · Tela inclinata e posizione di osservazione</summary><p>Il pittore potrebbe aver anticipato un'inclinazione e una distanza previste. Il nostro primo simulatore esplora proprio questa possibilità: geometria possibile non significa intenzione provata.</p></details>
+<details><summary><strong>H3</strong> · Interferenza architettonica</summary><p>Linee di una nicchia, di una cornice o di un ambiente oggi ignoto potrebbero aver partecipato alla lettura dello spazio. Per ora manca una ricostruzione materiale documentata.</p></details>
+<details><summary><strong>H4</strong> · Prototipo o studio</summary><p>Il dipinto potrebbe essere stato anche un luogo di sperimentazione tecnica, indipendentemente dalla sua fruizione devozionale. Non disponiamo però di una commissione monumentale perduta riconoscibile.</p></details>
+<details><summary><strong>H5</strong> · Piccolo sepolcro a profondità simulata</summary><p>Una nicchia domestica con pavimento, catafalco e superficie dipinta inclinati in modo coordinato: la nostra ipotesi narrativa e architettonica più audace. Non è modellata nel laboratorio attuale e non è attestata per la casa di Mantegna.</p></details>
+</div></section>
+<section class="section" id="laboratorio"><span class="number">04</span><h2>Il laboratorio: prova, modifica, contraddici</h2>
+<p class="section-lead">Il programma conserva quattro dipinti, due viste simultanee, punti anatomici selezionabili ed esportazione della sessione. La nuova prova a tre parametri confronta 27 condizioni di vista e misura la regolarità apparente della cornice.</p>
+<div class="resources">
+<div class="resource"><div class="type">Esperimento interattivo</div><h3>Confronto fra opere</h3><p>Mantegna, <em>Cristo morto</em>; Mantegna, <em>San Sebastiano</em>; Zaganelli, <em>Cristo morto con angeli</em>; Piero, <em>Flagellazione</em>.</p><a href="./laboratorio.html">Avvia il laboratorio ↗</a></div>
+<div class="resource"><div class="type">Rilevamento ripetibile</div><h3>Otto punti anatomici</h3><p>Carica con un clic gli otto punti rilevati il 15 ottobre oppure incolla un JSON nel laboratorio. I punti restano modificabili: non sono una verità anatomica preimpostata.</p><a href="./dati/punti_mantegna_20261015.json" download>Scarica gli otto punti JSON ↓</a></div>
+<div class="resource"><div class="type">Documentazione</div><h3>Quaderno di cantiere</h3><p>Ipotesi H1–H5, formule, parametri, limiti, regola di arresto e protocollo dei controlli.</p><a href="./documenti/quaderno_v03.md" download>Scarica il quaderno Markdown ↓</a></div>
+</div><div class="result"><div><b>A / B</b>Tela verticale confrontata con la stessa tela inclinata.</div><div><b>±55° / +65°</b>Intervallo di prova; l'angolo storico non è noto.</div><div><b>27 prove</b>Tre angoli, tre distanze, tre quote dell’occhio; quarto parametro fissato.</div></div>
+<p class="small">La scansione geometrica descrive la deformazione della superficie: non certifica un allestimento storico né una correzione anatomica. </p>
+<p class="small">Le immagini sono richieste a Wikimedia Commons con indirizzi alternativi. Se non si caricano, il laboratorio permette di scegliere un'immagine dal computer. I dati anatomici esportati nella nuova versione salvano anche angolo e distanze.</p>
+<div class="actions"><a class="button" href="./laboratorio.html">Entra nel laboratorio ↗</a></div>
+</section>
+<section class="section" id="esito"><span class="number">05</span><h2>Che cosa abbiamo trovato finora</h2>
+<p>Nel primo rilievo sperimentale effettuato sul <em>Cristo morto</em>, inclinare la tela può aumentare il rapporto apparente fra lunghezza delle gambe e lunghezza del torso; nello stesso assetto, però, può aumentare anche la larghezza relativa del busto. <strong>Non abbiamo individuato una correzione simultanea delle anomalie.</strong></p>
+<p>È un limite utile: impedisce di presentare come dimostrata l'ipotesi della semplice inclinazione. Il modello composto di nicchia e catafalco è ancora da costruire; l'effetto percettivo andrebbe valutato con osservatori e condizioni controllate.</p>
+<div class="plain-box"><p>La nostra domanda non è «abbiamo ragione?», ma «quale esperimento potrebbe dimostrare che abbiamo torto?». Il valore del lavoro sta anche nel percorso, indipendentemente dall'esito.</p></div>
+</section>
+<section class="section" id="fonti"><span class="number">06</span><h2>Fonti e provenienza</h2>
+<p>Queste schede forniscono dati materiali e collocazioni storiche. Le ipotesi H2–H5 sono <strong>inferenze dello Studiolo</strong>, non tesi attribuite ai musei.</p>
+<ol class="source-list">
+<li><a href="https://pinacotecabrera.org/collezioni/collezione-on-line/cristo-morto-nel-sepolcro-e-tre-dolenti/">Pinacoteca di Brera — <em>Cristo morto nel sepolcro e tre dolenti</em></a>. Autore, supporto, dimensioni, storia dell'opera.</li>
+<li><a href="https://collections.louvre.fr/ark:/53355/cl010064796">Musée du Louvre — <em>San Sebastiano</em></a>. Misure e contesto dell'opera, nostro controllo anatomico.</li>
+<li><a href="https://www.nationalgallery.org.uk/paintings/francesco-zaganelli-the-dead-christ-with-angels">National Gallery — Zaganelli, <em>The Dead Christ with Angels</em></a>. Lunetta di pala d'altare, con collocazione originale in alto; inclinazione del supporto non documentata.</li>
+<li><a href="https://www.movio.beniculturali.it/pmmar/eccellenzegallerianazionaledellemarche/it/33/piero-della-francesca-flagellazione">Galleria Nazionale delle Marche — Piero della Francesca, <em>Flagellazione</em></a>. Controllo architettonico.</li>
+<li><a href="https://uvadoc.uva.es/handle/10324/66764">A. Álvaro Tordesillas, F. Linares García (2011)</a>. Studio geometrico sul dipinto di Mantegna, riferimento per un confronto futuro.</li>
+</ol><p class="small">Riproduzioni: link e crediti puntuali nella sezione «Fonti e metodo» del laboratorio. Le immagini sono opere storiche in pubblico dominio; la disponibilità e le condizioni di riutilizzo delle singole riproduzioni vanno controllate alle rispettive schede.</p>
+</section>
+</main><footer class="credits"><strong>La stanza che non c'era</strong> · Guida all’ambiente · Paolo + ChatGPT (Geep) · laboratorio v0.10 e prologo v0.13, 15 ottobre 2026.<br>La pagina e il laboratorio si aggiornano per versioni; nessun dato personale è raccolto o trasmesso dal nostro codice. Le immagini vengono richieste a fonti esterne quando disponibili.</footer>
+</div></body></html>

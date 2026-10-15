@@ -1,20 +1,50 @@
-# Studiolo — Mantegna e la stanza che non c'era
+# Studiolo — Mantegna e la stanza che non c’era
 
-Versione di cantiere 0.8 — 15 ottobre 2026. Coautori: Paolo + ChatGPT (Geep).
+## v0.14 — indice e ambienti separati (15 ottobre 2026)
+
+L’ingresso a GitHub Pages è adesso `index.html`, un indice essenziale e responsive. La precedente pagina di presentazione è stata conservata integralmente in `guida.html`, con il pulsante prematuro per saltare direttamente al laboratorio rimosso. Il modulo Holbein (`anamorfosi.html`) e il laboratorio Mantegna (`laboratorio.html`, sempre v0.10) sono autonomi, e ciascuno può tornare all’indice.
+
+Percorso consigliato: **indice → guida → anamorfosi → laboratorio**. Le risorse Markdown e JSON sono collegate dall’indice.
+
+### Struttura aggiornata
+
+```text
+studioli_vari/
+  mantegna/
+    index.html                   ingresso e collegamenti
+    guida.html                   presentazione completa (vecchio index)
+    anamorfosi.html              Holbein / dimostrazione 2D
+    laboratorio.html             simulazione Mantegna v0.10
+    immagini/
+      holbein_teschio_dettaglio.webp
+    documenti/
+      quaderno_v03.md
+    dati/
+      punti_mantegna_20261015.json
+      punti_mantegna_v07.json
+    README.md
+```
+
+**Attenzione Blogger:** se la pagina dello Studiolo incorpora `laboratorio.html` in un iframe, GitHub non può cambiarne da solo il `src`. Nell’HTML della pagina Blogger sostituire esclusivamente il link nel `src` con `https://zibaldino-capaneo.github.io/deposito/studioli_vari/mantegna/index.html`. L’indice è volutamente breve per funzionare anche dentro un iframe. Il vecchio link `.../laboratorio.html` resta valido per gli accessi diretti.
+
+---
+
+
+Nota storica sulla struttura iniziale v0.8, conservata nel registro di sviluppo. Coautori: Paolo + ChatGPT (Geep).
 
 ## Installazione in GitHub Pages
 
 Questo pacchetto contiene la cartella `studioli_vari/`, da aggiungere **senza modificare la cartella `periplo/`** al repository pubblico `zibaldino-capaneo/deposito` (branch che pubblica GitHub Pages).
 
-La struttura da conservare è:
+Struttura della versione precedente (per lo schema attuale vedi la sezione v0.14 qui sopra):
 
 ```
 deposito/
   periplo/                  (già esistente, non toccare)
   studioli_vari/
     mantegna/
-      index.html             pagina dello Studiolo
-      laboratorio.html       laboratorio interattivo v0.9
+      index.html             [nella v0.14 è l’indice]
+      laboratorio.html       laboratorio interattivo (ora v0.10)
       dati/
         punti_mantegna_v07.json
       documenti/
