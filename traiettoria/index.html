@@ -1,0 +1,1077 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Riprendere la traiettoria</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: tavolo da disegno — indice a sinistra, schede di metodo con banco di prova sotto ciascuna */
+:root{
+  --paper:#eef1ef; --sheet:#fbfcfb; --ink:#17262b; --muted:#56686c; --rule:#cdd7d4;
+  --petrol:#1f5560; --petrol-soft:#dce8e9; --ochre:#9a6418; --ochre-soft:#f3e7d2;
+  --crit:#a93526; --crit-soft:#f5dcd7; --warn:#8a6a12; --warn-soft:#f4ecd0; --ok:#2c6a44; --ok-soft:#dbeedf;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-ui:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#101719; --sheet:#172124; --ink:#e2eae8; --muted:#94a7a7; --rule:#2b3a3d;
+  --petrol:#7cbcc6; --petrol-soft:#1d3238; --ochre:#dba556; --ochre-soft:#33291a;
+  --crit:#e8806f; --crit-soft:#3a201c; --warn:#d8b85a; --warn-soft:#332c16; --ok:#79c795; --ok-soft:#1a3123;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#101719; --sheet:#172124; --ink:#e2eae8; --muted:#94a7a7; --rule:#2b3a3d;
+  --petrol:#7cbcc6; --petrol-soft:#1d3238; --ochre:#dba556; --ochre-soft:#33291a;
+  --crit:#e8806f; --crit-soft:#3a201c; --warn:#d8b85a; --warn-soft:#332c16; --ok:#79c795; --ok-soft:#1a3123;
+  color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5}
+*,*::before,*::after{box-sizing:border-box}
+a{color:var(--petrol)}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* testata */
+.mast{display:grid;gap:14px;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);font-weight:600;margin:0}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:0;text-wrap:balance}
+.dek{font-family:var(--f-display);font-size:1.18rem;max-width:62ch;margin:0;color:var(--ink)}
+.caso{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:.9rem;color:var(--muted)}
+.caso input{flex:1 1 260px;max-width:440px}
+
+/* impianto */
+.layout{display:grid;gap:32px;margin-top:28px}
+@media (min-width:960px){.layout{grid-template-columns:200px minmax(0,1fr)}}
+nav.indice{padding-block:8px}
+nav.indice ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+nav.indice li{white-space:nowrap}
+nav.indice .grp{display:none}
+nav.indice a{display:block;text-decoration:none;color:var(--ink);font-size:.95rem;padding:5px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--sheet)}
+nav.indice a:hover{border-color:var(--petrol);color:var(--petrol)}
+@media (min-width:960px){
+  nav.indice{position:sticky;z-index:2;align-self:start;top:calc(env(safe-area-inset-top,0px) + 16px);padding:0}
+  nav.indice ol{flex-direction:column;flex-wrap:nowrap;gap:2px}
+  nav.indice li{white-space:normal}
+  nav.indice .grp{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+  nav.indice .grp:first-child{margin-top:0}
+  nav.indice a{border:0;background:none;padding:3px 0 3px 10px;border-left:2px solid transparent}
+  nav.indice a:hover{border-left-color:var(--ochre)}
+}
+main{min-width:0;display:grid;gap:56px}
+
+/* premessa */
+.premessa{display:grid;gap:18px}
+.premessa p{font-family:var(--f-display);font-size:1.06rem;max-width:66ch;margin:0}
+.premessa .principio{border-left:3px solid var(--ochre);padding:4px 0 4px 16px;font-style:italic}
+.mappa{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:12px}
+.mappa svg{display:block;width:100%;height:auto}
+.mappa .stretto{display:none;max-width:420px;margin:0 auto}
+@media (max-width:620px){.mappa .largo{display:none}.mappa .stretto{display:block}}
+.mappa .nodo rect{fill:var(--sheet);stroke:var(--petrol);stroke-width:1.4}
+.mappa .nodo text{fill:var(--ink);font-family:var(--f-ui);font-size:14px}
+.mappa .nodo .sub{fill:var(--muted);font-size:11px}
+.mappa .hub rect{fill:var(--petrol)}
+.mappa .hub text{fill:var(--sheet);font-weight:600;font-size:18px}
+.mappa .altra rect{stroke:var(--muted);stroke-dasharray:4 3}
+.mappa .freccia{stroke:var(--ochre);stroke-width:1.6;fill:none}
+.mappa .tenue{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.mappa .etic{fill:var(--ochre);font-family:var(--f-mono);font-size:12px}
+.mappa a:hover rect{stroke:var(--ochre)}
+
+/* sezioni metodo */
+section.metodo{display:grid;gap:18px;scroll-margin-top:72px}
+.fam{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);font-weight:600;margin:0}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.6rem,3.2vw,2.1rem);line-height:1.15;margin:2px 0 0;text-wrap:balance}
+h2 .sigla{display:block;font-family:var(--f-mono);font-size:.5em;font-weight:500;color:var(--muted);margin-top:4px;letter-spacing:.04em;line-height:1.4}
+.domanda{font-family:var(--f-display);font-style:italic;font-size:1.12rem;margin:6px 0 0;max-width:62ch}
+.scheda{display:grid;gap:14px 28px;margin:0}
+@media (min-width:720px){.scheda{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.scheda div{min-width:0}
+.scheda dt{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.scheda dd{margin:0;font-size:.95rem}
+.scheda ol{margin:0;padding-left:1.2em}
+.scheda li+li{margin-top:3px}
+
+.banco{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px;display:grid;gap:16px;min-width:0}
+.banco-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px}
+.banco-h h3{margin:0;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--petrol);font-weight:600}
+.banco-h p{margin:0;font-size:.85rem;color:var(--muted)}
+
+input[type=text],textarea,select{font:inherit;font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:6px 8px;width:100%}
+textarea{resize:vertical;min-height:64px;line-height:1.4}
+input[type=range]{width:100%;accent-color:var(--petrol)}
+button{font:inherit;font-size:.88rem;cursor:pointer;border-radius:3px;border:1px solid var(--petrol);background:var(--petrol);color:var(--sheet);padding:6px 12px;font-weight:600}
+button.sec{background:transparent;color:var(--petrol)}
+button.min{background:transparent;border-color:transparent;color:var(--muted);padding:2px 6px;font-weight:400}
+button.min:hover{color:var(--crit)}
+button:hover:not(.min){filter:brightness(1.08)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* liste a quadranti */
+.quad{display:grid;gap:12px}
+@media (min-width:640px){.quad{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.q{border:1px solid var(--rule);border-radius:3px;padding:12px;display:grid;gap:8px;align-content:start;min-width:0}
+.q h4{margin:0;font-size:.95rem;display:flex;justify-content:space-between;gap:8px}
+.q h4 small{font-weight:400;color:var(--muted);font-size:.78rem}
+.q.pos{border-top:3px solid var(--ok)}
+.q.neg{border-top:3px solid var(--crit)}
+.q.asp{border-top:3px solid var(--petrol)}
+ul.items{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+ul.items li{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;font-size:.93rem;padding:4px 0;border-bottom:1px dotted var(--rule)}
+ul.items li span{min-width:0;overflow-wrap:anywhere}
+.aggiungi{display:flex;gap:6px}
+.aggiungi input{flex:1;min-width:0}
+
+/* tabelle */
+.scorre{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--rule);font-size:.92rem}
+th{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tows{min-width:640px}
+.tows th ul{margin:4px 0 0;padding-left:1.1em;text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink);font-size:.85rem}
+.tows td textarea{min-height:90px}
+.tows .tag{font-family:var(--f-mono);color:var(--ochre);font-size:.8rem;display:block;margin-bottom:4px}
+
+/* PESTEL */
+.pestel-g{display:grid;gap:18px}
+@media (min-width:860px){.pestel-g{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}
+.fattore{display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 12px;padding:10px 0;border-bottom:1px solid var(--rule);align-items:center}
+.fattore .nome{font-weight:600}
+.fattore .cursori{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) 72px;gap:10px;align-items:center}
+.fattore label{font-size:.8rem;color:var(--muted);display:grid;gap:2px}
+.punteggio{font-family:var(--f-mono);text-align:right;font-size:1.05rem;padding:4px 6px;border-radius:3px}
+.punteggio.crit{background:var(--crit-soft);color:var(--crit);font-weight:500}
+.punteggio.med{background:var(--warn-soft);color:var(--warn)}
+.esito{display:grid;gap:12px;align-content:start}
+.indice-box{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.indice-box .grande{font-family:var(--f-mono);font-size:2.4rem;line-height:1}
+.indice-box .su{color:var(--muted)}
+.allarme{padding:10px 12px;border-radius:3px;font-size:.92rem}
+.allarme.crit{background:var(--crit-soft);color:var(--ink);border-left:3px solid var(--crit)}
+.allarme.ok{background:var(--ok-soft);border-left:3px solid var(--ok)}
+.matrice svg{width:100%;max-width:300px;height:auto;display:block}
+.matrice text{font-family:var(--f-ui);fill:var(--muted);font-size:10px}
+.matrice .lett{fill:var(--ink);font-family:var(--f-mono);font-size:11px;font-weight:500}
+.preset{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.soglia{display:flex;align-items:center;gap:8px;font-size:.88rem}
+.soglia input{width:140px}
+.nota-piccola{font-size:.85rem;color:var(--muted);margin:0;max-width:60ch}
+
+/* Porter */
+.porter-g{display:grid;gap:18px}
+@media (min-width:860px){.porter-g{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+.forza{display:grid;gap:6px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.forza .riga{display:grid;grid-template-columns:minmax(0,1fr) 120px 36px;gap:10px;align-items:center}
+.forza .riga strong{font-weight:600}
+.radar svg{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.radar .griglia{fill:none;stroke:var(--rule)}
+.radar .area{fill:var(--petrol);fill-opacity:.22;stroke:var(--petrol);stroke-width:2}
+.radar .area-forte{fill:var(--crit)}
+.radar text{font-family:var(--f-ui);font-size:11px;fill:var(--ink)}
+
+/* VRIO */
+.vrio{min-width:620px}
+.vrio td{vertical-align:middle}
+.vrio .chk{text-align:center}
+.vrio input[type=checkbox]{width:18px;height:18px;accent-color:var(--petrol)}
+.esito-v{font-size:.85rem;padding:3px 8px;border-radius:12px;white-space:nowrap;display:inline-block}
+.e0{background:var(--crit-soft);color:var(--crit)}
+.e1{background:var(--paper);color:var(--muted);border:1px solid var(--rule)}
+.e2{background:var(--warn-soft);color:var(--warn)}
+.e3{background:var(--ochre-soft);color:var(--ochre)}
+.e4{background:var(--ok-soft);color:var(--ok)}
+
+/* A'WOT */
+.awot-g{display:grid;gap:18px}
+@media (min-width:860px){.awot-g{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}}
+.coppia{display:grid;grid-template-columns:90px minmax(0,1fr) 90px;gap:10px;align-items:center;padding:6px 0}
+.coppia .sx{text-align:right}
+.coppia .leggi{grid-column:1/-1;text-align:center;font-size:.82rem;color:var(--muted);margin-top:-4px}
+.pesi{display:grid;gap:8px}
+.peso{display:grid;grid-template-columns:110px minmax(0,1fr) 52px;gap:8px;align-items:center;font-size:.92rem}
+.barra{height:14px;background:var(--paper);border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.barra i{display:block;height:100%;background:var(--petrol)}
+
+/* BMC */
+.bmc{display:grid;gap:8px}
+.bmc .blk{border:1px solid var(--rule);border-radius:3px;padding:8px;display:grid;gap:4px;align-content:start;min-width:0}
+.bmc .blk label{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.bmc .blk.cuore{border-color:var(--petrol);background:var(--petrol-soft)}
+.bmc textarea{min-height:90px;background:var(--sheet)}
+@media (min-width:860px){
+  .bmc{grid-template-columns:repeat(10,minmax(0,1fr));grid-template-areas:
+   "pa pa at at pv pv re re se se"
+   "pa pa ri ri pv pv ca ca se se"
+   "co co co co co rv rv rv rv rv"}
+  .bmc textarea{height:calc(100% - 22px)}
+}
+
+/* 4C */
+.c4{min-width:560px}
+.c4 td.freccia{color:var(--ochre);font-family:var(--f-mono);text-align:center;vertical-align:middle;width:30px}
+.c4 strong{display:block;font-size:.85rem;margin-bottom:4px}
+
+/* tabelle in colonna stretta */
+.vrio .mini{display:none}
+@media (max-width:760px){
+  .tows,.c4,.vrio{min-width:0}
+  .tows,.tows thead,.tows tbody,.tows tr,.tows th,.tows td{display:block;width:auto!important}
+  .tows thead th:first-child{display:none}
+  .tows th{border-bottom:0;padding:10px 0 2px}
+  .tows td{padding:6px 0 10px}
+  .c4,.c4 tbody,.c4 tr,.c4 td{display:block}
+  .c4 thead,.c4 td.freccia{display:none}
+  .c4 tr{border-bottom:1px solid var(--rule);padding-block:6px}
+  .c4 td{border:0;padding:4px 0}
+  .vrio,.vrio tbody{display:block}
+  .vrio thead{display:none}
+  .vrio tr{display:grid;grid-template-columns:repeat(4,auto) minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .vrio td{border:0;padding:0}
+  .vrio td:first-child{grid-column:1/-1}
+  .vrio .chk label{display:inline-flex;align-items:center;gap:4px}
+  .vrio .mini{display:inline;font-family:var(--f-mono);font-size:.82rem;color:var(--muted)}
+}
+
+/* dati */
+.dati-g{display:grid;gap:16px}
+@media (min-width:860px){.dati-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dati-g textarea{font-family:var(--f-mono);font-size:.78rem;min-height:220px}
+.azioni{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stato{font-size:.85rem;color:var(--muted)}
+.stato.err{color:var(--crit)}
+
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--muted);font-size:.85rem}
+footer .firma{font-family:var(--f-display);font-style:italic;color:var(--ink);font-size:1rem}
+.fonti{font-size:.85rem;color:var(--muted);max-width:80ch}
+.fonti p{margin:.3em 0}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+html{scroll-behavior:smooth}
+
+/* ===== aggiunte per Riprendere la traiettoria ===== */
+.kt{min-width:0}
+.kt-g{display:grid;gap:10px}
+.kt-r{display:grid;gap:8px;grid-template-columns:110px repeat(3,minmax(0,1fr));align-items:start;padding:8px 0;border-bottom:1px solid var(--rule)}
+.kt-r .lab{font-weight:600;padding-top:6px}
+.kt-h{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+@media (max-width:760px){.kt-r{grid-template-columns:1fr}.kt-h.hid{display:none}.kt-r textarea::placeholder{color:var(--muted)}}
+.kc{display:grid;gap:2px;min-width:0}.kc .kh{display:none;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+@media (max-width:760px){.kc .kh{display:block}.kt-r:first-child{display:none}}
+ul.items li button{white-space:nowrap}
+.cr-r input.n{padding:4px;font-size:.82rem;min-width:0}
+.enunciato{background:var(--petrol-soft);border-left:3px solid var(--petrol);padding:12px 14px;border-radius:3px;font-family:var(--f-display);font-size:1.02rem}
+.enunciato b{color:var(--ink)}
+.catena{display:grid;gap:8px;counter-reset:pp}
+.catena .anello{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center}
+.catena .anello span{font-family:var(--f-mono);color:var(--ochre);font-size:.85rem;white-space:nowrap}
+.radice{background:var(--ochre-soft);border-left:3px solid var(--ochre);padding:10px 12px;border-radius:3px}
+.fish{display:grid;gap:12px}
+@media (min-width:860px){
+  .fish{grid-template-columns:repeat(3,minmax(0,1fr)) 160px;grid-template-areas:"a b c e" "s s s e" "d f g e"}
+  .fish .spina{grid-area:s;height:4px;background:var(--petrol);align-self:center;border-radius:2px;position:relative}
+  .fish .spina:after{content:"";position:absolute;right:-10px;top:-6px;border-left:12px solid var(--petrol);border-top:8px solid transparent;border-bottom:8px solid transparent}
+  .fish .effetto{grid-area:e}
+}
+.fish .spina{display:none}
+@media (min-width:860px){.fish .spina{display:block}}
+.fish .effetto{background:var(--petrol);color:var(--sheet);border-radius:4px;padding:12px;font-weight:600;display:flex;align-items:center}
+.fish .effetto textarea{background:transparent;color:var(--sheet);border-color:rgba(255,255,255,.35);min-height:70px;font-weight:600}
+.btn-pareto{font-size:.75rem;padding:2px 6px}
+.pareto-svg svg{width:100%;height:auto;display:block}
+.pareto-svg text{font-family:var(--f-ui);fill:var(--ink);font-size:11px}
+.pareto-svg .ax{stroke:var(--rule)}
+.pareto-svg .bar{fill:var(--petrol)}
+.pareto-svg .bar.vit{fill:var(--ochre)}
+.pareto-svg .cum{fill:none;stroke:var(--crit);stroke-width:2}
+.pareto-svg .soglia{stroke:var(--muted);stroke-dasharray:4 3}
+.par-g{display:grid;gap:16px}
+@media (min-width:860px){.par-g{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}}
+.riga-par{display:grid;grid-template-columns:minmax(0,1fr) 90px auto;gap:8px;align-items:center;padding:4px 0}
+.registro{min-width:760px}
+.registro td input[type=text]{min-width:0}
+.registro td select{min-width:56px}
+.registro td select[aria-label="Risposta"]{min-width:108px}
+.registro th:first-child{width:22%}
+.registro .pun{font-family:var(--f-mono);text-align:center;border-radius:3px;padding:4px}
+.registro .pun.crit{background:var(--crit-soft);color:var(--crit);font-weight:500}
+.registro .pun.med{background:var(--warn-soft);color:var(--warn)}
+.registro select{font:inherit;font-size:.88rem}
+@media (max-width:760px){
+  .registro{min-width:0}
+  .registro,.registro tbody{display:block}
+  .registro thead{display:none}
+  .registro tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;padding:12px 0;border-bottom:1px solid var(--rule)}
+  .registro td{border:0;padding:0;display:grid;gap:2px}
+  .registro td[data-l]:before{content:attr(data-l);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .registro td.w{grid-column:1/-1}
+}
+.bow{display:grid;gap:10px}
+@media (min-width:980px){.bow{grid-template-columns:repeat(2,minmax(0,1fr)) 150px repeat(2,minmax(0,1fr));align-items:stretch}}
+.bow .q{border-top-width:3px}
+.bow .lato-c{border-top:3px solid var(--crit)}
+.bow .lato-b{border-top:3px solid var(--petrol)}
+.bow .lato-r{border-top:3px solid var(--ok)}
+.bow .nodo-ev{background:var(--crit);color:var(--sheet);border-radius:18px;display:flex;align-items:center;justify-content:center;padding:14px;text-align:center;min-height:120px}
+.bow .nodo-ev textarea{background:transparent;color:var(--sheet);border-color:rgba(255,255,255,.4);text-align:center;font-weight:600;min-height:150px}
+.cr-tab{display:grid;gap:10px}
+.cr-r{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.6fr) 120px 110px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}
+.cr-r .nm{display:grid;gap:4px}
+.cr-r .nm input{font-weight:600}
+.cr-r .soglie{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.cr-r .soglie label,.cr-r .serie label{font-size:.72rem;color:var(--muted);display:grid;gap:2px}
+.cr-r .serie{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.cr-r input.n{font-family:var(--f-mono);padding:5px 6px}
+.spark svg{width:100%;height:auto;display:block}
+.stato-cr{display:grid;gap:4px;justify-items:start}
+.pill{display:inline-block;font-size:.8rem;padding:2px 9px;border-radius:12px;white-space:nowrap}
+.pill.r{background:var(--crit-soft);color:var(--crit)}
+.pill.g{background:var(--warn-soft);color:var(--warn)}
+.pill.v{background:var(--ok-soft);color:var(--ok)}
+.freccia-t{font-family:var(--f-mono);font-size:.85rem}
+.freccia-t.bene{color:var(--ok)}.freccia-t.male{color:var(--crit)}.freccia-t.neutra{color:var(--muted)}
+@media (max-width:860px){.cr-r{grid-template-columns:1fr 1fr}.cr-r .nm,.cr-r .serie{grid-column:1/-1}}
+.pdca-g{display:grid;gap:12px}
+@media (min-width:860px){.pdca-g{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.pdca-col{border:1px solid var(--rule);border-radius:3px;padding:10px;display:grid;gap:8px;align-content:start;min-width:0}
+.pdca-col h4{margin:0;font-size:.9rem;display:flex;justify-content:space-between}
+.pdca-col h4 small{color:var(--muted);font-weight:400}
+.carta{background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:8px;display:grid;gap:6px}
+.carta .t{font-weight:600;overflow-wrap:anywhere}
+.carta .m{font-size:.8rem;color:var(--muted)}
+.carta .az{display:flex;gap:4px;flex-wrap:wrap}
+.carta .az button{font-size:.75rem;padding:2px 7px}
+.bil-g{display:grid;gap:18px}
+@media (min-width:900px){.bil-g{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}}
+.voci{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+.voci label{display:grid;gap:3px;font-size:.82rem;color:var(--muted)}
+.voci input{font-family:var(--f-mono)}
+.voci h4{grid-column:1/-1;margin:8px 0 0;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--petrol)}
+.ind{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.ind .val{font-family:var(--f-mono);font-size:1.15rem}
+.ind .s{grid-column:1/-1;font-size:.88rem;color:var(--muted)}
+.ind .nome{font-weight:600}
+.segnali{display:grid;gap:6px;margin-top:6px}
+.segnali label{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;font-size:.9rem}
+.segnali input{width:18px;height:18px;accent-color:var(--crit);margin-top:2px}
+.lettura{display:grid;gap:10px}
+.lettura h4{margin:0;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+.lettura .sub-r h4{color:var(--crit)}.lettura .sub-v h4{color:var(--ok)}
+.lettura ul{margin:4px 0 0;padding-left:1.1em}
+.mappa .loop{stroke:var(--petrol);stroke-width:1.4;fill:none;stroke-dasharray:5 4}
+.mappa .base rect{fill:var(--ochre-soft);stroke:var(--ochre)}
+.mappa .base text{fill:var(--ink);font-family:var(--f-ui);font-size:14px;font-weight:600}
+</style>
+
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <p class="eyebrow">Lo Zibaldino · strumenti</p>
+    <h1>Riprendere la traiettoria</h1>
+    <p class="dek">Quando le cose non vanno come si sperava: dieci metodi per definire il problema, trovarne le cause, rispondere e controllare se la risposta funziona. Più un banco per leggere il proprio bilancio senza paura. Ogni metodo ha il suo banco di prova; i dati restano nel tuo browser e si portano via in JSON.</p>
+    <div class="caso"><label for="caso">Caso in esame</label><input type="text" id="caso"></div>
+  </header>
+
+  <div class="layout">
+    <nav class="indice" aria-label="Indice">
+      <ol>
+        <li class="grp">Premessa</li>
+        <li><a href="#premessa">La paralisi</a></li>
+        <li class="grp">Definire</li>
+        <li><a href="#kt">È / non è</a></li>
+        <li><a href="#perche">Cinque perché</a></li>
+        <li class="grp">Capire le cause</li>
+        <li><a href="#ishikawa">Ishikawa</a></li>
+        <li><a href="#pareto">Pareto</a></li>
+        <li class="grp">Anticipare</li>
+        <li><a href="#premortem">Pre-mortem</a></li>
+        <li class="grp">Rispondere</li>
+        <li><a href="#registro">Registro e 4T</a></li>
+        <li><a href="#bowtie">Bow-tie</a></li>
+        <li class="grp">Tracciare</li>
+        <li><a href="#cruscotto">Cruscotto</a></li>
+        <li><a href="#pdca">PDCA</a></li>
+        <li class="grp">La base</li>
+        <li><a href="#bilancio">Il bilancio senza paura</a></li>
+        <li class="grp">Strumenti</li>
+        <li><a href="#dati">I tuoi dati</a></li>
+      </ol>
+    </nav>
+
+    <main>
+      <section class="premessa metodo" id="premessa">
+        <div>
+          <p class="fam">Premessa</p>
+          <h2>La paralisi viene prima del problema</h2>
+        </div>
+        <p>Quando un anno va storto, il primo ostacolo raramente è il problema stesso. È la sensazione di non sapere da dove cominciare. Il documento più temuto diventa il proprio bilancio, con i suoi allegati: si sa che dentro c'è la risposta, e proprio per questo non lo si apre.</p>
+        <p>I metodi di questa pagina servono a una cosa sola: spezzare il problema in domande abbastanza piccole da poter rispondere. Prima si dice che cosa sta succedendo, e che cosa no. Poi si cercano le cause e si separano le poche che contano dalle molte che fanno rumore. Si immagina che cosa può ancora andare storto, si decide come rispondere, e si misura se la risposta funziona.</p>
+        <div class="mappa" role="img" aria-label="Sequenza dei metodi: definire, capire, anticipare, rispondere, tracciare, con il bilancio come base">
+          <svg class="largo" viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="pt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ochre)"/></marker>
+            <marker id="pt3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--petrol)"/></marker></defs>
+            <a href="#kt"><g class="nodo"><rect x="10" y="80" width="150" height="76" rx="3"/><text x="85" y="108" text-anchor="middle">Definire</text><text class="sub" x="85" y="126" text-anchor="middle">È / non è</text><text class="sub" x="85" y="142" text-anchor="middle">Cinque perché</text></g></a>
+            <a href="#ishikawa"><g class="nodo"><rect x="185" y="80" width="150" height="76" rx="3"/><text x="260" y="108" text-anchor="middle">Capire le cause</text><text class="sub" x="260" y="126" text-anchor="middle">Ishikawa</text><text class="sub" x="260" y="142" text-anchor="middle">Pareto</text></g></a>
+            <a href="#premortem"><g class="nodo"><rect x="360" y="80" width="140" height="76" rx="3"/><text x="430" y="108" text-anchor="middle">Anticipare</text><text class="sub" x="430" y="126" text-anchor="middle">Pre-mortem</text></g></a>
+            <a href="#registro"><g class="nodo"><rect x="525" y="80" width="150" height="76" rx="3"/><text x="600" y="108" text-anchor="middle">Rispondere</text><text class="sub" x="600" y="126" text-anchor="middle">Registro e 4T</text><text class="sub" x="600" y="142" text-anchor="middle">Bow-tie</text></g></a>
+            <a href="#cruscotto"><g class="nodo hub"><rect x="700" y="80" width="150" height="76" rx="4"/><text x="775" y="112" text-anchor="middle">Tracciare</text><text x="775" y="138" text-anchor="middle" style="font-size:12px;font-weight:400">Cruscotto · PDCA</text></g></a>
+            <path class="freccia" d="M160,118 L183,118" marker-end="url(#pt)"/>
+            <path class="freccia" d="M335,118 L358,118" marker-end="url(#pt)"/>
+            <path class="freccia" d="M500,118 L523,118" marker-end="url(#pt)"/>
+            <path class="freccia" d="M675,118 L698,118" marker-end="url(#pt)"/>
+            <path class="loop" d="M775,80 C775,20 85,20 85,76" marker-end="url(#pt3)"/>
+            <text class="etic" x="430" y="30" text-anchor="middle">se la traiettoria non si riprende, si ridefinisce il problema</text>
+            <a href="#bilancio"><g class="base"><rect x="10" y="200" width="840" height="56" rx="3"/><text x="430" y="226" text-anchor="middle">Il bilancio senza paura</text><text x="430" y="244" text-anchor="middle" style="font-size:12px;font-weight:400">da dove si parte e dove si misura se la risposta funziona</text></g></a>
+            <path class="tenue" d="M85,156 L85,198 M260,156 L260,198 M600,156 L600,198 M775,156 L775,198"/>
+          </svg>
+          <svg class="stretto" viewBox="0 0 340 520" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="pt2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ochre)"/></marker>
+            <marker id="pt4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--petrol)"/></marker></defs>
+            <a href="#kt"><g class="nodo"><rect x="40" y="10" width="220" height="56" rx="3"/><text x="150" y="33" text-anchor="middle">Definire</text><text class="sub" x="150" y="52" text-anchor="middle">È / non è · Cinque perché</text></g></a>
+            <a href="#ishikawa"><g class="nodo"><rect x="40" y="88" width="220" height="56" rx="3"/><text x="150" y="111" text-anchor="middle">Capire le cause</text><text class="sub" x="150" y="130" text-anchor="middle">Ishikawa · Pareto</text></g></a>
+            <a href="#premortem"><g class="nodo"><rect x="40" y="166" width="220" height="56" rx="3"/><text x="150" y="189" text-anchor="middle">Anticipare</text><text class="sub" x="150" y="208" text-anchor="middle">Pre-mortem</text></g></a>
+            <a href="#registro"><g class="nodo"><rect x="40" y="244" width="220" height="56" rx="3"/><text x="150" y="267" text-anchor="middle">Rispondere</text><text class="sub" x="150" y="286" text-anchor="middle">Registro e 4T · Bow-tie</text></g></a>
+            <a href="#cruscotto"><g class="nodo hub"><rect x="40" y="322" width="220" height="56" rx="4"/><text x="150" y="346" text-anchor="middle">Tracciare</text><text x="150" y="366" text-anchor="middle" style="font-size:12px;font-weight:400">Cruscotto · PDCA</text></g></a>
+            <path class="freccia" d="M150,66 L150,86 M150,144 L150,164 M150,222 L150,242 M150,300 L150,320" marker-end="url(#pt2)"/>
+            <path class="loop" d="M260,350 C330,350 330,38 262,38" marker-end="url(#pt4)"/>
+            <a href="#bilancio"><g class="base"><rect x="10" y="420" width="320" height="64" rx="3"/><text x="170" y="447" text-anchor="middle">Il bilancio senza paura</text><text x="170" y="467" text-anchor="middle" style="font-size:11px;font-weight:400">da dove si parte, dove si misura</text></g></a>
+          </svg>
+        </div>
+        <p>Sotto tutto c'è il bilancio, che fa due mestieri: dice da dove si parte e, un anno dopo, se la risposta ha funzionato. Leggerlo non richiede di capire ogni voce. Bastano pochi indici, ciascuno con la sua soglia, e la disciplina di guardare anche ciò che regge, non solo ciò che preoccupa.</p>
+        <p class="principio">Lo stesso principio della pagina sorella, Attorno allo SWOT: soglia prima, somma poi. Un indicatore oltre soglia va affrontato qualunque sia il quadro d'insieme. E un quadro d'insieme grigio non è un verdetto.</p>
+      </section>
+
+      <!-- È / NON È -->
+      <section class="metodo" id="kt">
+        <div>
+          <p class="fam">Definire</p>
+          <h2>È / non è <span class="sigla">analisi del problema di Kepner e Tregoe</span></h2>
+          <p class="domanda">Che cosa sta succedendo esattamente, e che cosa invece no?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Charles Kepner e Benjamin Tregoe, <i>The Rational Manager</i>, 1965, da studi sui manager della RAND Corporation.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Descrivi il problema per cosa, dove, quando e quanto.</li><li>Per ogni riga scrivi anche dove il problema <i>non</i> c'è, pur potendo esserci.</li><li>La differenza fra le due colonne indica dove cercare la causa.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>La colonna «non è» è quella che si salta, ed è la più utile: se il problema riguarda l'export ma non l'Italia, la causa non sta nella cantina, sta nel mercato o nel canale.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>L'enunciato in fondo si compone da solo.</p></div>
+          <div class="kt-g" id="kt-g"></div>
+          <div class="enunciato" id="kt-out"></div>
+        </div>
+      </section>
+
+      <!-- 5 PERCHÉ -->
+      <section class="metodo" id="perche">
+        <div>
+          <p class="fam">Definire</p>
+          <h2>Cinque perché</h2>
+          <p class="domanda">Che cosa sta sotto il sintomo che vedo?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Sakichi Toyoda e la Toyota; descritto da Taiichi Ohno in <i>Toyota Production System</i>, 1978.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Scrivi il sintomo, come lo vedi.</li><li>Chiedi perché, e scrivi la risposta che sai dimostrare.</li><li>Ripeti finché arrivi a qualcosa su cui puoi agire.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Cinque è un numero indicativo. La catena si ferma quando trova una causa su cui agire, non quando trova un colpevole: «perché il commerciale ha sbagliato» non è una causa, è un'altra domanda.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>L'ultimo anello compilato è la causa su cui agire.</p></div>
+          <label for="pp-sint"><strong>Sintomo</strong></label>
+          <input type="text" id="pp-sint">
+          <div class="catena" id="pp-cat"></div>
+          <div class="radice" id="pp-out"></div>
+        </div>
+      </section>
+
+      <!-- ISHIKAWA -->
+      <section class="metodo" id="ishikawa">
+        <div>
+          <p class="fam">Capire le cause</p>
+          <h2>Diagramma di Ishikawa <span class="sigla">a lisca di pesce · causa-effetto</span></h2>
+          <p class="domanda">Quali sono tutte le cause possibili, prima di sceglierne una?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Kaoru Ishikawa, primo uso nel 1943 nei cantieri Kawasaki; diffuso con <i>Guide to Quality Control</i>, 1968.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Scrivi l'effetto in testa alla lisca.</li><li>Raccogli le cause per famiglie: le classiche sei M, qui adattate.</li><li>Porta le cause più credibili nel Pareto per pesarle.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Serve ad allargare lo sguardo, non a decidere. Un diagramma pieno è un buon inizio; un diagramma pieno lasciato lì è di nuovo un elenco.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Il tasto → porta una causa nel Pareto.</p></div>
+          <div class="fish" id="fish"></div>
+        </div>
+      </section>
+
+      <!-- PARETO -->
+      <section class="metodo" id="pareto">
+        <div>
+          <p class="fam">Capire le cause</p>
+          <h2>Analisi di Pareto</h2>
+          <p class="domanda">Quali poche cause fanno la maggior parte del danno?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Vilfredo Pareto osservò, nel 1896, la concentrazione della proprietà fondiaria. Joseph Juran ne fece un principio della qualità fra anni Quaranta e Cinquanta: i «pochi vitali» e i «molti utili».</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Dai a ogni causa un peso misurabile: euro, giorni, casi.</li><li>Ordina dalla più pesante.</li><li>Agisci sulle cause che arrivano all'80% del totale.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>L'80/20 è una regolarità, non una legge. A volte il danno è distribuito, e allora il Pareto dice una cosa diversa ma utile: non c'è una leva sola.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>In arancio le cause dentro l'80%.</p></div>
+          <div class="par-g">
+            <div>
+              <label for="par-unita" class="nota-piccola">Unità di misura</label>
+              <input type="text" id="par-unita" style="margin-bottom:8px">
+              <div id="par-righe"></div>
+              <form class="aggiungi" id="par-add" style="margin-top:8px"><input type="text" id="par-nuova" placeholder="Nuova causa" aria-label="Nuova causa"><button>Aggiungi</button></form>
+            </div>
+            <div><div class="pareto-svg" id="par-svg"></div><p class="nota-piccola" id="par-out"></p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRE-MORTEM -->
+      <section class="metodo" id="premortem">
+        <div>
+          <p class="fam">Anticipare</p>
+          <h2>Pre-mortem</h2>
+          <p class="domanda">È passato un anno e il piano è fallito: che cosa è successo?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Gary Klein, «Performing a Project Premortem», <i>Harvard Business Review</i>, 2007, dalla psicologia della decisione.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Dichiara il piano di ripresa.</li><li>Immagina che sia fallito, e scrivi perché, senza filtri.</li><li>Porta i motivi credibili nel registro dei rischi.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Funziona perché autorizza il dissenso: chi teme di sembrare disfattista parla più volentieri di un fallimento già avvenuto. Usato in gruppo rende di più.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Il tasto → registro sposta un motivo fra i rischi da gestire.</p></div>
+          <label for="pm-piano"><strong>Il piano</strong></label>
+          <input type="text" id="pm-piano">
+          <div class="q neg"><h4>Perché è fallito <small>un anno dopo</small></h4><div id="pm-lista"></div></div>
+        </div>
+      </section>
+
+      <!-- REGISTRO -->
+      <section class="metodo" id="registro">
+        <div>
+          <p class="fam">Rispondere</p>
+          <h2>Registro dei rischi e le 4T <span class="sigla">Tollerare · Trattare · Trasferire · Terminare</span></h2>
+          <p class="domanda">Per ogni rischio, che cosa faccio, chi lo fa, e come me ne accorgo in tempo?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Il registro è pratica comune della gestione del rischio. Le quattro risposte sono codificate nell'<i>Orange Book</i> del Tesoro britannico (2004, aggiornato nel 2020).</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Stima probabilità e impatto (1-5).</li><li>Scegli una delle quattro risposte, e scrivi l'azione mitigante.</li><li>Per ogni rischio fissa l'indicatore che ti avvisa prima che accada.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Il prodotto probabilità × impatto ha gli stessi limiti visti nel PESTEL. Qui vale la soglia: un impatto 5 è prioritario d'ufficio, anche se improbabile. Il registro senza indicatore d'allarme è un elenco di paure.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>In rosso: impatto 5 o punteggio da 15 in su.</p></div>
+          <div class="scorre"><table class="registro"><thead><tr><th>Rischio</th><th>P</th><th>I</th><th>Punti</th><th>Risposta</th><th>Azione mitigante</th><th>Indicatore d'allarme</th><th><span hidden>Togli</span></th></tr></thead><tbody id="reg-corpo"></tbody></table></div>
+          <form class="aggiungi" id="reg-add"><input type="text" id="reg-nuova" placeholder="Nuovo rischio" aria-label="Nuovo rischio"><button>Aggiungi</button></form>
+          <p class="nota-piccola" id="reg-out"></p>
+        </div>
+      </section>
+
+      <!-- BOW-TIE -->
+      <section class="metodo" id="bowtie">
+        <div>
+          <p class="fam">Rispondere</p>
+          <h2>Bow-tie <span class="sigla">a farfallino</span></h2>
+          <p class="domanda">Che cosa impedisce che accada, e che cosa limita il danno se accade?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Nasce nell'industria chimica (corsi ICI, 1979) e si diffonde nel petrolifero dopo Piper Alpha, adottato da Shell negli anni Novanta.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Al centro l'evento da temere.</li><li>A sinistra le cause e le barriere che le fermano prima.</li><li>A destra le conseguenze e le barriere che ne riducono il danno.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Separa due mestieri che si confondono: prevenire e recuperare. Molte aziende hanno solo barriere a sinistra, e quando l'evento arriva non hanno niente a destra.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Leggilo da sinistra a destra.</p></div>
+          <div class="bow" id="bow"></div>
+        </div>
+      </section>
+
+      <!-- CRUSCOTTO -->
+      <section class="metodo" id="cruscotto">
+        <div>
+          <p class="fam">Tracciare</p>
+          <h2>Cruscotto con soglie e tendenza</h2>
+          <p class="domanda">La traiettoria si sta riprendendo, e con che velocità?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Dal <i>tableau de bord</i> francese degli anni Trenta alla <i>Balanced Scorecard</i> di Robert Kaplan e David Norton (1992). Qui ridotto all'essenziale.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Scegli pochi indicatori, e almeno uno che anticipi (gli ordini, gli incassi) invece di confermare.</li><li>Fissa due soglie: attenzione e allarme.</li><li>Guarda il livello e anche la direzione: un rosso che migliora è diverso da un giallo che peggiora.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>La freccia conta quanto il colore. La tendenza è calcolata sugli ultimi periodi, e l'accelerazione dice se il miglioramento sta prendendo forza o si sta esaurendo.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Quattro periodi, dal più vecchio al più recente.</p></div>
+          <div class="cr-tab" id="cr-tab"></div>
+          <form class="aggiungi" id="cr-add"><input type="text" id="cr-nuova" placeholder="Nuovo indicatore" aria-label="Nuovo indicatore"><button>Aggiungi</button></form>
+        </div>
+      </section>
+
+      <!-- PDCA -->
+      <section class="metodo" id="pdca">
+        <div>
+          <p class="fam">Tracciare</p>
+          <h2>Ciclo PDCA <span class="sigla">Plan · Do · Check · Act</span></h2>
+          <p class="domanda">A che punto è ogni azione, e che cosa ci ha insegnato?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Origine</dt><dd>Walter Shewhart, 1939; reso celebre da W. Edwards Deming, che lo portò nell'industria giapponese del dopoguerra.</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Pianifica un'azione con un risultato atteso.</li><li>Falla, poi controlla il risultato contro l'atteso.</li><li>Se funziona, rendila stabile; se no, torna a pianificare.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>La fase che si salta è il controllo. Un'azione fatta e mai verificata non è una risposta, è un'abitudine nuova.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Sposta le azioni fra le fasi con le frecce.</p></div>
+          <div class="pdca-g" id="pdca-g"></div>
+          <form class="aggiungi" id="pdca-add"><input type="text" id="pdca-nuova" placeholder="Nuova azione" aria-label="Nuova azione"><button>Aggiungi</button></form>
+        </div>
+      </section>
+
+      <!-- BILANCIO -->
+      <section class="metodo" id="bilancio">
+        <div>
+          <p class="fam">La base</p>
+          <h2>Il bilancio senza paura</h2>
+          <p class="domanda">Che cosa mi dice, in poche cifre, il documento che non ho il coraggio di aprire?</p>
+        </div>
+        <dl class="scheda">
+          <div><dt>Riferimenti</dt><dd>Codice della crisi d'impresa (D.Lgs. 14/2019, modificato dal D.Lgs. 83/2022), art. 3; art. 2086 del codice civile sugli adeguati assetti. Edward Altman, Z-score (1968) e la variante Z'' per imprese non quotate e non manifatturiere (1995).</dd></div>
+          <div><dt>Come si usa</dt><dd><ol><li>Prendi dal bilancio le voci richieste: tredici cifre in tutto.</li><li>Leggi gli indici uno per uno, ciascuno con la sua soglia.</li><li>Scrivi due elenchi: che cosa va affrontato subito, e che cosa regge.</li></ol></dd></div>
+          <div><dt>Attenzione</dt><dd>Le soglie sono indicative e variano per settore. Lo Z'' è stato stimato su imprese americane: qui serve come termometro, non come sentenza. I segnali di legge, invece, non sono indicativi: se ne scatta uno, gli amministratori devono attivarsi.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Importi in migliaia di euro.</p></div>
+          <div class="bil-g">
+            <div>
+              <div class="voci" id="bil-voci"></div>
+              <h4 style="margin:16px 0 4px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--crit)">Segnali d'allerta del Codice della crisi (art. 3, c. 4)</h4>
+              <div class="segnali" id="bil-segnali"></div>
+            </div>
+            <div class="esito">
+              <div id="bil-ind"></div>
+              <div id="bil-allarme"></div>
+              <div class="lettura" id="bil-lettura"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DATI -->
+      <section class="metodo" id="dati">
+        <div>
+          <p class="fam">Strumenti</p>
+          <h2>I tuoi dati</h2>
+          <p class="domanda">Tutto quello che scrivi nei banchi di prova sta in un unico file JSON.</p>
+        </div>
+        <div class="banco">
+          <div class="dati-g">
+            <div style="display:grid;gap:8px;min-width:0">
+              <label for="json-out"><strong>Esporta</strong> · copia il testo e salvalo come file .json</label>
+              <textarea id="json-out" readonly></textarea>
+              <div class="azioni"><button id="copia">Copia il JSON</button><span class="stato" id="copia-stato" aria-live="polite"></span></div>
+            </div>
+            <div style="display:grid;gap:8px;min-width:0">
+              <label for="json-in"><strong>Importa</strong> · incolla un JSON esportato in precedenza</label>
+              <textarea id="json-in" placeholder='{ "caso": "…", "kt": { … } }'></textarea>
+              <div class="azioni"><button id="carica">Carica</button><span class="stato" id="carica-stato" aria-live="polite"></span></div>
+            </div>
+          </div>
+          <div class="azioni"><button class="sec" id="esempio">Ripristina l'esempio</button><button class="sec" id="svuota">Svuota tutto</button><span class="stato" id="reset-stato" aria-live="polite"></span></div>
+          <p class="nota-piccola">I dati si salvano solo in questo browser. Per tenerli o passarli a qualcuno, esporta il JSON. L'esempio è la stessa cantina cooperativa immaginaria di «Attorno allo SWOT», in un anno andato storto; le cifre sono inventate.</p>
+        </div>
+        <div class="fonti">
+          <p>Riferimenti citati: Kepner e Tregoe 1965; Ohno 1978; Ishikawa 1968; Pareto 1896 e Juran; Klein 2007; HM Treasury, <i>Orange Book</i>, 2004 e 2020; Shewhart 1939 e Deming; Kaplan e Norton 1992; Altman 1968 e 1995; D.Lgs. 14/2019 e 83/2022; art. 2086 c.c.</p>
+          <p>Strumenti di avvicinamento ai metodi, non consulenza né valutazione legale della crisi.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer><span class="firma">Paolo Carena &amp; Claude</span><span>Lo Zibaldino · ottobre 2026</span></footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY='riprendere-traiettoria-v1';
+const clone=o=>JSON.parse(JSON.stringify(o));
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(n,d)=>(n==null||!isFinite(n))?'—':n.toLocaleString('it-IT',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});
+
+const KT=[['cosa','Cosa'],['dove','Dove'],['quando','Quando'],['quanto','Quanto']];
+const FAM=[['metodi','Metodi'],['mezzi','Mezzi e impianti'],['persone','Persone'],['materiali','Materiali e fornitori'],['misure','Misure e informazioni'],['mercato','Mercato e ambiente']];
+const RISP=['Tollerare','Trattare','Trasferire','Terminare'];
+const FASI=[['P','Plan','pianificare'],['D','Do','fare'],['C','Check','controllare'],['A','Act','consolidare']];
+const VOCI=[
+ ['Conto economico',null],
+ ['ricavi','Ricavi'],['ebitda','Margine operativo lordo (EBITDA)'],['ebit','Risultato operativo (EBIT)'],['oneri','Oneri finanziari'],
+ ['Stato patrimoniale',null],
+ ['attivo','Totale attivo'],['passivo','Totale passività (debiti)'],['pn','Patrimonio netto'],['riserve','Riserve di utili'],['ccn','Capitale circolante netto'],['pfn','Posizione finanziaria netta (debito)'],['crediti','Crediti verso clienti'],
+ ['Prossimi 12 mesi',null],
+ ['flusso','Flusso di cassa disponibile'],['servizio','Servizio del debito (rate + interessi)']
+];
+const SEGN=[
+ ['retribuzioni','Debiti per retribuzioni scaduti da almeno 30 giorni, oltre la metà del monte retribuzioni mensile'],
+ ['fornitori','Debiti verso fornitori scaduti da almeno 90 giorni, superiori a quelli non ancora scaduti'],
+ ['banche','Esposizioni verso banche e intermediari scadute da oltre 60 giorni o oltre il fido da 60 giorni, se almeno il 5% del totale'],
+ ['pubblici','Debiti scaduti verso INPS, INAIL, Agenzia delle Entrate o Riscossione oltre le soglie dell’art. 25-novies']
+];
+
+const ESEMPIO={
+ caso:'Cantina cooperativa di collina — l’anno dei dazi (esempio)',
+ kt:{
+  cosa:{e:'Calo delle vendite e della cassa',n:'Calo della produzione o della qualità',d:'Il vino c’è, è chi lo compra che è cambiato'},
+  dove:{e:'Export negli Stati Uniti; due catene della distribuzione',n:'Spaccio aziendale, Horeca locale, export europeo',d:'Il problema sta in due canali, non in cantina'},
+  quando:{e:'Da aprile 2026, dopo i nuovi dazi',n:'Prima di aprile; nessun calo nel 2025',d:'C’è una data precisa: un evento esterno'},
+  quanto:{e:'Export −30%; incassi dalle catene a 120 giorni',n:'Prezzo medio stabile; nessun reclamo',d:'Volumi e tempi, non prezzo né qualità'}
+ },
+ perche:{sint:'La cassa è scesa sotto i 250 mila euro',cat:['Perché le due catene pagano a 120 giorni invece che a 60','Perché a primavera hanno allungato i termini a tutti i fornitori','Perché i loro volumi sono calati e scaricano il circolante a monte','Perché la cantina vende per il 55% a due soli clienti',''] },
+ ishikawa:{effetto:'Cassa sotto soglia nel 2026',
+  metodi:['Nessun limite di esposizione per cliente','Budget annuale, non trimestrale'],
+  mezzi:['Imbottigliatrice ferma tre settimane a maggio'],
+  persone:['Un solo commerciale per l’export'],
+  materiali:['Vetro rincarato del 12%'],
+  misure:['Scadenzario crediti aggiornato a mano, una volta al mese'],
+  mercato:['Dazi USA da aprile','Catene che allungano i pagamenti','Consumi interni in calo']},
+ pareto:{unita:'mila € di cassa persa',righe:[
+  {nome:'Catene che allungano i pagamenti',val:410},{nome:'Dazi USA da aprile',val:260},{nome:'Vetro rincarato del 12%',val:70},
+  {nome:'Imbottigliatrice ferma tre settimane a maggio',val:45},{nome:'Consumi interni in calo',val:40},{nome:'Altro',val:25}]},
+ premortem:{piano:'Riportare la cassa sopra 400 mila euro entro giugno 2027',lista:[
+  'Le catene non hanno accettato termini più brevi',
+  'Il nuovo importatore canadese non ha mai ordinato',
+  'La linea per l’Horeca ha tolto vino ai canali più ricchi',
+  'Nessuno ha guardato lo scadenzario fino a marzo']},
+ registro:[
+  {r:'Le catene mantengono i 120 giorni',p:4,i:5,risp:'Trattare',az:'Rinegoziare: sconto 1,5% per pagamento a 60 giorni',al:'Giorni medi d’incasso sopra 110 per due mesi'},
+  {r:'Insolvenza di una catena',p:2,i:5,risp:'Trasferire',az:'Assicurazione crediti sulle due catene',al:'Ritardi oltre 150 giorni su una fattura'},
+  {r:'Dazi USA ulteriormente aumentati',p:3,i:3,risp:'Tollerare',az:'Nessuna azione oltre al monitoraggio',al:'Annunci dell’amministrazione USA'},
+  {r:'Vendemmia scarsa per siccità',p:2,i:4,risp:'Trattare',az:'Irrigazione di soccorso sulle parcelle più esposte',al:'Precipitazioni giugno-luglio sotto media'}
+ ],
+ bowtie:{evento:'Crisi di liquidità: non si pagano i soci conferitori a scadenza',
+  cause:['Clienti che pagano tardi','Calo dell’export','Investimenti non rinviati'],
+  prev:['Limite di esposizione per cliente','Scadenzario settimanale','Assicurazione crediti'],
+  rec:['Linea di credito di riserva già negoziata','Calendario di pagamento concordato con i soci'],
+  conseg:['Soci che conferiscono altrove','Perdita di fiducia della banca']},
+ cruscotto:[
+  {nome:'Giorni medi d’incasso',unita:'gg',serie:[95,104,118,120],giallo:90,rosso:110,verso:'basso'},
+  {nome:'Liquidità',unita:'k€',serie:[420,360,290,240],giallo:300,rosso:200,verso:'alto'},
+  {nome:'Export sul fatturato',unita:'%',serie:[24,21,18,17],giallo:20,rosso:15,verso:'alto'},
+  {nome:'Ordini del trimestre dal nuovo canale',unita:'k€',serie:[0,15,38,70],giallo:50,rosso:20,verso:'alto'}
+ ],
+ pdca:[
+  {t:'Rinegoziare i termini con la catena A',f:'D',rev:'15/11/2026',nota:'Primo incontro fatto'},
+  {t:'Assicurazione crediti sulle due catene',f:'C',rev:'30/11/2026',nota:'Polizza attiva da ottobre'},
+  {t:'Linea per l’Horeca piemontese',f:'P',rev:'31/12/2026',nota:''},
+  {t:'Scadenzario crediti settimanale',f:'A',rev:'',nota:'Funziona: diventa la regola'}
+ ],
+ bilancio:{v:{ricavi:4200,ebitda:310,ebit:120,oneri:70,attivo:6400,passivo:4300,pn:2100,riserve:900,ccn:380,pfn:1650,crediti:1380,flusso:260,servizio:340},
+  s:{retribuzioni:false,fornitori:false,banche:false,pubblici:false}}
+};
+
+function vuoto(){
+ const kt={};KT.forEach(([k])=>kt[k]={e:'',n:'',d:''});
+ const ish={effetto:''};FAM.forEach(([k])=>ish[k]=[]);
+ const v={};VOCI.forEach(([k,l])=>{if(l)v[k]=null;});
+ const s={};SEGN.forEach(([k])=>s[k]=false);
+ return {caso:'',kt,perche:{sint:'',cat:['','','','','']},ishikawa:ish,pareto:{unita:'',righe:[]},premortem:{piano:'',lista:[]},registro:[],bowtie:{evento:'',cause:[],prev:[],rec:[],conseg:[]},cruscotto:[],pdca:[],bilancio:{v,s}};
+}
+function completa(d){
+ const b=vuoto(); if(!d||typeof d!=='object') return b;
+ for(const k in b){ if(d[k]===undefined) d[k]=b[k];
+  else if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])){ for(const j in b[k]) if(d[k][j]===undefined) d[k][j]=b[k][j]; } }
+ if(!Array.isArray(d.perche.cat)) d.perche.cat=['','','','',''];
+ while(d.perche.cat.length<5) d.perche.cat.push('');
+ return d;
+}
+let S;
+try{const raw=localStorage.getItem(KEY);S=raw?completa(JSON.parse(raw)):clone(ESEMPIO);}catch(e){S=clone(ESEMPIO);}
+let tS;function salva(){clearTimeout(tS);tS=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}},250);aggExport();}
+
+function lista(el,arr,ph,opz){
+ opz=opz||{};el.innerHTML='';
+ const ul=document.createElement('ul');ul.className='items';
+ arr.forEach((t,i)=>{
+  const li=document.createElement('li');li.innerHTML='<span>'+esc(t)+'</span>';
+  const g=document.createElement('span');g.style.display='flex';g.style.gap='2px';
+  if(opz.extra){const x=document.createElement('button');x.type='button';x.className='sec btn-pareto';x.textContent=opz.extra.label;x.title=opz.extra.title;x.onclick=()=>opz.extra.fn(t,x);g.appendChild(x);}
+  const b=document.createElement('button');b.className='min';b.type='button';b.textContent='×';b.setAttribute('aria-label','Togli: '+t);
+  b.onclick=()=>{arr.splice(i,1);salva();lista(el,arr,ph,opz);opz.dopo&&opz.dopo();};
+  g.appendChild(b);li.appendChild(g);ul.appendChild(li);
+ });
+ const f=document.createElement('form');f.className='aggiungi';
+ const inp=document.createElement('input');inp.type='text';inp.placeholder=ph;inp.setAttribute('aria-label',ph);
+ const btn=document.createElement('button');btn.textContent='Aggiungi';f.append(inp,btn);
+ f.onsubmit=e=>{e.preventDefault();const v=inp.value.trim();if(!v)return;arr.push(v);salva();lista(el,arr,ph,opz);opz.dopo&&opz.dopo();const n=el.querySelector('input');n&&n.focus();};
+ el.append(ul,f);
+}
+
+/* ---- È / non è ---- */
+function renderKT(){
+ const g=$('kt-g');
+ g.innerHTML='<div class="kt-r"><span></span><span class="kt-h">È</span><span class="kt-h hid">Non è (ma potrebbe)</span><span class="kt-h hid">Che cosa distingue</span></div>'+
+  KT.map(([k,l])=>'<div class="kt-r"><span class="lab">'+l+'</span><label class="kc"><span class="kh">È</span><textarea id="kt-'+k+'-e" aria-label="'+l+': è" placeholder="È">'+esc(S.kt[k].e)+'</textarea></label><label class="kc"><span class="kh">Non è</span><textarea id="kt-'+k+'-n" aria-label="'+l+': non è" placeholder="Non è">'+esc(S.kt[k].n)+'</textarea></label><label class="kc"><span class="kh">Che cosa distingue</span><textarea id="kt-'+k+'-d" aria-label="'+l+': che cosa distingue" placeholder="Che cosa distingue">'+esc(S.kt[k].d)+'</textarea></label></div>').join('');
+ KT.forEach(([k])=>['e','n','d'].forEach(c=>$('kt-'+k+'-'+c).oninput=ev=>{S.kt[k][c]=ev.target.value;salva();aggKT();}));
+ aggKT();
+}
+function aggKT(){
+ const k=S.kt,pz=[];
+ const t=s=>{s=(s||'').trim().replace(/\.$/,'');return s?s.charAt(0).toLowerCase()+s.slice(1):s;};
+ if(t(k.cosa.e))pz.push('<b>'+esc(t(k.cosa.e))+'</b>');
+ if(t(k.dove.e))pz.push('nel perimetro: '+esc(t(k.dove.e)));
+ if(t(k.quando.e))pz.push(t(k.quando.e).startsWith('da')?esc(t(k.quando.e)):'quando: '+esc(t(k.quando.e)));
+ if(t(k.quanto.e))pz.push('con questa misura: '+esc(t(k.quanto.e)));
+ const no=KT.map(([kk])=>t(k[kk].n)).filter(Boolean);
+ const dist=KT.map(([kk])=>(k[kk].d||'').trim().replace(/\.$/,'')).filter(Boolean);
+ $('kt-out').innerHTML=pz.length?('<p style="margin:0 0 6px">Il problema: '+pz.join('; ')+'.</p>'+(no.length?'<p style="margin:0 0 6px">Non riguarda: '+esc(no.join('; '))+'.</p>':'')+(dist.length?'<p style="margin:0">Quindi: '+esc(dist.join('. '))+'.</p>':'')):'<p style="margin:0">Compila almeno la colonna «È» per comporre l’enunciato.</p>';
+}
+
+/* ---- 5 perché ---- */
+function renderPerche(){
+ $('pp-sint').value=S.perche.sint;$('pp-sint').oninput=e=>{S.perche.sint=e.target.value;salva();aggPerche();};
+ $('pp-cat').innerHTML=S.perche.cat.map((c,i)=>'<div class="anello"><span>Perché '+(i+1)+'</span><input type="text" id="pp-'+i+'" aria-label="Perché '+(i+1)+'" value="'+esc(c)+'"></div>').join('');
+ S.perche.cat.forEach((c,i)=>$('pp-'+i).oninput=e=>{S.perche.cat[i]=e.target.value;salva();aggPerche();});
+ aggPerche();
+}
+function aggPerche(){
+ const c=S.perche.cat.map(x=>x.trim());let ult=-1;c.forEach((x,i)=>{if(x)ult=i;});
+ const colpa=/colpa|ha sbagliato|non ha fatto|incapac/i;
+ if(ult<0){$('pp-out').innerHTML='Scrivi il primo perché.';return;}
+ let h='<strong>Causa su cui agire:</strong> '+esc(c[ult].replace(/^perch[ée]\s*/i,''))+(ult<4?' <span class="nota-piccola">('+(ult+1)+' passaggi: se puoi ancora chiedere perché, continua)</span>':'');
+ if(colpa.test(c[ult])) h+='<div class="nota-piccola" style="margin-top:6px">Questo anello indica una persona, non una causa. Chiedi ancora perché.</div>';
+ $('pp-out').innerHTML=h;
+}
+
+/* ---- Ishikawa ---- */
+function renderIsh(){
+ const f=$('fish');f.innerHTML='';
+ const aree=['a','b','c','d','f','g'];
+ FAM.forEach(([k,l],i)=>{
+  const box=document.createElement('div');box.className='q';box.style.gridArea=window.matchMedia('(min-width:860px)').matches?aree[i]:'auto';
+  box.innerHTML='<h4>'+l+'</h4>';const a=document.createElement('div');box.appendChild(a);f.appendChild(box);
+  lista(a,S.ishikawa[k],'Causa: '+l.toLowerCase(),{extra:{label:'→',title:'Porta nel Pareto',fn:(t,btn)=>{if(!S.pareto.righe.some(r=>r.nome===t)){S.pareto.righe.push({nome:t,val:0});salva();renderPareto();}btn.textContent='✓';}}});
+ });
+ const sp=document.createElement('div');sp.className='spina';f.appendChild(sp);
+ const ef=document.createElement('div');ef.className='effetto';ef.innerHTML='<textarea id="ish-eff" aria-label="Effetto">'+esc(S.ishikawa.effetto)+'</textarea>';f.appendChild(ef);
+ $('ish-eff').oninput=e=>{S.ishikawa.effetto=e.target.value;salva();};
+}
+window.addEventListener('resize',()=>{clearTimeout(window._ri);window._ri=setTimeout(()=>{const m=window.matchMedia('(min-width:860px)').matches;const aree=['a','b','c','d','f','g'];document.querySelectorAll('#fish > .q').forEach((b,i)=>b.style.gridArea=m?aree[i]:'auto');},150);});
+
+/* ---- Pareto ---- */
+function renderPareto(){
+ $('par-unita').value=S.pareto.unita;$('par-unita').oninput=e=>{S.pareto.unita=e.target.value;salva();aggPareto();};
+ const r=$('par-righe');r.innerHTML='';
+ S.pareto.righe.forEach((x,i)=>{
+  const d=document.createElement('div');d.className='riga-par';
+  d.innerHTML='<input type="text" aria-label="Causa" value="'+esc(x.nome)+'"><input type="text" inputmode="decimal" class="num" aria-label="Peso" value="'+(x.val||'')+'"><button class="min" type="button" aria-label="Togli">×</button>';
+  const [a,b]=d.querySelectorAll('input');
+  a.oninput=e=>{x.nome=e.target.value;salva();aggPareto();};
+  b.oninput=e=>{x.val=parseFloat(e.target.value.replace(',','.'))||0;salva();aggPareto();};
+  d.querySelector('button').onclick=()=>{S.pareto.righe.splice(i,1);salva();renderPareto();};
+  r.appendChild(d);
+ });
+ aggPareto();
+}
+function aggPareto(){
+ const rs=S.pareto.righe.filter(x=>x.val>0).slice().sort((a,b)=>b.val-a.val);
+ const tot=rs.reduce((s,x)=>s+x.val,0);
+ if(!rs.length||!tot){$('par-svg').innerHTML='';$('par-out').textContent='Dai un peso alle cause per vedere il grafico.';return;}
+ const W=460,H=250,ml=36,mr=36,mt=12,mb=70,n=rs.length,bw=(W-ml-mr)/n,max=rs[0].val;
+ let cum=0,pts=[],vit=0,s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramma di Pareto">';
+ s+='<line class="ax" x1="'+ml+'" y1="'+(H-mb)+'" x2="'+(W-mr)+'" y2="'+(H-mb)+'"/>';
+ const y80=mt+(H-mt-mb)*0.2;
+ s+='<line class="soglia" x1="'+ml+'" y1="'+y80+'" x2="'+(W-mr)+'" y2="'+y80+'"/><text x="'+(W-mr+4)+'" y="'+(y80+4)+'">80%</text>';
+ rs.forEach((x,i)=>{
+  const prima=cum/tot;cum+=x.val;const c=cum/tot;
+  const isV=prima<0.8; if(isV)vit++;
+  const h=(H-mt-mb)*x.val/max,xx=ml+i*bw+4;
+  s+='<rect class="bar'+(isV?' vit':'')+'" x="'+xx+'" y="'+(H-mb-h)+'" width="'+(bw-8)+'" height="'+h+'"><title>'+esc(x.nome)+': '+fmt(x.val)+'</title></rect>';
+  pts.push([ml+i*bw+bw/2,mt+(H-mt-mb)*(1-c)]);
+  const lab=x.nome.length>18?x.nome.slice(0,17)+'…':x.nome;
+  s+='<text transform="translate('+(ml+i*bw+bw/2)+','+(H-mb+10)+') rotate(35)" style="font-size:10px">'+esc(lab)+'</text>';
+ });
+ s+='<polyline class="cum" points="'+pts.map(p=>p.join(',')).join(' ')+'"/>';
+ pts.forEach(p=>s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3" fill="var(--crit)"/>');
+ s+='<text x="'+(ml-6)+'" y="'+(mt+8)+'" text-anchor="end">'+fmt(max)+'</text><text x="'+(ml-6)+'" y="'+(H-mb)+'" text-anchor="end">0</text></svg>';
+ $('par-svg').innerHTML=s;
+ const quota=rs.slice(0,vit).reduce((a,x)=>a+x.val,0)/tot;
+ $('par-out').textContent=vit+' cause su '+n+' spiegano '+(/^(8|11$)/.test(fmt(quota*100))?'l\u2019':'il ')+fmt(quota*100)+'% del totale ('+fmt(tot)+' '+(S.pareto.unita||'')+'). '+(vit<=n/2?'La concentrazione è forte: lì si agisce per primo.':'Il danno è distribuito: non c’è una leva sola.');
+}
+
+/* ---- Pre-mortem ---- */
+function renderPM(){
+ $('pm-piano').value=S.premortem.piano;$('pm-piano').oninput=e=>{S.premortem.piano=e.target.value;salva();};
+ lista($('pm-lista'),S.premortem.lista,'Motivo del fallimento',{extra:{label:'→ registro',title:'Porta nel registro dei rischi',fn:(t,btn)=>{if(!S.registro.some(r=>r.r===t)){S.registro.push({r:t,p:3,i:3,risp:'Trattare',az:'',al:''});salva();renderReg();}btn.textContent='✓ nel registro';}}});
+}
+
+/* ---- Registro ---- */
+function renderReg(){
+ const tb=$('reg-corpo');tb.innerHTML='';
+ if(!S.registro.length){tb.innerHTML='<tr><td colspan="8" class="nota-piccola">Nessun rischio. Aggiungine uno, o portalo dal pre-mortem.</td></tr>';$('reg-out').textContent='';return;}
+ S.registro.forEach((x,i)=>{
+  const tr=document.createElement('tr');
+  const sel=n=>'<select aria-label="'+n+'">'+[1,2,3,4,5].map(v=>'<option'+(x[n==='Probabilità'?'p':'i']==v?' selected':'')+'>'+v+'</option>').join('')+'</select>';
+  tr.innerHTML='<td class="w" data-l="Rischio"><input type="text" aria-label="Rischio" value="'+esc(x.r)+'"></td>'+
+   '<td data-l="Probabilità">'+sel('Probabilità')+'</td><td data-l="Impatto">'+sel('Impatto')+'</td>'+
+   '<td data-l="Punti"><div class="pun"></div></td>'+
+   '<td data-l="Risposta"><select aria-label="Risposta">'+RISP.map(r=>'<option'+(x.risp===r?' selected':'')+'>'+r+'</option>').join('')+'</select></td>'+
+   '<td class="w" data-l="Azione mitigante"><input type="text" aria-label="Azione mitigante" value="'+esc(x.az)+'"></td>'+
+   '<td class="w" data-l="Indicatore d’allarme"><input type="text" aria-label="Indicatore d’allarme" value="'+esc(x.al)+'"></td>'+
+   '<td><button class="min" type="button" aria-label="Togli rischio">×</button></td>';
+  const ins=tr.querySelectorAll('input'),ss=tr.querySelectorAll('select');
+  ins[0].oninput=e=>{x.r=e.target.value;salva();};ins[1].oninput=e=>{x.az=e.target.value;salva();aggReg();};ins[2].oninput=e=>{x.al=e.target.value;salva();aggReg();};
+  ss[0].onchange=e=>{x.p=+e.target.value;salva();aggReg();};ss[1].onchange=e=>{x.i=+e.target.value;salva();aggReg();};ss[2].onchange=e=>{x.risp=e.target.value;salva();};
+  tr.querySelector('button').onclick=()=>{S.registro.splice(i,1);salva();renderReg();};
+  tb.appendChild(tr);
+ });
+ aggReg();
+}
+function aggReg(){
+ const rows=$('reg-corpo').querySelectorAll('tr');let crit=0,senza=0;
+ S.registro.forEach((x,i)=>{const v=x.p*x.i,el=rows[i]&&rows[i].querySelector('.pun');if(!el)return;el.textContent=v;
+  const c=x.i>=5||v>=15;el.className='pun'+(c?' crit':v>=8?' med':'');if(c)crit++;if(!(x.al||'').trim())senza++;});
+ $('reg-out').textContent=crit+(crit===1?' rischio prioritario':' rischi prioritari')+'. '+(senza?senza+(senza===1?' rischio non ha':' rischi non hanno')+' un indicatore d’allarme: senza, te ne accorgerai solo quando sarà successo.':'Ogni rischio ha il suo indicatore d’allarme.');
+}
+
+/* ---- Bow-tie ---- */
+function renderBow(){
+ const b=$('bow');b.innerHTML='';
+ const col=(k,t,sub,cls)=>{const d=document.createElement('div');d.className='q '+cls;d.innerHTML='<h4>'+t+' <small>'+sub+'</small></h4>';const a=document.createElement('div');d.appendChild(a);b.appendChild(d);lista(a,S.bowtie[k],t);};
+ col('cause','Cause','prima','lato-c');col('prev','Barriere preventive','fermano le cause','lato-b');
+ const ev=document.createElement('div');ev.className='nodo-ev';ev.innerHTML='<textarea id="bow-ev" aria-label="Evento centrale">'+esc(S.bowtie.evento)+'</textarea>';b.appendChild(ev);
+ $('bow-ev').oninput=e=>{S.bowtie.evento=e.target.value;salva();};
+ col('rec','Barriere di recupero','limitano il danno','lato-r');col('conseg','Conseguenze','dopo','lato-c');
+}
+
+/* ---- Cruscotto ---- */
+function statoCr(x){
+ const v=x.serie[x.serie.length-1];if(v==null||isNaN(v))return['','—'];
+ const alto=x.verso==='alto';
+ if(alto?v<=x.rosso:v>=x.rosso)return['r','Allarme'];
+ if(alto?v<=x.giallo:v>=x.giallo)return['g','Attenzione'];
+ return['v','In regola'];
+}
+function tendenza(x){
+ const s=x.serie.map(Number);if(s.some(isNaN))return null;
+ const d1=s[3]-s[2],d0=s[2]-s[1],acc=d1-d0;const segno=x.verso==='alto'?1:-1;
+ return{vel:d1,acc,meglio:d1*segno>0,peggio:d1*segno<0,accel:acc*segno>0};
+}
+function spark(x){
+ const s=x.serie.map(Number),W=160,H=46,p=6,all=s.concat([x.giallo,x.rosso]).filter(v=>!isNaN(v));
+ const mn=Math.min(...all),mx=Math.max(...all),rg=(mx-mn)||1;
+ const X=i=>p+i*(W-2*p)/3,Y=v=>H-p-(v-mn)/rg*(H-2*p);
+ let svg='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Andamento di '+esc(x.nome)+'">';
+ svg+='<line x1="0" x2="'+W+'" y1="'+Y(x.rosso)+'" y2="'+Y(x.rosso)+'" stroke="var(--crit)" stroke-dasharray="3 3" stroke-width="1"/>';
+ svg+='<line x1="0" x2="'+W+'" y1="'+Y(x.giallo)+'" y2="'+Y(x.giallo)+'" stroke="var(--warn)" stroke-dasharray="3 3" stroke-width="1"/>';
+ if(!s.some(isNaN)){svg+='<polyline points="'+s.map((v,i)=>X(i)+','+Y(v)).join(' ')+'" fill="none" stroke="var(--petrol)" stroke-width="2"/>';
+  svg+='<circle cx="'+X(3)+'" cy="'+Y(s[3])+'" r="3.5" fill="var(--petrol)"/>';}
+ return svg+'</svg>';
+}
+function renderCr(){
+ const t=$('cr-tab');t.innerHTML='';
+ S.cruscotto.forEach((x,i)=>{
+  const d=document.createElement('div');d.className='cr-r';
+  d.innerHTML='<div class="nm"><input type="text" aria-label="Indicatore" value="'+esc(x.nome)+'"><div style="display:flex;gap:6px"><input type="text" aria-label="Unità" value="'+esc(x.unita)+'" style="width:70px"><select aria-label="Verso buono"><option value="alto"'+(x.verso==='alto'?' selected':'')+'>meglio se sale</option><option value="basso"'+(x.verso==='basso'?' selected':'')+'>meglio se scende</option></select><button class="min" type="button" aria-label="Togli indicatore">×</button></div></div>'+
+   '<div><div class="serie">'+x.serie.map((v,j)=>'<label>P'+(j+1)+'<input class="n" inputmode="decimal" type="text" data-j="'+j+'" value="'+(v==null?'':v)+'"></label>').join('')+'</div><div class="soglie" style="margin-top:6px"><label>Attenzione<input class="n" inputmode="decimal" type="text" data-s="giallo" value="'+x.giallo+'"></label><label>Allarme<input class="n" inputmode="decimal" type="text" data-s="rosso" value="'+x.rosso+'"></label></div></div>'+
+   '<div class="spark"></div><div class="stato-cr"></div>';
+  const ins=d.querySelectorAll('input');
+  ins[0].oninput=e=>{x.nome=e.target.value;salva();};ins[1].oninput=e=>{x.unita=e.target.value;salva();aggCr(d,x);};
+  d.querySelector('select').onchange=e=>{x.verso=e.target.value;salva();aggCr(d,x);};
+  d.querySelectorAll('[data-j]').forEach(el=>el.oninput=e=>{x.serie[+el.dataset.j]=parseFloat(e.target.value.replace(',','.'));salva();aggCr(d,x);});
+  d.querySelectorAll('[data-s]').forEach(el=>el.oninput=e=>{x[el.dataset.s]=parseFloat(e.target.value.replace(',','.'));salva();aggCr(d,x);});
+  d.querySelector('button').onclick=()=>{S.cruscotto.splice(i,1);salva();renderCr();};
+  t.appendChild(d);aggCr(d,x);
+ });
+}
+function aggCr(d,x){
+ d.querySelector('.spark').innerHTML=spark(x);
+ const [c,l]=statoCr(x),tz=tendenza(x);
+ let fr='<span class="freccia-t neutra">—</span>';
+ if(tz){const sim=tz.vel>0?'↗':tz.vel<0?'↘':'→';const cl=tz.meglio?'bene':tz.peggio?'male':'neutra';
+  const v=(tz.vel>0?'+':'')+fmt(tz.vel,Math.abs(tz.vel)<10?1:0)+' '+(x.unita||'');
+  const a=tz.vel===0?'ferma':tz.meglio?(tz.accel?'accelera':'rallenta'):(tz.accel?'rallenta il peggioramento':'peggiora più in fretta');
+  fr='<span class="freccia-t '+cl+'">'+sim+' '+esc(v)+'</span><span class="nota-piccola">'+a+'</span>';}
+ d.querySelector('.stato-cr').innerHTML=(c?'<span class="pill '+c+'">'+l+'</span>':'')+fr;
+}
+
+/* ---- PDCA ---- */
+function renderPDCA(){
+ const g=$('pdca-g');g.innerHTML='';
+ FASI.forEach(([k,n,it],fi)=>{
+  const col=document.createElement('div');col.className='pdca-col';col.innerHTML='<h4>'+n+' <small>'+it+'</small></h4>';
+  S.pdca.forEach((x,i)=>{if(x.f!==k)return;
+   const c=document.createElement('div');c.className='carta';
+   c.innerHTML='<input type="text" aria-label="Azione" value="'+esc(x.t)+'" style="font-weight:600"><input type="text" aria-label="Data di revisione" placeholder="Revisione (data)" value="'+esc(x.rev)+'"><input type="text" aria-label="Nota" placeholder="Che cosa abbiamo visto" value="'+esc(x.nota)+'">'+
+    '<div class="az">'+(fi>0?'<button class="sec" type="button" data-m="-1">← '+FASI[fi-1][1]+'</button>':'')+(fi<3?'<button class="sec" type="button" data-m="1">'+FASI[fi+1][1]+' →</button>':'<button class="sec" type="button" data-m="r">↺ di nuovo Plan</button>')+'<button class="min" type="button" aria-label="Togli azione">×</button></div>';
+   const ins=c.querySelectorAll('input');ins[0].oninput=e=>{x.t=e.target.value;salva();};ins[1].oninput=e=>{x.rev=e.target.value;salva();};ins[2].oninput=e=>{x.nota=e.target.value;salva();};
+   c.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const m=b.dataset.m;x.f=m==='r'?'P':FASI[fi+(+m)][0];salva();renderPDCA();});
+   c.querySelector('.min').onclick=()=>{S.pdca.splice(i,1);salva();renderPDCA();};
+   col.appendChild(c);});
+  g.appendChild(col);
+ });
+}
+
+/* ---- Bilancio ---- */
+function renderBil(){
+ const v=$('bil-voci');v.innerHTML='';
+ VOCI.forEach(([k,l])=>{
+  if(!l){const h=document.createElement('h4');h.textContent=k;v.appendChild(h);return;}
+  const lb=document.createElement('label');lb.innerHTML=esc(l)+'<input type="text" inputmode="decimal" id="bv-'+k+'" value="'+(S.bilancio.v[k]==null?'':S.bilancio.v[k])+'">';v.appendChild(lb);
+ });
+ VOCI.forEach(([k,l])=>{if(l)$('bv-'+k).oninput=e=>{const t=e.target.value.trim().replace(/\./g,'').replace(',','.');S.bilancio.v[k]=t===''?null:parseFloat(t);salva();aggBil();};});
+ $('bil-segnali').innerHTML=SEGN.map(([k,l])=>'<label><input type="checkbox" id="bs-'+k+'"'+(S.bilancio.s[k]?' checked':'')+'><span>'+esc(l)+'</span></label>').join('');
+ SEGN.forEach(([k])=>$('bs-'+k).onchange=e=>{S.bilancio.s[k]=e.target.checked;salva();aggBil();});
+ aggBil();
+}
+function calcBil(v){
+ const ok=(...a)=>a.every(x=>x!=null&&isFinite(x));const out=[];
+ const add=(nome,val,dec,st,frase,qual)=>out.push({nome,val,dec,st,frase,qual});
+ if(ok(v.flusso,v.servizio)&&v.servizio>0){const d=v.flusso/v.servizio;add('DSCR, copertura del debito a 12 mesi',d,2,d<1?'r':d<1.2?'g':'v',d<1?'Nei prossimi dodici mesi la cassa prevista non basta a pagare rate e interessi: è il primo fronte.':d<1.2?'La cassa copre il debito, ma con poco margine.':'La cassa prevista copre il servizio del debito con margine.','debito');}
+ if(ok(v.pfn,v.ebitda)&&v.ebitda>0){const d=v.pfn/v.ebitda;add('Debito finanziario netto su EBITDA',d,1,d>5?'r':d>3?'g':'v',d>5?'Servono più di cinque anni di margine lordo per ripagare il debito.':d>3?'Il debito è sostenibile ma pesante: fra tre e cinque anni di margine.':'Il debito è proporzionato a quello che l’azienda genera.','debito');}
+ if(ok(v.ebit,v.oneri)&&v.oneri>0){const d=v.ebit/v.oneri;add('Copertura degli oneri finanziari (EBIT su interessi)',d,1,d<1.5?'r':d<3?'g':'v',d<1.5?'Il risultato operativo copre a stento gli interessi.':d<3?'Gli interessi sono coperti, ma assorbono una parte importante del risultato.':'Gli interessi pesano poco sul risultato operativo.','redd');}
+ if(ok(v.crediti,v.ricavi)&&v.ricavi>0){const d=v.crediti/v.ricavi*365;add('Giorni medi d’incasso',d,0,d>90?'r':d>60?'g':'v',d>90?'I clienti pagano oltre i novanta giorni: la cassa fa da banca ai clienti.':d>60?'Tempi d’incasso nella media alta: da tenere d’occhio.':'I clienti pagano in tempi brevi.','circ');}
+ if(ok(v.pn,v.attivo)&&v.attivo>0){const d=v.pn/v.attivo*100;add('Patrimonio netto sul totale attivo',d,0,v.pn<=0?'r':d<15?'g':'v',v.pn<=0?'Il patrimonio netto è azzerato o negativo: va affrontato subito, anche per i suoi effetti di legge.':d<15?'Il capitale proprio è sottile rispetto a quanto l’azienda impiega.':'Il capitale proprio è solido: è una base da cui ripartire.','patr');}
+ if(ok(v.ccn,v.riserve,v.ebit,v.pn,v.attivo,v.passivo)&&v.attivo>0&&v.passivo>0){
+  const z=6.56*v.ccn/v.attivo+3.26*v.riserve/v.attivo+6.72*v.ebit/v.attivo+1.05*v.pn/v.passivo;
+  add('Z′′ di Altman (termometro, non sentenza)',z,2,z<1.1?'r':z<2.6?'g':'v',z<1.1?'Zona di difficoltà nel modello di Altman.':z<2.6?'Zona grigia: né sicura né compromessa. Non è un verdetto, è un invito a guardare i singoli indici.':'Zona sicura nel modello di Altman.','sint');}
+ return out;
+}
+function aggBil(){
+ const r=calcBil(S.bilancio.v);
+ $('bil-ind').innerHTML=r.length?r.map(x=>'<div class="ind"><span class="nome">'+esc(x.nome)+'</span><span><span class="val">'+fmt(x.val,x.dec)+'</span> <span class="pill '+x.st+'">'+(x.st==='r'?'oltre soglia':x.st==='g'?'attenzione':'regge')+'</span></span><span class="s">'+esc(x.frase)+'</span></div>').join(''):'<p class="nota-piccola">Inserisci le voci per vedere gli indici.</p>';
+ const seg=SEGN.filter(([k])=>S.bilancio.s[k]);
+ $('bil-allarme').innerHTML=seg.length?'<div class="allarme crit"><strong>Segnale d’allerta di legge.</strong> Con '+(seg.length===1?'questo segnale':'questi segnali')+' l’organo amministrativo deve attivarsi senza indugio: valutare la situazione, e se serve gli strumenti del Codice della crisi, come la composizione negoziata. Conviene parlarne subito con il commercialista.</div>':'';
+ const rossi=r.filter(x=>x.st==='r'),gialli=r.filter(x=>x.st==='g'),verdi=r.filter(x=>x.st==='v');
+ if(!r.length){$('bil-lettura').innerHTML='';return;}
+ const li=a=>a.length?'<ul>'+a.map(x=>'<li>'+esc(x.nome.split(' (')[0])+': '+fmt(x.val,x.dec)+'</li>').join('')+'</ul>':'<p class="nota-piccola" style="margin:4px 0 0">nessuno</p>';
+ $('bil-lettura').innerHTML='<div class="sub-r"><h4>Da affrontare subito</h4>'+li(rossi.filter(x=>x.qual!=='sint'))+'</div>'+
+  (gialli.filter(x=>x.qual!=='sint').length?'<div><h4 style="color:var(--warn)">Da tenere d’occhio</h4>'+li(gialli.filter(x=>x.qual!=='sint'))+'</div>':'')+
+  '<div class="sub-v"><h4>Che cosa regge</h4>'+li(verdi.filter(x=>x.qual!=='sint'))+'</div>'+
+  '<p class="nota-piccola" style="margin:0">'+(rossi.filter(x=>x.qual!=='sint').length?'Il quadro d’insieme conta meno del singolo indice oltre soglia: si parte da lì, e da ciò che regge si prendono le forze.':'Nessun indice oltre soglia. Il lavoro è di manutenzione, non di emergenza.')+'</p>';
+}
+
+/* ---- dati ---- */
+function aggExport(){$('json-out').value=JSON.stringify(Object.assign({formato:'riprendere-la-traiettoria',versione:1},S),null,2);}
+$('copia').onclick=()=>{const ta=$('json-out');const ok=()=>$('copia-stato').textContent='Copiato.';const fb=()=>{ta.focus();ta.select();$('copia-stato').textContent='Testo selezionato: copialo con Ctrl+C o Cmd+C.';};try{navigator.clipboard.writeText(ta.value).then(ok,fb);}catch(e){fb();}};
+$('carica').onclick=()=>{const st=$('carica-stato');st.className='stato';try{const d=JSON.parse($('json-in').value);if(!d||typeof d!=='object'||!d.kt)throw new Error('manca la sezione kt');delete d.formato;delete d.versione;S=completa(d);salva();tutto();st.textContent='Caricato.';$('json-in').value='';}catch(e){st.className='stato err';st.textContent='Non riesco a leggerlo: '+e.message+'. Incolla un JSON esportato da questa pagina.';}};
+$('esempio').onclick=()=>{S=clone(ESEMPIO);salva();tutto();$('reset-stato').textContent='Esempio ripristinato.';};
+let arm=null;$('svuota').onclick=()=>{const b=$('svuota');if(arm){clearTimeout(arm);arm=null;b.textContent='Svuota tutto';S=vuoto();salva();tutto();$('reset-stato').textContent='Tutto svuotato. «Ripristina l’esempio» lo riporta.';return;}b.textContent='Conferma: svuota';$('reset-stato').textContent='Premi di nuovo per cancellare tutti i dati.';arm=setTimeout(()=>{arm=null;b.textContent='Svuota tutto';$('reset-stato').textContent='';},4000);};
+$('par-add').onsubmit=e=>{e.preventDefault();const v=$('par-nuova').value.trim();if(!v)return;S.pareto.righe.push({nome:v,val:0});$('par-nuova').value='';salva();renderPareto();};
+$('reg-add').onsubmit=e=>{e.preventDefault();const v=$('reg-nuova').value.trim();if(!v)return;S.registro.push({r:v,p:3,i:3,risp:'Trattare',az:'',al:''});$('reg-nuova').value='';salva();renderReg();};
+$('cr-add').onsubmit=e=>{e.preventDefault();const v=$('cr-nuova').value.trim();if(!v)return;S.cruscotto.push({nome:v,unita:'',serie:[null,null,null,null],giallo:0,rosso:0,verso:'alto'});$('cr-nuova').value='';salva();renderCr();};
+$('pdca-add').onsubmit=e=>{e.preventDefault();const v=$('pdca-nuova').value.trim();if(!v)return;S.pdca.push({t:v,f:'P',rev:'',nota:''});$('pdca-nuova').value='';salva();renderPDCA();};
+$('caso').oninput=e=>{S.caso=e.target.value;salva();};
+function tutto(){$('caso').value=S.caso||'';renderKT();renderPerche();renderIsh();renderPareto();renderPM();renderReg();renderBow();renderCr();renderPDCA();renderBil();aggExport();}
+tutto();
+
+/* ---- ospitato in iframe ---- */
+if(window.parent!==window){
+ const invia=m=>{try{window.parent.postMessage(m,'*');}catch(e){}};
+ const alt=()=>invia({tipo:'traiettoria-altezza',h:document.documentElement.scrollHeight});
+ try{new ResizeObserver(alt).observe(document.body);}catch(e){}
+ window.addEventListener('load',alt);alt();
+ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.getElementById(a.getAttribute('href').slice(1));if(!t)return;e.preventDefault();invia({tipo:'traiettoria-vai',y:t.getBoundingClientRect().top+window.pageYOffset});}));
+}
+})();
+
+</script>
+
+</body>
+</html>
