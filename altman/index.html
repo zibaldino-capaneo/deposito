@@ -1,1 +1,942 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Il termometro di Altman">
+<meta property="og:description" content="Lo Z-score con i parametri a vista, più bilanci a confronto, e un banco per vedere che cosa fa un capannone a debito al punteggio prima di firmare. Lo Zibaldino.">
+<meta property="og:image" content="https://zibaldino-capaneo.github.io/deposito/altman/copertina.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<title>Il termometro di Altman</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+
+/* Layout: tavolo da disegno — indice a sinistra, schede di metodo con banco di prova sotto ciascuna */
+:root{
+  --paper:#eef1ef; --sheet:#fbfcfb; --ink:#17262b; --muted:#56686c; --rule:#cdd7d4;
+  --petrol:#1f5560; --petrol-soft:#dce8e9; --ochre:#9a6418; --ochre-soft:#f3e7d2;
+  --crit:#a93526; --crit-soft:#f5dcd7; --warn:#8a6a12; --warn-soft:#f4ecd0; --ok:#2c6a44; --ok-soft:#dbeedf;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-ui:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#101719; --sheet:#172124; --ink:#e2eae8; --muted:#94a7a7; --rule:#2b3a3d;
+  --petrol:#7cbcc6; --petrol-soft:#1d3238; --ochre:#dba556; --ochre-soft:#33291a;
+  --crit:#e8806f; --crit-soft:#3a201c; --warn:#d8b85a; --warn-soft:#332c16; --ok:#79c795; --ok-soft:#1a3123;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#101719; --sheet:#172124; --ink:#e2eae8; --muted:#94a7a7; --rule:#2b3a3d;
+  --petrol:#7cbcc6; --petrol-soft:#1d3238; --ochre:#dba556; --ochre-soft:#33291a;
+  --crit:#e8806f; --crit-soft:#3a201c; --warn:#d8b85a; --warn-soft:#332c16; --ok:#79c795; --ok-soft:#1a3123;
+  color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5}
+*,*::before,*::after{box-sizing:border-box}
+a{color:var(--petrol)}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* testata */
+.mast{display:grid;gap:14px;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);font-weight:600;margin:0}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:0;text-wrap:balance}
+.dek{font-family:var(--f-display);font-size:1.18rem;max-width:62ch;margin:0;color:var(--ink)}
+.caso{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:.9rem;color:var(--muted)}
+.caso input{flex:1 1 260px;max-width:440px}
+
+/* impianto */
+.layout{display:grid;gap:32px;margin-top:28px}
+@media (min-width:960px){.layout{grid-template-columns:200px minmax(0,1fr)}}
+nav.indice{padding-block:8px}
+nav.indice ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+nav.indice li{white-space:nowrap}
+nav.indice .grp{display:none}
+nav.indice a{display:block;text-decoration:none;color:var(--ink);font-size:.95rem;padding:5px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--sheet)}
+nav.indice a:hover{border-color:var(--petrol);color:var(--petrol)}
+@media (min-width:960px){
+  nav.indice{position:sticky;z-index:2;align-self:start;top:calc(env(safe-area-inset-top,0px) + 16px);padding:0}
+  nav.indice ol{flex-direction:column;flex-wrap:nowrap;gap:2px}
+  nav.indice li{white-space:normal}
+  nav.indice .grp{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+  nav.indice .grp:first-child{margin-top:0}
+  nav.indice a{border:0;background:none;padding:3px 0 3px 10px;border-left:2px solid transparent}
+  nav.indice a:hover{border-left-color:var(--ochre)}
+}
+main{min-width:0;display:grid;gap:56px}
+
+/* premessa */
+.premessa{display:grid;gap:18px}
+.premessa p{font-family:var(--f-display);font-size:1.06rem;max-width:66ch;margin:0}
+.premessa .principio{border-left:3px solid var(--ochre);padding:4px 0 4px 16px;font-style:italic}
+.mappa{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:12px}
+.mappa svg{display:block;width:100%;height:auto}
+.mappa .stretto{display:none;max-width:420px;margin:0 auto}
+@media (max-width:620px){.mappa .largo{display:none}.mappa .stretto{display:block}}
+.mappa .nodo rect{fill:var(--sheet);stroke:var(--petrol);stroke-width:1.4}
+.mappa .nodo text{fill:var(--ink);font-family:var(--f-ui);font-size:14px}
+.mappa .nodo .sub{fill:var(--muted);font-size:11px}
+.mappa .hub rect{fill:var(--petrol)}
+.mappa .hub text{fill:var(--sheet);font-weight:600;font-size:18px}
+.mappa .altra rect{stroke:var(--muted);stroke-dasharray:4 3}
+.mappa .freccia{stroke:var(--ochre);stroke-width:1.6;fill:none}
+.mappa .tenue{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.mappa .etic{fill:var(--ochre);font-family:var(--f-mono);font-size:12px}
+.mappa a:hover rect{stroke:var(--ochre)}
+
+/* sezioni metodo */
+section.metodo{display:grid;gap:18px;scroll-margin-top:72px}
+.fam{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);font-weight:600;margin:0}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.6rem,3.2vw,2.1rem);line-height:1.15;margin:2px 0 0;text-wrap:balance}
+h2 .sigla{display:block;font-family:var(--f-mono);font-size:.5em;font-weight:500;color:var(--muted);margin-top:4px;letter-spacing:.04em;line-height:1.4}
+.domanda{font-family:var(--f-display);font-style:italic;font-size:1.12rem;margin:6px 0 0;max-width:62ch}
+.scheda{display:grid;gap:14px 28px;margin:0}
+@media (min-width:720px){.scheda{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.scheda div{min-width:0}
+.scheda dt{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.scheda dd{margin:0;font-size:.95rem}
+.scheda ol{margin:0;padding-left:1.2em}
+.scheda li+li{margin-top:3px}
+
+.banco{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px;display:grid;gap:16px;min-width:0}
+.banco-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px}
+.banco-h h3{margin:0;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--petrol);font-weight:600}
+.banco-h p{margin:0;font-size:.85rem;color:var(--muted)}
+
+input[type=text],textarea,select{font:inherit;font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:6px 8px;width:100%}
+textarea{resize:vertical;min-height:64px;line-height:1.4}
+input[type=range]{width:100%;accent-color:var(--petrol)}
+button{font:inherit;font-size:.88rem;cursor:pointer;border-radius:3px;border:1px solid var(--petrol);background:var(--petrol);color:var(--sheet);padding:6px 12px;font-weight:600}
+button.sec{background:transparent;color:var(--petrol)}
+button.min{background:transparent;border-color:transparent;color:var(--muted);padding:2px 6px;font-weight:400}
+button.min:hover{color:var(--crit)}
+button:hover:not(.min){filter:brightness(1.08)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* liste a quadranti */
+.quad{display:grid;gap:12px}
+@media (min-width:640px){.quad{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.q{border:1px solid var(--rule);border-radius:3px;padding:12px;display:grid;gap:8px;align-content:start;min-width:0}
+.q h4{margin:0;font-size:.95rem;display:flex;justify-content:space-between;gap:8px}
+.q h4 small{font-weight:400;color:var(--muted);font-size:.78rem}
+.q.pos{border-top:3px solid var(--ok)}
+.q.neg{border-top:3px solid var(--crit)}
+.q.asp{border-top:3px solid var(--petrol)}
+ul.items{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+ul.items li{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;font-size:.93rem;padding:4px 0;border-bottom:1px dotted var(--rule)}
+ul.items li span{min-width:0;overflow-wrap:anywhere}
+.aggiungi{display:flex;gap:6px}
+.aggiungi input{flex:1;min-width:0}
+
+/* tabelle */
+.scorre{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--rule);font-size:.92rem}
+th{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tows{min-width:640px}
+.tows th ul{margin:4px 0 0;padding-left:1.1em;text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink);font-size:.85rem}
+.tows td textarea{min-height:90px}
+.tows .tag{font-family:var(--f-mono);color:var(--ochre);font-size:.8rem;display:block;margin-bottom:4px}
+
+/* PESTEL */
+.pestel-g{display:grid;gap:18px}
+@media (min-width:860px){.pestel-g{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}
+.fattore{display:grid;grid-template-columns:110px minmax(0,1fr);gap:6px 12px;padding:10px 0;border-bottom:1px solid var(--rule);align-items:center}
+.fattore .nome{font-weight:600}
+.fattore .cursori{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) 72px;gap:10px;align-items:center}
+.fattore label{font-size:.8rem;color:var(--muted);display:grid;gap:2px}
+.punteggio{font-family:var(--f-mono);text-align:right;font-size:1.05rem;padding:4px 6px;border-radius:3px}
+.punteggio.crit{background:var(--crit-soft);color:var(--crit);font-weight:500}
+.punteggio.med{background:var(--warn-soft);color:var(--warn)}
+.esito{display:grid;gap:12px;align-content:start}
+.indice-box{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.indice-box .grande{font-family:var(--f-mono);font-size:2.4rem;line-height:1}
+.indice-box .su{color:var(--muted)}
+.allarme{padding:10px 12px;border-radius:3px;font-size:.92rem}
+.allarme.crit{background:var(--crit-soft);color:var(--ink);border-left:3px solid var(--crit)}
+.allarme.ok{background:var(--ok-soft);border-left:3px solid var(--ok)}
+.matrice svg{width:100%;max-width:300px;height:auto;display:block}
+.matrice text{font-family:var(--f-ui);fill:var(--muted);font-size:10px}
+.matrice .lett{fill:var(--ink);font-family:var(--f-mono);font-size:11px;font-weight:500}
+.preset{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.soglia{display:flex;align-items:center;gap:8px;font-size:.88rem}
+.soglia input{width:140px}
+.nota-piccola{font-size:.85rem;color:var(--muted);margin:0;max-width:60ch}
+
+/* Porter */
+.porter-g{display:grid;gap:18px}
+@media (min-width:860px){.porter-g{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+.forza{display:grid;gap:6px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.forza .riga{display:grid;grid-template-columns:minmax(0,1fr) 120px 36px;gap:10px;align-items:center}
+.forza .riga strong{font-weight:600}
+.radar svg{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.radar .griglia{fill:none;stroke:var(--rule)}
+.radar .area{fill:var(--petrol);fill-opacity:.22;stroke:var(--petrol);stroke-width:2}
+.radar .area-forte{fill:var(--crit)}
+.radar text{font-family:var(--f-ui);font-size:11px;fill:var(--ink)}
+
+/* VRIO */
+.vrio{min-width:620px}
+.vrio td{vertical-align:middle}
+.vrio .chk{text-align:center}
+.vrio input[type=checkbox]{width:18px;height:18px;accent-color:var(--petrol)}
+.esito-v{font-size:.85rem;padding:3px 8px;border-radius:12px;white-space:nowrap;display:inline-block}
+.e0{background:var(--crit-soft);color:var(--crit)}
+.e1{background:var(--paper);color:var(--muted);border:1px solid var(--rule)}
+.e2{background:var(--warn-soft);color:var(--warn)}
+.e3{background:var(--ochre-soft);color:var(--ochre)}
+.e4{background:var(--ok-soft);color:var(--ok)}
+
+/* A'WOT */
+.awot-g{display:grid;gap:18px}
+@media (min-width:860px){.awot-g{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}}
+.coppia{display:grid;grid-template-columns:90px minmax(0,1fr) 90px;gap:10px;align-items:center;padding:6px 0}
+.coppia .sx{text-align:right}
+.coppia .leggi{grid-column:1/-1;text-align:center;font-size:.82rem;color:var(--muted);margin-top:-4px}
+.pesi{display:grid;gap:8px}
+.peso{display:grid;grid-template-columns:110px minmax(0,1fr) 52px;gap:8px;align-items:center;font-size:.92rem}
+.barra{height:14px;background:var(--paper);border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.barra i{display:block;height:100%;background:var(--petrol)}
+
+/* BMC */
+.bmc{display:grid;gap:8px}
+.bmc .blk{border:1px solid var(--rule);border-radius:3px;padding:8px;display:grid;gap:4px;align-content:start;min-width:0}
+.bmc .blk label{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.bmc .blk.cuore{border-color:var(--petrol);background:var(--petrol-soft)}
+.bmc textarea{min-height:90px;background:var(--sheet)}
+@media (min-width:860px){
+  .bmc{grid-template-columns:repeat(10,minmax(0,1fr));grid-template-areas:
+   "pa pa at at pv pv re re se se"
+   "pa pa ri ri pv pv ca ca se se"
+   "co co co co co rv rv rv rv rv"}
+  .bmc textarea{height:calc(100% - 22px)}
+}
+
+/* 4C */
+.c4{min-width:560px}
+.c4 td.freccia{color:var(--ochre);font-family:var(--f-mono);text-align:center;vertical-align:middle;width:30px}
+.c4 strong{display:block;font-size:.85rem;margin-bottom:4px}
+
+/* tabelle in colonna stretta */
+.vrio .mini{display:none}
+@media (max-width:760px){
+  .tows,.c4,.vrio{min-width:0}
+  .tows,.tows thead,.tows tbody,.tows tr,.tows th,.tows td{display:block;width:auto!important}
+  .tows thead th:first-child{display:none}
+  .tows th{border-bottom:0;padding:10px 0 2px}
+  .tows td{padding:6px 0 10px}
+  .c4,.c4 tbody,.c4 tr,.c4 td{display:block}
+  .c4 thead,.c4 td.freccia{display:none}
+  .c4 tr{border-bottom:1px solid var(--rule);padding-block:6px}
+  .c4 td{border:0;padding:4px 0}
+  .vrio,.vrio tbody{display:block}
+  .vrio thead{display:none}
+  .vrio tr{display:grid;grid-template-columns:repeat(4,auto) minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .vrio td{border:0;padding:0}
+  .vrio td:first-child{grid-column:1/-1}
+  .vrio .chk label{display:inline-flex;align-items:center;gap:4px}
+  .vrio .mini{display:inline;font-family:var(--f-mono);font-size:.82rem;color:var(--muted)}
+}
+
+/* dati */
+.dati-g{display:grid;gap:16px}
+@media (min-width:860px){.dati-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dati-g textarea{font-family:var(--f-mono);font-size:.78rem;min-height:220px}
+.azioni{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stato{font-size:.85rem;color:var(--muted)}
+.stato.err{color:var(--crit)}
+
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--muted);font-size:.85rem}
+footer .firma{font-family:var(--f-display);font-style:italic;color:var(--ink);font-size:1rem}
+.fonti{font-size:.85rem;color:var(--muted);max-width:80ch}
+.fonti p{margin:.3em 0}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+html{scroll-behavior:smooth}
+
+/* ===== aggiunte per Il termometro di Altman ===== */
+.anni{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.anni button{font-family:var(--f-mono);font-size:.85rem;padding:5px 11px}
+.anni button.on{background:var(--petrol);color:var(--sheet);border-color:var(--petrol)}
+.anni button.off{background:transparent;color:var(--petrol);border:1px solid var(--rule)}
+.voci{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+@media (min-width:860px){.voci{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.voci label{display:grid;gap:3px;font-size:.82rem;color:var(--muted);min-width:0}
+.voci input{font-family:var(--f-mono);width:100%}
+.voci h4{grid-column:1/-1;margin:8px 0 0;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--petrol)}
+.voci .quad-ok{grid-column:1/-1;font-size:.85rem}
+.quad-ok.male{color:var(--crit)}.quad-ok.bene{color:var(--ok)}
+.pan-g{display:grid;gap:16px}
+.grafico svg{width:100%;height:auto;display:block}
+.grafico text{font-family:var(--f-ui);fill:var(--ink);font-size:12px}
+.grafico .tit{font-weight:600;font-size:13px}
+.grafico .z-r{fill:var(--crit-soft)}.grafico .z-g{fill:var(--warn-soft)}.grafico .z-v{fill:var(--ok-soft)}
+.grafico .lin{fill:none;stroke:var(--petrol);stroke-width:2}
+.grafico .pt{fill:var(--petrol)}
+.grafico .pt.sel{fill:var(--ochre);stroke:var(--sheet);stroke-width:2}
+.grafico .sim{fill:none;stroke:var(--crit);stroke-width:2;stroke-dasharray:4 3}
+.grafico .pt-sim{fill:var(--crit)}
+.grafico .sog{stroke:var(--muted);stroke-dasharray:3 3;stroke-width:1}
+.grafico .lbl{fill:var(--muted);font-size:11px}
+.grafico .val{font-family:var(--f-mono);font-size:11px}
+table.pan,table.calc{min-width:560px}
+table.pan td,table.pan th,table.calc td,table.calc th{white-space:nowrap}
+table.pan td.n,table.calc td.n,table.pan th.n,table.calc th.n{text-align:right;font-family:var(--f-mono)}
+table.pan tr.gr td{font-weight:600;background:var(--petrol-soft)}
+table.pan td.lab,table.calc td.lab{white-space:normal;min-width:180px}
+table.calc .form{font-size:.8rem;color:var(--muted);display:block}
+table.calc tr.tot td{font-weight:600;border-top:2px solid var(--ink)}
+.fr{font-family:var(--f-mono);font-size:.8rem;margin-left:4px}
+.fr.bene{color:var(--ok)}.fr.male{color:var(--crit)}.fr.neutra{color:var(--muted)}
+.esito-r{display:grid;gap:8px}
+.esito-r .grande{font-family:var(--f-display);font-size:1.5rem;line-height:1.2}
+.esito-r .grande b{font-family:var(--f-mono);font-weight:500}
+.scala{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px;margin-top:4px}
+.scala span{font-size:.62rem;text-align:center;padding:3px 0;border-radius:2px;background:var(--rule);color:var(--muted);font-family:var(--f-mono);overflow:hidden}
+.scala span.r{background:var(--crit-soft);color:var(--crit)}
+.scala span.g{background:var(--warn-soft);color:var(--warn)}
+.scala span.v{background:var(--ok-soft);color:var(--ok)}
+.scala span.qui{outline:2px solid var(--ink);color:var(--ink);font-weight:600}
+@media (max-width:620px){.scala{grid-template-columns:repeat(10,minmax(0,1fr))}}
+.pill{display:inline-block;font-size:.8rem;padding:2px 9px;border-radius:12px;white-space:nowrap}
+.pill.r{background:var(--crit-soft);color:var(--crit)}
+.pill.g{background:var(--warn-soft);color:var(--warn)}
+.pill.v{background:var(--ok-soft);color:var(--ok)}
+.sim-g{display:grid;gap:18px}
+@media (min-width:900px){.sim-g{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}}
+.op{border:1px solid var(--rule);border-radius:3px;padding:10px 12px;display:grid;gap:8px;background:var(--paper)}
+.op.on{border-color:var(--petrol);background:var(--sheet)}
+.op-h{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;font-weight:600}
+.op-h input{width:18px;height:18px;accent-color:var(--petrol);margin-top:2px}
+.op-h small{display:block;font-weight:400;color:var(--muted);font-size:.82rem}
+.op-p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px}
+.op-p label{display:grid;gap:2px;font-size:.78rem;color:var(--muted)}
+.op-p input{font-family:var(--f-mono);padding:5px 6px;width:100%}
+.op:not(.on) .op-p{display:none}
+.sim-in{display:grid;gap:10px;align-content:start}
+.sim-out{display:grid;gap:14px;align-content:start;min-width:0}
+.conf{display:grid;gap:8px}
+.conf-r{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(3,minmax(0,1fr));gap:6px 10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--rule)}
+.conf-r.h{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-top:0}
+.conf-r .n{font-family:var(--f-mono);text-align:right}
+.conf-r .nm{font-weight:600}
+.conf-r .nm small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.lettura-sim{background:var(--ochre-soft);border-left:3px solid var(--ochre);padding:12px 14px;border-radius:3px;display:grid;gap:6px}
+.lettura-sim p{margin:0}
+.lettura-sim ul{margin:0;padding-left:1.1em}
+.avviso{background:var(--crit-soft);color:var(--crit);padding:8px 12px;border-radius:3px;font-size:.9rem}
+ul.limiti{margin:0;padding-left:1.1em;display:grid;gap:8px;max-width:75ch}
+.grafico .sim{fill:none;stroke:var(--crit);stroke-width:2;stroke-dasharray:5 4}
+table.pan tr.sim-gr td{background:var(--crit-soft);color:var(--crit)}
+
+figure.fig{margin:0;display:grid;gap:4px;min-width:0}
+figure.fig figcaption{font-size:.84rem;color:var(--muted);line-height:1.4}
+figure.fig figcaption b{display:block;color:var(--ink);font-size:.92rem}
+#pan-svg{display:grid;gap:14px}
+.mini-g#pan-svg{gap:16px 20px}
+p.leggi{margin:0 0 6px;font-size:.88rem;color:var(--muted);max-width:75ch}
+.mini-g figure.fig{grid-template-rows:1fr auto;align-items:start}
+
+.sigle{display:grid;gap:6px;margin-top:4px}
+.sigle-t{margin:0;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--petrol);font-weight:600}
+.sigle dl{margin:0;display:grid;gap:4px 18px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.sigle dl div{display:grid;grid-template-columns:4.5em minmax(0,1fr);gap:8px;font-size:.86rem;line-height:1.4}
+.sigle dt{font-weight:700;color:var(--ink);font-family:var(--f-mono);font-size:.82rem}
+.sigle dd{margin:0;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="mast">
+    <p class="eyebrow">Lo Zibaldino · strumenti</p>
+    <h1>Il termometro di Altman</h1>
+    <p class="dek">Lo Z-score legge in quattro rapporti di bilancio quanto un'impresa è vicina alla crisi. È un termometro, e anche un invito a non fare sciocchezze nel momento sbagliato. Qui i parametri restano a vista, si confrontano più anni, e si prova che cosa succede al punteggio prima di firmare un investimento.</p>
+    <div class="caso"><label for="caso">Caso in esame</label><input type="text" id="caso"></div>
+  </header>
+
+  <div class="layout">
+    <nav class="indice" aria-label="Indice">
+      <ol>
+        <li class="grp">Premessa</li>
+        <li><a href="#premessa">Il termometro</a></li>
+        <li class="grp">I dati</li>
+        <li><a href="#bilanci">I tuoi bilanci</a></li>
+        <li><a href="#panorama">Panorama</a></li>
+        <li class="grp">I modelli</li>
+        <li><a href="#zpp">Z′′ e rating</a></li>
+        <li><a href="#italia">Modello per le PMI</a></li>
+        <li><a href="#mcc">Fondo di garanzia</a></li>
+        <li class="grp">Prima di firmare</li>
+        <li><a href="#ese">E se…</a></li>
+        <li class="grp">Strumenti</li>
+        <li><a href="#limiti">I limiti</a></li>
+        <li><a href="#dati">I tuoi dati</a></li>
+      </ol>
+    </nav>
+
+    <main>
+      <section class="premessa metodo" id="premessa">
+        <div><p class="fam">Premessa</p><h2>Un termometro, non un vaticinio</h2></div>
+        <p>Nel 1968 Edward Altman confrontò 66 imprese manifatturiere americane, metà fallite e metà sane, e trovò che cinque rapporti di bilancio, pesati in un'unica formula, le separavano con sorprendente precisione. Nel 1995 ne derivò una versione a quattro rapporti, lo Z′′, adatta alle imprese non quotate e non manifatturiere: è quella che si usa per le piccole e medie imprese italiane.</p>
+        <p>Nel 2013, con Alessandro Danovi dell'Università di Bergamo e Alberto Falini dell'Università di Brescia, Altman l'ha provata sulle imprese italiane finite in amministrazione straordinaria fra il 2000 e il 2010. Un anno prima del dissesto, quasi tutte erano già nella zona di difficoltà. Ma Parmalat, due anni prima del crollo, risultava in zona sicura: il termometro misura il bilancio, non la verità del bilancio.</p>
+        <p class="principio">Il punteggio è utile soprattutto in due modi: per vedere da dove viene la febbre, rapporto per rapporto, e per sapere prima che cosa farà un investimento al proprio bilancio. Un capannone nuovo comprato a debito nell'anno sbagliato può far perdere a un'impresa più classi di rating senza che abbia venduto un pezzo in meno.</p>
+        <p>Lo scopo della pagina è ragionare sugli effetti di azioni possibili prima di compierle. Il capannone è il primo caso; seguono il dividendo straordinario, l'aumento di capitale, l'incasso dei crediti, il consolidamento del debito. Il termometro non predice niente: mostra quale rapporto si muove, di quanto e perché.</p>
+        <p>Anche i riferimenti sono scelti con uno sforzo preciso: sono stratificati nel tempo e non necessariamente aggiornati. Lo Z del 1968, lo Z′′ del 1995, la prova sulle imprese italiane del 2013, uno schema del Fondo di garanzia superato nel 2019. Servono a prendere dimestichezza con uno strumento, con le sue impostazioni e con la sua natura empirica, riconosciuta fin dall'origine: i pesi sono stimati su un campione di imprese, in un certo periodo. Una stima che partisse oggi con lo stesso schema porterebbe di sicuro a esiti in parte diversi. Sul piano concettuale non è invalidante, perché il ragionamento resta quello. Lo diventa se si passano al vaglio i bilanci di oggi pensando di ottenere il risultato omologo a quello di allora.</p>
+      </section>
+
+      <section class="metodo" id="bilanci">
+        <div><p class="fam">I dati</p><h2>I tuoi bilanci</h2><p class="domanda">Le voci che servono, anno per anno, in migliaia di euro.</p></div>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>Scegli l'anno da compilare; i calcoli si aggiornano subito.</p></div>
+          <div class="anni" id="anni-tab"></div>
+          <div class="voci" id="voci"></div>
+          <p class="nota-piccola">Le attività correnti comprendono rimanenze, crediti a breve e liquidità. «Riserve di utili» è la somma degli utili non distribuiti accumulati (riserva legale, straordinaria, utili portati a nuovo): non l'utile dell'anno. «Debiti totali» è il totale dei debiti, senza il patrimonio netto.</p>
+          <div class="sigle"><p class="sigle-t">Le sigle</p><dl><div><dt>MOL</dt><dd>Margine operativo lordo, i ricavi meno i costi operativi prima di ammortamenti e accantonamenti.</dd></div><div><dt>EBIT</dt><dd>Risultato operativo, dall'inglese <i>earnings before interest and taxes</i>, utile prima di interessi e imposte.</dd></div><div><dt>TFR</dt><dd>Trattamento di fine rapporto.</dd></div><div><dt>PMI</dt><dd>Piccole e medie imprese.</dd></div><div><dt>k€</dt><dd>Migliaia di euro.</dd></div></dl></div>
+        </div>
+      </section>
+
+      <section class="metodo" id="panorama">
+        <div><p class="fam">I dati</p><h2>Panorama</h2><p class="domanda">Dove sta l'impresa, anno per anno, per ciascuno dei tre modelli?</p></div>
+        <div class="banco">
+          <div class="pan-g">
+            <p class="leggi">Come si leggono le strisce: la linea continua è il bilancio, anno per anno; la tratteggiata rossa è lo stesso anno con l'operazione di «E se…». Le fasce colorate sono le zone del modello; il punto pieno arancione è l'anno in esame.</p>
+            <div class="grafico" id="pan-svg"></div>
+            <div class="scorre"><table class="pan" id="pan-tab"></table></div>
+          </div>
+          <p class="nota-piccola" id="pan-out"></p>
+        </div>
+      </section>
+
+      <section class="metodo" id="zpp">
+        <div><p class="fam">I modelli</p><h2>Z′′ di Altman e rating equivalente <span class="sigla">Altman 1995 · imprese non quotate</span></h2><p class="domanda">Quanto pesa ogni rapporto, e quale fa scendere il punteggio?</p></div>
+        <dl class="scheda">
+          <div><dt>Formula</dt><dd>Z′′ = 6,56·X1 + 3,26·X2 + 6,72·X3 + 1,05·X4. Per la corrispondenza con i rating si aggiunge la costante 3,25 (punteggio per i mercati emergenti, EM).</dd></div>
+          <div><dt>Fasce</dt><dd>Z′′ sotto 1,10: difficoltà. Fra 1,10 e 2,60: zona grigia. Sopra 2,60: zona sicura. Con la costante, sopra 8,15 si è in AAA, sotto 1,75 in D.</dd></div>
+          <div><dt>Attenzione</dt><dd>La tabella dei rating vale per lo Z′′ <i>più</i> 3,25. Confrontare lo Z′′ senza costante con quella tabella abbassa il giudizio di molte classi.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Il calcolo per esteso</h3><p id="zpp-anno"></p></div>
+          <div class="scorre"><table class="calc" id="zpp-tab"></table></div>
+          <div class="esito-r" id="zpp-out"></div>
+        </div>
+      </section>
+
+      <section class="metodo" id="italia">
+        <div><p class="fam">I modelli</p><h2>Il modello ripensato per le PMI manifatturiere <span class="sigla">cinque rapporti · soglie 4,846 e 8,105</span></h2><p class="domanda">Che cosa dice una versione tarata sulle piccole imprese italiane?</p></div>
+        <dl class="scheda">
+          <div><dt>Formula</dt><dd>Z = 1,981·X1 + 9,841·X2 + 1,951·X3 + 3,206·X4 + 4,037·X5, con i denominatori ridefiniti sulle voci dell'attivo. Le sigle della formula: <b>AC</b> attività correnti, <b>PC</b> passività correnti, <b>AM</b> immobilizzazioni materiali, <b>AI</b> immobilizzazioni immateriali, <b>RF</b> rimanenze finali, <b>DL</b> disponibilità liquide, <b>RL</b> riserva legale, <b>RS</b> riserva straordinaria, <b>TA</b> totale attivo, <b>UON</b> utile operativo netto, <b>PN</b> patrimonio netto, <b>TP</b> totale passività, <b>RV</b> ricavi di vendita.</dd></div>
+          <div><dt>Fasce</dt><dd>Sopra 8,105: struttura sana. Sotto 4,846: crisi, a meno di modificare pesantemente la struttura. In mezzo: gestione da tenere sotto cautela.</dd></div>
+          <div><dt>Attenzione</dt><dd>Lo conosciamo da fonti secondarie e non abbiamo ritrovato lo studio originale. I denominatori sommano attività correnti, rimanenze e liquidità: se le attività correnti le comprendono già, alcune voci pesano due volte. Usalo come confronto, non come riferimento.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Il calcolo per esteso</h3><p id="it-anno"></p></div>
+          <div class="scorre"><table class="calc" id="it-tab"></table></div>
+          <div class="esito-r" id="it-out"></div>
+        </div>
+      </section>
+
+      <section class="metodo" id="mcc">
+        <div><p class="fam">I modelli</p><h2>Il vecchio punteggio del Fondo di garanzia <span class="sigla">Medio Credito Centrale · settore industria</span></h2><p class="domanda">Come guardava una banca pubblica gli stessi numeri?</p></div>
+        <dl class="scheda">
+          <div><dt>Come funziona</dt><dd>Quattro indici, ciascuno da 0 a 3 punti. Il totale (da 0 a 12) dà un livello: A da 9 in su, B con 7 o 8, C fino a 6. I livelli degli ultimi due anni danno la fascia.</dd></div>
+          <div><dt>Le fasce</dt><dd>Fascia 1, proposta positiva: livello A nell'ultimo anno, A o B in quello prima. Fascia 3, proposta negativa: livello C nell'ultimo anno, B o C in quello prima. Tutti gli altri casi sono in fascia 2: servono altri elementi.</dd></div>
+          <div><dt>Attenzione</dt><dd>È lo schema usato prima della riforma del 2019, che ha introdotto un modello di rating diverso. Qui serve come secondo sguardo, più semplice: guarda la copertura delle immobilizzazioni e degli interessi, non solo il patrimonio.</dd></div>
+        </dl>
+        <div class="banco">
+          <div class="banco-h"><h3>Il calcolo per esteso</h3><p id="mcc-anno"></p></div>
+          <div class="scorre"><table class="calc" id="mcc-tab"></table></div>
+          <div class="esito-r" id="mcc-out"></div>
+        </div>
+      </section>
+
+      <section class="metodo" id="ese">
+        <div><p class="fam">Prima di firmare</p><h2>E se…</h2><p class="domanda">Che cosa farebbe questa operazione al mio punteggio, nell'anno in esame?</p></div>
+        <div class="banco">
+          <div class="banco-h"><h3>Banco di prova</h3><p>L'operazione si applica all'anno in esame; nel panorama, a ciascun anno, per vedere che cosa farebbe in un altro momento.</p></div>
+          <div class="sim-g">
+            <div class="sim-in" id="sim-in"></div>
+            <div class="sim-out" id="sim-out"></div>
+          </div>
+          <p class="nota-piccola">I conti sono al lordo delle imposte: ammortamento, interessi e margine in più passano interi su risultato e riserve. Il debito del capannone si rimborsa in rate costanti; la prima rata è fra i debiti entro 12 mesi.</p>
+        </div>
+      </section>
+
+      <section class="metodo" id="limiti">
+        <div><p class="fam">Strumenti</p><h2>I limiti, detti in chiaro</h2></div>
+        <ul class="limiti">
+          <li><strong>Misura il bilancio, non la realtà.</strong> Un bilancio abbellito dà un buon punteggio: Parmalat era in zona sicura due anni prima del crollo.</li>
+          <li><strong>È stimato su altre imprese.</strong> Lo Z′′ viene da imprese americane; lo studio italiano lo ha provato a posteriori, su imprese grandi di cui si sapeva già che erano fallite.</li>
+          <li><strong>Arriva tardi.</strong> Un bilancio si deposita mesi dopo la chiusura: il termometro misura la febbre di ieri.</li>
+          <li><strong>Non vede la cassa.</strong> Incassare un credito arretrato salva la tesoreria e non sposta il punteggio di un decimale. Per la cassa servono altri strumenti, come la copertura del debito a dodici mesi.</li>
+        </ul>
+      </section>
+
+      <section class="metodo" id="dati">
+        <div><p class="fam">Strumenti</p><h2>I tuoi dati</h2><p class="domanda">Bilanci e simulazione stanno in un unico file JSON.</p></div>
+        <div class="banco">
+          <div class="dati-g">
+            <div style="display:grid;gap:8px;min-width:0">
+              <label for="json-out"><strong>Esporta</strong> · copia il testo e salvalo come file .json</label>
+              <textarea id="json-out" readonly></textarea>
+              <div class="azioni"><button id="copia">Copia il JSON</button><span class="stato" id="copia-stato" aria-live="polite"></span></div>
+            </div>
+            <div style="display:grid;gap:8px;min-width:0">
+              <label for="json-in"><strong>Importa</strong> · incolla un JSON esportato in precedenza</label>
+              <textarea id="json-in" placeholder='{ "caso": "…", "anni": [ … ] }'></textarea>
+              <div class="azioni"><button id="carica">Carica</button><span class="stato" id="carica-stato" aria-live="polite"></span></div>
+            </div>
+          </div>
+          <div class="azioni"><button class="sec" id="esempio">Ripristina l'esempio</button><button class="sec" id="svuota">Svuota tutto</button><span class="stato" id="reset-stato" aria-live="polite"></span></div>
+          <p class="nota-piccola">I dati si salvano solo in questo browser. L'esempio è un pastificio immaginario; le cifre sono inventate. Lo stesso file si carica nella pagina gemella, <a href="https://zibaldino-capaneo.github.io/deposito/spie/">Le spie della crisi</a>, che guarda la cassa e i segnali di legge.</p>
+        </div>
+        <div class="fonti">
+          <p>Riferimenti: Altman 1968; Altman, Hartzell e Peck 1995 (Z′′ e punteggio per i mercati emergenti); Altman e Hotchkiss 2005 (tabella dei rating equivalenti); Altman, Danovi e Falini 2013 (imprese italiane in amministrazione straordinaria); schema di valutazione del Fondo di garanzia per le PMI precedente al 2019.</p>
+          <p>Strumento di avvicinamento, non valutazione del merito di credito.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <footer><span class="firma">Paolo Carena &amp; Claude</span><span>Lo Zibaldino · ottobre 2026</span></footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY='termometro-altman-v2';
+const FORMATO='termometro-di-altman';
+const clone=o=>JSON.parse(JSON.stringify(o));
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(n,d)=>(n==null||!isFinite(n))?'—':n.toLocaleString('it-IT',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});
+const pct=(n,d)=>(n==null||!isFinite(n))?'—':fmt(n*100,d==null?1:d)+'%';
+const num=v=>{if(v===''||v==null)return null;if(typeof v==='number')return isFinite(v)?v:null;let t=String(v).trim().replace(/\s/g,'');if(t==='')return null;
+ if(t.includes(','))t=t.replace(/\./g,'').replace(',','.');else if(/^-?\d{1,3}(\.\d{3})+$/.test(t))t=t.replace(/\./g,'');
+ const n=Number(t);return isFinite(n)?n:null;};
+const low=t=>/^[A-Z]{2}/.test(t)?t:t.charAt(0).toLowerCase()+t.slice(1);
+const div=(a,b)=>(a==null||b==null||b===0)?null:a/b;
+
+const VOCI=[
+ ['Conto economico',null],
+ ['ricavi','Ricavi delle vendite'],['mol','Margine operativo lordo (MOL)'],['ebit','Risultato operativo (EBIT, prima di interessi e imposte)'],['oneri','Oneri finanziari'],
+ ['Attivo',null],
+ ['imm_imm','Immobilizzazioni immateriali'],['imm_mat','Immobilizzazioni materiali'],['imm_fin','Immobilizzazioni finanziarie'],['att_correnti','Attività correnti (totale)'],['rimanenze','di cui rimanenze'],['liquidita','di cui liquidità'],['attivo','Totale attivo'],
+ ['Passivo',null],
+ ['pn','Patrimonio netto'],['riserve','di cui riserve di utili'],['pass_correnti','Debiti entro 12 mesi'],['debiti_mlt','Debiti oltre 12 mesi'],['debiti_tot','Debiti totali (con fondi e TFR)']
+];
+const CAMPI=VOCI.filter(v=>v[1]).map(v=>v[0]);
+
+/* ---- tabella dei rating equivalenti per il punteggio EM (Z'' + 3,25) ---- */
+const RATING=[[8.15,'AAA'],[7.60,'AA+'],[7.30,'AA'],[7.00,'AA-'],[6.85,'A+'],[6.65,'A'],[6.40,'A-'],[6.25,'BBB+'],[5.85,'BBB'],[5.65,'BBB-'],[5.25,'BB+'],[4.95,'BB'],[4.75,'BB-'],[4.50,'B+'],[4.15,'B'],[3.75,'B-'],[3.20,'CCC+'],[2.50,'CCC'],[1.75,'CCC-'],[-Infinity,'D']];
+const rating=em=>{if(em==null)return null;for(const [s,r] of RATING)if(em>=s)return r;return 'D';};
+const RORD=RATING.map(r=>r[1]).reverse(); /* D … AAA */
+const classeR=r=>{const i=RORD.indexOf(r);return i<0?'':(i>=RORD.indexOf('BBB-')?'v':i>=RORD.indexOf('B-')?'g':'r');};
+
+/* ---- i tre modelli ---- */
+function zpp(d){
+ const TA=d.attivo;
+ const X=[
+  {k:'X1',nome:'Capitale circolante netto / totale attivo',form:'(attività correnti − debiti entro 12 mesi) / totale attivo',num:d.att_correnti-d.pass_correnti,den:TA,c:6.56},
+  {k:'X2',nome:'Riserve di utili / totale attivo',form:'utili accumulati e non distribuiti / totale attivo',num:d.riserve,den:TA,c:3.26},
+  {k:'X3',nome:'EBIT / totale attivo',form:'risultato operativo / totale attivo',num:d.ebit,den:TA,c:6.72},
+  {k:'X4',nome:'Patrimonio netto / debiti totali',form:'mezzi propri / mezzi di terzi',num:d.pn,den:d.debiti_tot,c:1.05}
+ ];
+ let z=0,ok=true;
+ X.forEach(x=>{x.v=div(x.num,x.den);x.p=x.v==null?null:x.v*x.c;if(x.p==null)ok=false;else z+=x.p;});
+ if(!ok)return {X,z:null,em:null,r:null,zona:null};
+ const em=z+3.25;
+ return {X,z,em,r:rating(em),zona:z<1.1?'r':z<2.6?'g':'v'};
+}
+function ita(d){
+ const D5=d.imm_mat+d.imm_imm+d.rimanenze+d.att_correnti+d.liquidita;
+ const D4=d.imm_mat+d.imm_imm+d.rimanenze+d.att_correnti;
+ const X=[
+  {k:'X1',nome:'Circolante netto sull\'attivo ricalcolato',form:'(AC − PC) / (AM + AI + RF + AC + DL)',num:d.att_correnti-d.pass_correnti,den:D5,c:1.981},
+  {k:'X2',nome:'Riserve di utili / totale attivo',form:'(riserva legale + straordinaria) / TA',num:d.riserve,den:d.attivo,c:9.841},
+  {k:'X3',nome:'Utile operativo sull\'attivo ricalcolato',form:'UON / (AM + AI + RF + AC)',num:d.ebit,den:D4,c:1.951},
+  {k:'X4',nome:'Patrimonio netto / debiti totali',form:'PN / TP',num:d.pn,den:d.debiti_tot,c:3.206},
+  {k:'X5',nome:'Ricavi sull\'attivo ricalcolato',form:'RV / (AM + AI + RF + AC + DL)',num:d.ricavi,den:D5,c:4.037}
+ ];
+ let z=0,ok=true;
+ X.forEach(x=>{x.v=div(x.num,x.den);x.p=x.v==null?null:x.v*x.c;if(x.p==null)ok=false;else z+=x.p;});
+ if(!ok)return {X,z:null,zona:null};
+ return {X,z,zona:z<4.846?'r':z<8.105?'g':'v'};
+}
+function mcc(d){
+ const imm=d.imm_mat+d.imm_imm+d.imm_fin;
+ const I=[
+  {k:'A',nome:'Copertura delle immobilizzazioni',form:'(patrimonio netto + debiti oltre 12 mesi) / immobilizzazioni',v:div(d.pn+d.debiti_mlt,imm),soglie:[[1,3],[0.5,2],[0,1]],perc:true,fasce:'≥100% → 3 · 50-100% → 2 · 0-50% → 1 · ≤0 → 0'},
+  {k:'B',nome:'Indipendenza finanziaria',form:'patrimonio netto / totale passivo',v:div(d.pn,d.attivo),soglie:[[0.10,3],[0.06,2],[0,1]],perc:true,fasce:'≥10% → 3 · 6-10% → 2 · 0-6% → 1 · ≤0 → 0'},
+  {k:'C',nome:'Copertura degli oneri finanziari',form:'MOL / oneri finanziari',v:d.oneri>0?div(d.mol,d.oneri):(d.mol>0?Infinity:null),soglie:[[2,3],[1.5,2],[1,1]],perc:false,fasce:'≥2 → 3 · 1,5-2 → 2 · 1-1,5 → 1 · <1 → 0'},
+  {k:'D',nome:'Redditività delle vendite',form:'MOL / ricavi',v:div(d.mol,d.ricavi),soglie:[[0.08,3],[0.05,2],[0.03,1]],perc:true,fasce:'≥8% → 3 · 5-8% → 2 · 3-5% → 1 · <3% → 0'}
+ ];
+ let tot=0,ok=true;
+ I.forEach(x=>{
+  if(x.v==null){x.p=null;ok=false;return;}
+  x.p=0;
+  for(const [s,p] of x.soglie){ if(x.k==='A'||x.k==='B'){ if(s===0? x.v>0 : x.v>=s){x.p=p;break;} } else if(x.v>=s){x.p=p;break;} }
+  tot+=x.p;
+ });
+ if(!ok)return {I,tot:null,liv:null};
+ return {I,tot,liv:tot>=9?'A':tot>=7?'B':'C'};
+}
+/* chiave: livello dell'anno precedente + livello dell'anno in esame, come nella tabella del Fondo */
+const FASCIA={AA:1,BA:1,AB:2,BB:2,CB:2,CA:2,AC:2,BC:3,CC:3};
+const fascia=(prec,att)=>(prec&&att)?FASCIA[prec+att]||null:null;
+
+/* ---- esempio dichiarato ---- */
+function anno(a,v){const o={anno:a};CAMPI.forEach((k,i)=>o[k]=v[i]);return o;}
+const ESEMPIO={
+ caso:'Pastificio di provincia (esempio con cifre inventate)',
+ sel:3,
+ anni:[
+  anno(2022,[5200,620,380,60, 100,1500,50,3150,800,450,4800, 1850,1150,1900,950,2950]),
+  anno(2023,[5600,660,410,70, 100,1550,50,3400,850,420,5100, 1980,1280,2050,970,3120]),
+  anno(2024,[5300,470,250,90,  90,1600,50,3560,950,300,5300, 2030,1330,2380,790,3270]),
+  anno(2025,[5000,380,170,110, 80,1650,50,3620,1000,220,5400, 2040,1340,2620,640,3360])
+ ],
+ sim:{
+  cap:{on:true,importo:1200,mol_extra:0,debito:90,tasso:5,amm:20,mutuo:15},
+  div:{on:false,v:300},
+  aum:{on:false,v:500},
+  inc:{on:false,v:400},
+  cons:{on:false,v:600}
+ }
+};
+const vuoto=()=>({caso:'',sel:0,anni:[anno(new Date().getFullYear()-1,CAMPI.map(()=>null))],sim:clone(ESEMPIO.sim)});
+
+function completa(d){
+ const b=clone(ESEMPIO);
+ const o=Object.assign({},d);
+ if(!Array.isArray(o.anni)||!o.anni.length)o.anni=b.anni;
+ o.anni=o.anni.slice(0,6).map(a=>{const x=Object.assign({},a);x.anno=a&&a.anno!=null?a.anno:'';CAMPI.forEach(k=>{x[k]=num(a?a[k]:null);});return x;});
+ o.sim=Object.assign({},b.sim,o.sim||{});
+ for(const k of Object.keys(b.sim))o.sim[k]=Object.assign({},b.sim[k],o.sim[k]||{});
+ o.sel=Math.min(Math.max(0,parseInt(o.sel,10)||0),o.anni.length-1);
+ if(typeof o.caso!=='string')o.caso='';
+ return o;
+}
+let S;
+try{const r=localStorage.getItem(KEY);S=r?completa(JSON.parse(r)):clone(ESEMPIO);}catch(e){S=clone(ESEMPIO);}
+const salva=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}aggExport();};
+const pieno=d=>CAMPI.every(k=>d[k]!=null);
+const nomeAnno=i=>S.anni[i]&&S.anni[i].anno!==''?String(S.anni[i].anno):'anno '+(i+1);
+
+/* ---- bilanci ---- */
+function renderAnni(){
+ const h=S.anni.map((a,i)=>`<button type="button" class="${i===S.sel?'on':'off'}" data-i="${i}">${esc(nomeAnno(i))}</button>`).join('')
+  +(S.anni.length<6?'<button type="button" class="sec" id="anno-add">+ anno</button>':'')
+  +(S.anni.length>1?'<button type="button" class="min" id="anno-del">togli l\'anno scelto</button>':'');
+ $('anni-tab').innerHTML=h;
+ $('anni-tab').querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{S.sel=+b.dataset.i;salva();tutto();});
+ const add=$('anno-add');if(add)add.onclick=()=>{const u=S.anni[S.anni.length-1];const n=clone(u);n.anno=(Number(u.anno)||new Date().getFullYear())+1;S.anni.push(n);S.sel=S.anni.length-1;salva();tutto();};
+ const del=$('anno-del');if(del)del.onclick=()=>{S.anni.splice(S.sel,1);S.sel=Math.max(0,S.sel-1);salva();tutto();};
+}
+function renderVoci(){
+ const d=S.anni[S.sel];
+ let h=`<label>Anno<input type="text" inputmode="numeric" data-k="anno" value="${esc(d.anno)}"></label><span></span>`;
+ VOCI.forEach(([k,l])=>{
+  if(!l){h+=`<h4>${esc(k)}</h4>`;return;}
+  h+=`<label>${esc(l)}<input type="text" inputmode="decimal" data-k="${k}" value="${d[k]==null?'':esc(fmt(d[k]))}"></label>`;
+ });
+ h+='<p class="quad-ok" id="quad"></p>';
+ $('voci').innerHTML=h;
+ $('voci').querySelectorAll('input').forEach(inp=>{
+  inp.oninput=()=>{const k=inp.dataset.k;if(k==='anno'){d.anno=inp.value.trim();salva();renderAnni();calcoli();return;}d[k]=num(inp.value);salva();quad();calcoli();};
+  inp.onblur=()=>{const k=inp.dataset.k;if(k!=='anno'&&d[k]!=null)inp.value=fmt(d[k]);};
+ });
+ quad();
+}
+function quad(){
+ const d=S.anni[S.sel],q=$('quad');if(!q)return;
+ const msg=[];
+ if(d.attivo!=null&&d.pn!=null&&d.debiti_tot!=null){const s=d.attivo-d.pn-d.debiti_tot;if(Math.abs(s)>0.5)msg.push('il totale attivo differisce di '+fmt(s)+' da patrimonio netto più debiti');}
+ if([d.attivo,d.imm_mat,d.imm_imm,d.imm_fin,d.att_correnti].every(v=>v!=null)){const s=d.attivo-d.imm_mat-d.imm_imm-d.imm_fin-d.att_correnti;if(Math.abs(s)>0.5)msg.push('immobilizzazioni più attività correnti differiscono di '+fmt(s)+' dal totale attivo (ratei, crediti oltre l\'anno?)');}
+ if(d.rimanenze!=null&&d.liquidita!=null&&d.att_correnti!=null&&d.rimanenze+d.liquidita>d.att_correnti)msg.push('rimanenze e liquidità superano le attività correnti, che dovrebbero comprenderle');
+ if(d.riserve!=null&&d.pn!=null&&d.riserve>d.pn&&d.pn>0)msg.push('le riserve di utili superano il patrimonio netto: ci sono perdite da coprire?');
+ if(!pieno(d)){q.className='quad-ok male';q.textContent='Mancano alcune voci: i modelli che le usano restano senza punteggio.';return;}
+ q.className='quad-ok '+(msg.length?'male':'bene');
+ q.textContent=msg.length?'Controllo: '+msg.join('; ')+'.':'Controllo: lo stato patrimoniale quadra.';
+}
+
+/* ---- panorama ---- */
+const ZN={r:'difficoltà',g:'zona grigia',v:'zona sicura'};
+const ZNi={r:'crisi',g:'cautela',v:'struttura sana'};
+const FASCIA_T={1:'fascia 1 · positiva',2:'fascia 2 · da approfondire',3:'fascia 3 · negativa'};
+const LIVc={A:'v',B:'g',C:'r'};
+function freccia(a,b,dec,verso){
+ if(a==null||b==null)return '';
+ const d=b-a;const e=Math.abs(d)<Math.pow(10,-(dec||2))/2;
+ const cl=e?'neutra':((d>0)===(verso!=='basso')?'bene':'male');
+ return `<span class="fr ${cl}">${e?'=':d>0?'▲':'▼'}</span>`;
+}
+let SW=640;
+function strip(titolo,y0,vals,lo,hi,sog,cls,simv,dec,etic){
+ /* striscia orizzontale: anni sull'asse x, valore sull'asse y, fasce colorate */
+ const W=SW,H=132,L=58,R=W<500?24:20,T=y0+38,B=y0+H-18,n=vals.length;
+ const ys=v=>B-(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*(B-T);
+ const xs=i=>n===1?(L+W-R)/2:L+i*(W-R-L)/(n-1);
+ let s=`<text class="tit" x="0" y="${y0+12}">${esc(titolo)}</text>`;
+ const tagli=[lo].concat(sog).concat([hi]);
+ for(let i=0;i<tagli.length-1;i++){s+=`<rect class="${cls[i]}" x="${L-10}" y="${ys(tagli[i+1])}" width="${W-R-L+20}" height="${ys(tagli[i])-ys(tagli[i+1])}"/>`;}
+ sog.forEach(v=>{s+=`<line class="sog" x1="${L-10}" x2="${W-R+10}" y1="${ys(v)}" y2="${ys(v)}"/><text class="lbl" x="${L-14}" y="${ys(v)+4}" text-anchor="end">${etic?'':fmt(v,dec)}</text>`;});
+ if(etic)etic.forEach(([v,t])=>{s+=`<text class="lbl" x="${L-14}" y="${ys(v)+4}" text-anchor="end">${esc(t)}</text>`;});
+ const pts=vals.map((v,i)=>v==null?null:[xs(i),ys(v)]);
+ const seg=pts.filter(Boolean);
+ if(seg.length>1)s+=`<polyline class="lin" points="${seg.map(p=>p.join(',')).join(' ')}"/>`;
+ pts.forEach((p,i)=>{if(!p)return;s+=`<circle class="pt${i===S.sel?' sel':''}" cx="${p[0]}" cy="${p[1]}" r="${i===S.sel?6:4}"/><text class="val" x="${p[0]}" y="${p[1]-9}" text-anchor="middle">${fmt(vals[i],dec)}</text>`;});
+ if(simv){
+  const sp=simv.map((v,i)=>v==null?null:[xs(i),ys(v)]);const sg=sp.filter(Boolean);
+  if(sg.length>1)s+=`<polyline class="sim" points="${sg.map(p=>p.join(',')).join(' ')}"/>`;
+  if(false)s+=`<line class="lin" x1="${W-R-215}" x2="${W-R-195}" y1="${y0+8}" y2="${y0+8}"/><text class="lbl" x="${W-R-190}" y="${y0+12}">bilancio</text><line class="sim" x1="${W-R-130}" x2="${W-R-110}" y1="${y0+8}" y2="${y0+8}"/><text class="lbl" x="${W-R-105}" y="${y0+12}">con l'operazione</text>`;
+  sp.forEach((q,i)=>{if(!q)return;if(vals[i]!=null&&Math.abs(simv[i]-vals[i])<Math.pow(10,-dec)/2)return;const giu=vals[i]==null||simv[i]<=vals[i];s+=`<circle class="pt-sim" cx="${q[0]}" cy="${q[1]}" r="4"/><text class="val" x="${q[0]}" y="${q[1]+(giu?16:-9)}" text-anchor="middle" style="fill:var(--crit)">${fmt(simv[i],dec)}</text>`;});
+ }
+ S.anni.forEach((a,i)=>{s+=`<text class="lbl" x="${xs(i)}" y="${B+15}" text-anchor="middle">${esc(nomeAnno(i))}</text>`;});
+ return s;
+}
+function renderPanorama(sim){
+ const R=S.anni.map(d=>pieno(d)?{z:zpp(d),i:ita(d),m:mcc(d)}:null);
+ const zs=R.map(r=>r&&r.z.z),is=R.map(r=>r&&r.i.z),ms=R.map(r=>r&&r.m.tot);
+ const span=(a,lo,hi,pad)=>{const v=a.filter(x=>x!=null);if(!v.length)return [lo,hi];return [Math.min(lo,Math.min.apply(null,v)-pad),Math.max(hi,Math.max.apply(null,v)+pad)];};
+ const SR=sim?S.anni.map(d=>{if(!pieno(d))return null;const x=applica(d,S.sim).d;return {z:zpp(x),i:ita(x),m:mcc(x),liq:x.liquidita};}):null;
+ const szs=SR?SR.map(r=>r&&r.z.z):null,sis=SR?SR.map(r=>r&&r.i.z):null,sms=SR?SR.map(r=>r&&r.m.tot):null;
+ const [zl,zh]=span(zs.concat(szs||[]),0,4,.4),[il,ih]=span(is.concat(sis||[]),3,10,.5);
+ SW=($('pan-svg').clientWidth||640)<560?400:640;
+ const fig=(t,d,inner)=>`<figure class="fig"><figcaption><b>${t}</b>${d}</figcaption><svg viewBox="0 0 ${SW} 118" role="img" aria-label="${esc(t)}">${inner}</svg></figure>`;
+ let svg='';
+ svg+=fig('Z′′ di Altman (senza costante)','Quattro rapporti di bilancio pesati in un solo numero: circolante, riserve e redditività sull\'attivo, patrimonio sui debiti. Sotto 1,10 difficoltà, sopra 2,60 zona sicura.',strip('',-16,zs,zl,zh,[1.1,2.6],['z-r','z-g','z-v'],szs,2));
+ svg+=fig('Modello ripensato per le PMI','Cinque rapporti con pesi tarati sulle piccole imprese manifatturiere italiane; pesano molto le riserve di utili. Sotto 4,85 crisi, sopra 8,11 struttura sana.',strip('',-16,is,il,ih,[4.846,8.105],['z-r','z-g','z-v'],sis,2));
+ svg+=fig('Fondo di garanzia: punti su 12','Quattro indici da 0 a 3 punti: copertura delle immobilizzazioni, indipendenza finanziaria, copertura degli interessi, margine sulle vendite. Livello A da 9 punti, C fino a 6.',strip('',-16,ms,0,12,[6.5,8.5],['z-r','z-g','z-v'],sms,0,[[3.25,'C'],[7.5,'B'],[10.25,'A']]));
+ $('pan-svg').innerHTML=svg;
+
+ const righe=[
+  ['Z′′ di Altman',null],
+  ['X1 · circolante / attivo',r=>r.z.X[0].v,3,'alto'],
+  ['X2 · riserve / attivo',r=>r.z.X[1].v,3,'alto'],
+  ['X3 · EBIT / attivo',r=>r.z.X[2].v,3,'alto'],
+  ['X4 · patrimonio / debiti',r=>r.z.X[3].v,3,'alto'],
+  ['Z′′',r=>r.z.z,2,'alto'],
+  ['Punteggio EM (Z′′ + 3,25)',r=>r.z.em,2,'alto'],
+  ['Rating equivalente',r=>r.z.r,'t'],
+  ['Modello per le PMI',null],
+  ['Z',r=>r.i.z,2,'alto'],
+  ['Lettura',r=>ZNi[r.i.zona],'t'],
+  ['Fondo di garanzia',null],
+  ['Punti (su 12)',r=>r.m.tot,0,'alto'],
+  ['Livello',r=>r.m.liv,'t'],
+  ['Fascia (con l\'anno prima)',(r,i)=>{const p=i>0&&R[i-1]?R[i-1].m.liv:null;const f=fascia(p,r.m.liv);return f?'fascia '+f:'—';},'t']
+ ];
+ let h='<thead><tr><th>Indicatore</th>'+S.anni.map((a,i)=>`<th class="n">${esc(nomeAnno(i))}${i===S.sel?' ●':''}</th>`).join('')+'</tr></thead><tbody>';
+ righe.forEach(rg=>{
+  if(!rg[1]){h+=`<tr class="gr"><td colspan="${S.anni.length+1}">${esc(rg[0])}</td></tr>`;return;}
+  h+=`<tr><td class="lab">${esc(rg[0])}</td>`;
+  R.forEach((r,i)=>{
+   if(!r){h+='<td class="n">—</td>';return;}
+   const v=rg[1](r,i);
+   if(rg[2]==='t'){let cl='';if(rg[0].startsWith('Rating'))cl=classeR(v);else if(rg[0]==='Livello')cl=LIVc[v];h+=`<td class="n">${cl?`<span class="pill ${cl}">${esc(v)}</span>`:esc(v)}</td>`;return;}
+   const p=i>0&&R[i-1]?rg[1](R[i-1],i-1):null;
+   h+=`<td class="n">${fmt(v,rg[2])}${freccia(p,v,rg[2],rg[3])}</td>`;
+  });
+  h+='</tr>';
+ });
+ if(SR){
+  const cols=S.anni.length+1;
+  h+=`<tr class="gr sim-gr"><td colspan="${cols}">Con l'operazione di «E se…», fatta in quell'anno</td></tr>`;
+  const cella=(i,f)=>(!R[i]||!SR[i])?'<td class="n">—</td>':f(R[i],SR[i]);
+  const rr=(lab,f)=>{h+=`<tr><td class="lab">${lab}</td>`+S.anni.map((a,i)=>cella(i,f)).join('')+'</tr>';};
+  rr('Z′′',(r,q)=>`<td class="n">${fmt(q.z.z,2)}${freccia(r.z.z,q.z.z,2,'alto')}</td>`);
+  rr('Zona',(r,q)=>`<td class="n">${ZN[q.z.zona]}</td>`);
+  rr('Rating equivalente',(r,q)=>`<td class="n"><span class="pill ${classeR(q.z.r)}">${q.z.r}</span></td>`);
+  rr('Classi rispetto a prima',(r,q)=>`<td class="n">${salti(r.z.r,q.z.r)}</td>`);
+  rr('Modello per le PMI',(r,q)=>`<td class="n">${fmt(q.i.z,2)}${freccia(r.i.z,q.i.z,2,'alto')}</td>`);
+  rr('Fondo di garanzia, punti',(r,q)=>`<td class="n">${q.m.tot}${freccia(r.m.tot,q.m.tot,0,'alto')}</td>`);
+  rr('Liquidità dopo (k€)',(r,q)=>`<td class="n">${fmt(q.liq)}</td>`);
+ }
+ $('pan-tab').innerHTML=h+'</tbody>';
+ const val=R.filter(Boolean);
+ if(val.length>1){
+  const a=R.findIndex(Boolean),b=R.length-1-[...R].reverse().findIndex(Boolean);
+  const za=R[a].z,zb=R[b].z;
+  const dX=zb.X.map((x,j)=>({k:x.k,nome:x.nome,d:x.p-za.X[j].p})).sort((u,v)=>u.d-v.d);
+  const peg=dX[0];
+  $('pan-out').innerHTML=`Fra ${esc(nomeAnno(a))} e ${esc(nomeAnno(b))} lo Z′′ passa da ${fmt(za.z,2)} a ${fmt(zb.z,2)} (rating da ${esc(za.r)} a ${esc(zb.r)}). `+
+   (peg.d<0?`Il contributo che scende di più è ${peg.k}, ${esc(low(peg.nome))}: ${fmt(peg.d,2)} punti.`:'Nessun rapporto peggiora.')+(SR?' '+momento(R,SR):'');
+ }else $('pan-out').textContent=val.length?'Con un solo anno compilato il panorama mostra la posizione, non l\'andamento: aggiungi gli anni precedenti.':'Compila almeno un anno per vedere il panorama.';
+}
+
+function momento(R,SR){
+ const ii=S.anni.map((a,i)=>i).filter(i=>R[i]&&SR[i]);if(!ii.length)return '';
+ const elenco=ii.map(i=>`${esc(nomeAnno(i))} da ${R[i].z.r} a ${SR[i].z.r} (${ZN[SR[i].z.zona]}, liquidità ${fmt(SR[i].liq)} k€)`).join('; ');
+ let t=`La linea tratteggiata rossa mostra la stessa operazione fatta in ciascun anno: ${elenco}.`;
+ if(ii.length>1){
+  const sl=ii.map(i=>RORD.indexOf(SR[i].z.r)-RORD.indexOf(R[i].z.r));const lo=ii.reduce((a,i)=>SR[i].z.z<SR[a].z.z?i:a,ii[0]),hi=ii.reduce((a,i)=>SR[i].z.z>SR[a].z.z?i:a,ii[0]);
+  if(Math.max(...sl)-Math.min(...sl)<=2)t+=` Le classi perse si somigliano; quello che cambia è dove si arriva: il punto d'arrivo più alto è nel ${esc(nomeAnno(hi))}, il più basso nel ${esc(nomeAnno(lo))}.`;
+  else t+=` Il punto d'arrivo più alto è nel ${esc(nomeAnno(hi))}, il più basso nel ${esc(nomeAnno(lo))}.`;
+ }
+ return t;
+}
+
+/* ---- dettaglio modelli ---- */
+function tabCalc(X,tot,totLab,dec){
+ let h='<thead><tr><th>Rapporto</th><th class="n">Numeratore</th><th class="n">Denominatore</th><th class="n">Valore</th><th class="n">Peso</th><th class="n">Contributo</th></tr></thead><tbody>';
+ X.forEach(x=>{h+=`<tr><td class="lab"><b>${x.k}</b> · ${esc(x.nome)}<span class="form">${esc(x.form)}</span></td><td class="n">${fmt(x.num)}</td><td class="n">${fmt(x.den)}</td><td class="n">${fmt(x.v,3)}</td><td class="n">× ${fmt(x.c,(String(x.c).split('.')[1]||'').length)}</td><td class="n">${fmt(x.p,3)}</td></tr>`;});
+ h+=`<tr class="tot"><td colspan="5">${esc(totLab)}</td><td class="n">${fmt(tot,dec||3)}</td></tr>`;
+ return h+'</tbody>';
+}
+function renderModelli(){
+ const d=S.anni[S.sel],ok=pieno(d),na=nomeAnno(S.sel);
+ ['zpp-anno','it-anno','mcc-anno'].forEach(id=>$(id).textContent='Anno in esame: '+na+'. Cambialo dai pulsanti in «I tuoi bilanci».');
+ if(!ok){['zpp','it','mcc'].forEach(p=>{$(p+'-tab').innerHTML='';$(p+'-out').innerHTML='<p class="nota-piccola">Mancano alcune voci di bilancio per questo anno.</p>';});return;}
+ const z=zpp(d);
+ $('zpp-tab').innerHTML=tabCalc(z.X,z.z,'Z′′ (somma dei contributi)');
+ const peg=[...z.X].sort((a,b)=>a.p-b.p)[0];
+ const scala=RORD.map(r=>`<span class="${classeR(r)}${r===z.r?' qui':''}" title="${r}">${r}</span>`).join('');
+ $('zpp-out').innerHTML=`<p class="grande">Z′′ <b>${fmt(z.z,2)}</b> · ${ZN[z.zona]} · EM <b>${fmt(z.em,2)}</b> → <span class="pill ${classeR(z.r)}">${z.r}</span></p>
+  <div class="scala" aria-label="Scala dei rating, da D a AAA">${scala}</div>
+  <p class="nota-piccola">Il contributo più basso è ${peg.k} (${esc(low(peg.nome))}, ${fmt(peg.p,2)} punti): è lì che conviene guardare per primo. Il rating equivalente è un'indicazione di ordine di grandezza, non il giudizio di un'agenzia.</p>`;
+ const it=ita(d);
+ $('it-tab').innerHTML=tabCalc(it.X,it.z,'Z (somma dei contributi)');
+ const dist=it.zona==='v'?`${fmt(it.z-8.105,2)} punti sopra la soglia di sicurezza`:it.zona==='g'?`${fmt(8.105-it.z,2)} punti sotto la soglia di sicurezza, ${fmt(it.z-4.846,2)} sopra quella di crisi`:`${fmt(4.846-it.z,2)} punti sotto la soglia di crisi`;
+ $('it-out').innerHTML=`<p class="grande">Z <b>${fmt(it.z,2)}</b> · <span class="pill ${it.zona}">${ZNi[it.zona]}</span></p><p class="nota-piccola">${dist}. Qui il peso maggiore va alle riserve (X2, × 9,841): un'impresa giovane o che distribuisce tutto parte svantaggiata.</p>`;
+ const m=mcc(d);
+ let h='<thead><tr><th>Indice</th><th class="n">Valore</th><th>Fasce di punteggio</th><th class="n">Punti</th></tr></thead><tbody>';
+ m.I.forEach(x=>{h+=`<tr><td class="lab"><b>${x.k}</b> · ${esc(x.nome)}<span class="form">${esc(x.form)}</span></td><td class="n">${x.v===Infinity?'nessun onere':x.perc?pct(x.v):fmt(x.v,2)}</td><td style="white-space:normal;font-size:.82rem">${esc(x.fasce)}</td><td class="n">${x.p}</td></tr>`;});
+ h+=`<tr class="tot"><td colspan="3">Totale</td><td class="n">${m.tot} / 12</td></tr></tbody>`;
+ $('mcc-tab').innerHTML=h;
+ const prec=S.sel>0&&pieno(S.anni[S.sel-1])?mcc(S.anni[S.sel-1]).liv:null;
+ const f=fascia(prec,m.liv);
+ $('mcc-out').innerHTML=`<p class="grande">Livello <span class="pill ${LIVc[m.liv]}">${m.liv}</span>${prec?` · con ${esc(nomeAnno(S.sel-1))} (livello ${prec}): <b>fascia ${f}</b>`:''}</p><p class="nota-piccola">${f?FASCIA_T[f].replace(/^./,c=>c.toUpperCase())+'. ':'Per la fascia serve anche l\'anno precedente. '}I livelli: A da 9 punti, B con 7 o 8, C fino a 6.</p>`;
+}
+
+/* ---- e se… ---- */
+const OPS=[
+ {k:'cap',t:'Capannone nuovo, a debito',s:'Cresce l\'attivo, crescono i debiti, l\'ammortamento e gli interessi pesano sul risultato. Se l\'investimento porta margine, indicalo; altrimenti entra a ricavi invariati.',
+  p:[['importo','Importo dell\'investimento (k€)'],['mol_extra','MOL in più atteso (k€ l\'anno)'],['debito','Quota finanziata a debito (%)'],['tasso','Tasso del mutuo (%)'],['amm','Anni di ammortamento'],['mutuo','Durata del mutuo (anni)']]},
+ {k:'div',t:'Dividendo straordinario',s:'Esce cassa, scendono le riserve di utili.',p:[['v','Importo (k€)']]},
+ {k:'aum',t:'Aumento di capitale dei soci',s:'Entra cassa, cresce il patrimonio; le riserve di utili restano uguali.',p:[['v','Importo (k€)']]},
+ {k:'inc',t:'Incasso di crediti arretrati',s:'I crediti diventano liquidità: la cassa respira, il punteggio no.',p:[['v','Importo (k€)']]},
+ {k:'cons',t:'Consolidamento: debito da breve a lungo',s:'Un fido a breve diventa un finanziamento a medio termine.',p:[['v','Importo spostato (k€)']]}
+];
+function applica(d0,sim){
+ const d=clone(d0),note=[];
+ const c=sim.cap;
+ if(c.on){
+  const I=num(c.importo)||0,q=Math.min(100,Math.max(0,num(c.debito)||0))/100,r=(num(c.tasso)||0)/100,na=Math.max(1,num(c.amm)||1),nm=Math.max(1,num(c.mutuo)||1);
+  const deb=I*q,cassa=I-deb,amm=I/na,int=deb*r;
+  d.imm_mat+=I-amm;
+  d.liquidita-=cassa+int;d.att_correnti-=cassa+int;
+  d.attivo+=deb-amm-int;
+  d.debiti_tot+=deb;d.debiti_mlt+=deb-deb/nm;d.pass_correnti+=deb/nm;
+  d.oneri+=int;d.ebit-=amm;
+  d.pn-=amm+int;d.riserve-=amm+int;
+  const m=num(c.mol_extra)||0;
+  if(m){d.mol+=m;d.ebit+=m;d.pn+=m;d.riserve+=m;d.liquidita+=m;d.att_correnti+=m;d.attivo+=m;}
+  note.push(`il capannone aggiunge ${fmt(deb)} k€ di debito (di cui ${fmt(deb/nm)} da rimborsare entro l'anno), ${fmt(amm)} k€ di ammortamento e ${fmt(int)} k€ di interessi; dalla cassa escono ${fmt(cassa+int)} k€`+(m?`, mentre il margine in più ne porta ${fmt(m)}`:''));
+ }
+ if(sim.div.on){const v=num(sim.div.v)||0;d.liquidita-=v;d.att_correnti-=v;d.attivo-=v;d.pn-=v;d.riserve-=v;note.push(`il dividendo toglie ${fmt(v)} k€ da cassa e riserve`);}
+ if(sim.aum.on){const v=num(sim.aum.v)||0;d.liquidita+=v;d.att_correnti+=v;d.attivo+=v;d.pn+=v;note.push(`l'aumento di capitale porta ${fmt(v)} k€ in cassa e nel patrimonio`);}
+ if(sim.inc.on){const v=num(sim.inc.v)||0;const cr=Math.max(0,d0.att_correnti-d0.rimanenze-d0.liquidita);const w=Math.min(v,cr);d.liquidita+=w;note.push(`l'incasso trasforma ${fmt(w)} k€ di crediti in liquidità`+(w<v?' (non più dei crediti in bilancio)':''));}
+ if(sim.cons.on){const v=num(sim.cons.v)||0;const w=Math.min(v,Math.max(0,d.pass_correnti));d.pass_correnti-=w;d.debiti_mlt+=w;note.push(`il consolidamento sposta ${fmt(w)} k€ di debito oltre l'anno`);}
+ return {d,note};
+}
+function renderSimIn(){
+ let h='';
+ OPS.forEach(o=>{
+  const st=S.sim[o.k];
+  h+=`<div class="op${st.on?' on':''}" data-k="${o.k}"><label class="op-h"><input type="checkbox" ${st.on?'checked':''}><span>${esc(o.t)}<small>${esc(o.s)}</small></span></label><div class="op-p">`+
+   o.p.map(([pk,pl])=>`<label>${esc(pl)}<input type="text" inputmode="decimal" data-p="${pk}" value="${esc(st[pk])}"></label>`).join('')+'</div></div>';
+ });
+ $('sim-in').innerHTML=h;
+ $('sim-in').querySelectorAll('.op').forEach(box=>{
+  const k=box.dataset.k;
+  box.querySelector('.op-h input').onchange=e=>{S.sim[k].on=e.target.checked;box.classList.toggle('on',e.target.checked);salva();calcoli();};
+  box.querySelectorAll('.op-p input').forEach(inp=>inp.oninput=()=>{S.sim[k][inp.dataset.p]=inp.value;salva();calcoli();});
+ });
+}
+function renderSimOut(){
+ const d0=S.anni[S.sel];
+ if(!pieno(d0)){$('sim-out').innerHTML='<p class="nota-piccola">Compila tutte le voci dell\'anno in esame per provare un\'operazione.</p>';return null;}
+ const attive=OPS.filter(o=>S.sim[o.k].on);
+ const z0=zpp(d0),i0=ita(d0),m0=mcc(d0);
+ if(!attive.length){$('sim-out').innerHTML=`<p class="nota-piccola">Scegli una o più operazioni a sinistra. Partenza (${esc(nomeAnno(S.sel))}): Z′′ ${fmt(z0.z,2)}, rating ${z0.r}; modello PMI ${fmt(i0.z,2)}; Fondo di garanzia ${m0.tot} punti.</p>`;return null;}
+ const {d,note}=applica(d0,S.sim);
+ const z1=zpp(d),i1=ita(d),m1=mcc(d);
+ const riga=(nm,sub,a,b,dec,verso,fa)=>`<div class="conf-r"><span class="nm">${nm}${sub?`<small>${sub}</small>`:''}</span><span class="n">${fa?fa(a):fmt(a,dec)}</span><span class="n">${fa?fa(b):fmt(b,dec)}${freccia(a,b,dec,verso)}</span><span class="n">${(a!=null&&b!=null&&!fa)?(Math.abs(b-a)<Math.pow(10,-dec)/2?'0':(b-a>0?'+':'')+fmt(b-a,dec)):''}</span></div>`;
+ let h='<div class="conf"><div class="conf-r h"><span>Z′′ di Altman</span><span class="n">prima</span><span class="n">dopo</span><span class="n">differenza</span></div>';
+ z0.X.forEach((x,j)=>{h+=riga(x.k+' · contributo',esc(low(x.nome)),x.p,z1.X[j].p,3,'alto');});
+ h+=riga('Z′′','',z0.z,z1.z,2,'alto');
+ h+=`<div class="conf-r"><span class="nm">Rating equivalente</span><span class="n"><span class="pill ${classeR(z0.r)}">${z0.r}</span></span><span class="n"><span class="pill ${classeR(z1.r)}">${z1.r}</span></span><span class="n">${salti(z0.r,z1.r)}</span></div>`;
+ h+='<div class="conf-r h"><span>Gli altri due termometri</span><span></span><span></span><span></span></div>';
+ h+=riga('Modello per le PMI',ZNi[i0.zona]+' → '+ZNi[i1.zona],i0.z,i1.z,2,'alto');
+ h+=riga('Fondo di garanzia',`livello ${m0.liv} → ${m1.liv}`,m0.tot,m1.tot,0,'alto');
+ m0.I.forEach((x,j)=>{if(x.p!==m1.I[j].p)h+=riga('&nbsp;&nbsp;indice '+x.k,esc(low(x.nome)),x.p,m1.I[j].p,0,'alto');});
+ h+='<div class="conf-r h"><span>Cassa</span><span></span><span></span><span></span></div>';
+ h+=riga('Liquidità','',d0.liquidita,d.liquidita,0,'alto');
+ h+=riga('Debiti entro 12 mesi','',d0.pass_correnti,d.pass_correnti,0,'basso');
+ h+='</div>';
+ if(d.liquidita<0)h+=`<p class="avviso">La liquidità va sotto zero di ${fmt(-d.liquidita)} k€: nella realtà servirebbe un fido in più, e i debiti a breve crescerebbero ancora.</p>`;
+ const dX=z0.X.map((x,j)=>({x,d:z1.X[j].p-x.p})).sort((a,b)=>a.d-b.d);
+ const peg=dX.filter(e=>e.d<-0.0005),mig=dX.filter(e=>e.d>0.0005).reverse();
+ let l='<div class="lettura-sim"><p><b>Che cosa succede.</b> '+esc(note.join('; ').replace(/^./,c=>c.toUpperCase()))+'.</p>';
+ if(peg.length)l+='<p><b>Quali rapporti peggiorano.</b></p><ul>'+peg.map(e=>`<li>${e.x.k}, ${esc(low(e.x.nome))}: ${fmt(e.d,2)} punti. ${spiega(e.x.k,d0,d)}</li>`).join('')+'</ul>';
+ if(mig.length)l+='<p><b>Quali migliorano.</b> '+mig.map(e=>`${e.x.k} (+${fmt(e.d,2)})`).join(', ')+'.</p>';
+ if(!peg.length&&!mig.length)l+='<p><b>Lo Z′′ non si muove.</b> L\'operazione cambia la composizione dell\'attivo o del debito, non i rapporti che il termometro misura.'+(S.sim.inc.on?' È il caso dell\'incasso dei crediti: salva la cassa, ed è proprio quello che il termometro non vede.':'')+'</p>';
+ const pg=pareggio(d0,z0.z);
+ if(pg)l+=pg;
+ l+='</div>';
+ $('sim-out').innerHTML=h+l;
+ return {z:z1.z,i:i1.z,m:m1.tot};
+}
+function pareggio(d0,target){
+ if(!S.sim.cap.on)return '';
+ const f=m=>{const s2=clone(S.sim);s2.cap.mol_extra=m;return zpp(applica(d0,s2).d).z;};
+ const m0=num(S.sim.cap.mol_extra)||0,altre=OPS.some(o=>o.k!=='cap'&&S.sim[o.k].on);
+ const marg=pct(d0.mol/d0.ricavi);
+ if(f(0)>=target)return '<p><b>Il punto di pareggio del punteggio.</b> Anche senza margine in più lo Z′′ non scende sotto il valore di partenza.</p>';
+ let hi=Math.max(1,d0.ricavi);
+ if(f(hi)<target)return `<p><b>Il punto di pareggio del punteggio.</b> Nemmeno un MOL in più pari ai ricavi di oggi riporterebbe lo Z′′ al valore di partenza.</p>`;
+ let lo=0;for(let k=0;k<60;k++){const md=(lo+hi)/2;if(f(md)>=target)hi=md;else lo=md;}
+ const m=hi;
+ let t=`<p><b>Il punto di pareggio del punteggio.</b> Perché lo Z′′ torni a ${fmt(target,2)}, il capannone dovrebbe portare circa <b>${fmt(m)} k€ di MOL in più all'anno</b>${altre?', con le altre operazioni scelte':''}: il ${pct(m/d0.ricavi)} dei ricavi di oggi, quando l'intera impresa ha oggi un margine del ${marg}.`;
+ t+=m0?` Con i ${fmt(m0)} k€ che hai indicato, ${m0>=m?'il punteggio regge':'mancano ancora '+fmt(m-m0)+' k€'}.</p>`:' Prova a indicarlo nel campo del capannone.</p>';
+ return t;
+}
+function salti(a,b){const i=RORD.indexOf(a),j=RORD.indexOf(b);if(i<0||j<0)return '';const n=j-i;if(!n)return 'stessa classe';return (n>0?'+':'−')+Math.abs(n)+(Math.abs(n)===1?' classe':' classi');}
+function spiega(k,a,b){
+ const ta=`il totale attivo passa da ${fmt(a.attivo)} a ${fmt(b.attivo)}`;
+ if(k==='X1')return `Il circolante netto passa da ${fmt(a.att_correnti-a.pass_correnti)} a ${fmt(b.att_correnti-b.pass_correnti)}, e ${ta}.`;
+ if(k==='X2')return `Le riserve di utili passano da ${fmt(a.riserve)} a ${fmt(b.riserve)}, e ${ta}.`;
+ if(k==='X3')return `L'EBIT passa da ${fmt(a.ebit)} a ${fmt(b.ebit)}, e ${ta}.`;
+ if(k==='X4')return `Il patrimonio passa da ${fmt(a.pn)} a ${fmt(b.pn)}, i debiti da ${fmt(a.debiti_tot)} a ${fmt(b.debiti_tot)}.`;
+ return '';
+}
+
+/* ---- dati ---- */
+function aggExport(){const o=Object.assign({formato:FORMATO,versione:1},S);$('json-out').value=JSON.stringify(o,null,2);}
+$('copia').onclick=()=>{const t=$('json-out');const st=$('copia-stato');const ok=()=>st.textContent='Copiato.';try{navigator.clipboard.writeText(t.value).then(ok,()=>{t.select();document.execCommand('copy');ok();});}catch(e){t.select();try{document.execCommand('copy');ok();}catch(_){st.textContent='Seleziona il testo e copialo a mano.';}}};
+$('carica').onclick=()=>{const st=$('carica-stato');st.className='stato';try{const d=JSON.parse($('json-in').value);if(!d||typeof d!=='object')throw new Error('non è un oggetto');if(!Array.isArray(d.anni))throw new Error('manca l\'elenco degli anni');delete d.formato;delete d.versione;S=completa(d);salva();tutto();st.textContent='Caricato.';$('json-in').value='';}catch(e){st.className='stato err';st.textContent='Non riesco a leggerlo: '+e.message+'. Incolla un JSON esportato da questa pagina.';}};
+$('esempio').onclick=()=>{S=clone(ESEMPIO);salva();tutto();$('reset-stato').textContent='Esempio ripristinato.';};
+let arm=null;$('svuota').onclick=()=>{const b=$('svuota');if(arm){clearTimeout(arm);arm=null;b.textContent='Svuota tutto';S=vuoto();salva();tutto();$('reset-stato').textContent='Tutto svuotato. «Ripristina l’esempio» lo riporta.';return;}b.textContent='Conferma: svuota';$('reset-stato').textContent='Premi di nuovo per cancellare tutti i dati.';arm=setTimeout(()=>{arm=null;b.textContent='Svuota tutto';$('reset-stato').textContent='';},4000);};
+$('caso').oninput=e=>{S.caso=e.target.value;salva();};
+
+function calcoli(){renderModelli();const sim=renderSimOut();renderPanorama(sim);}
+function tutto(){$('caso').value=S.caso||'';renderAnni();renderVoci();renderSimIn();calcoli();aggExport();}
+tutto();
+let rz=null,lastW=window.innerWidth;window.addEventListener('resize',()=>{if(Math.abs(window.innerWidth-lastW)<40)return;lastW=window.innerWidth;clearTimeout(rz);rz=setTimeout(calcoli,200);});
+
+/* ---- ospitato in iframe ---- */
+if(window.parent!==window){
+ const invia=m=>{try{window.parent.postMessage(m,'*');}catch(e){}};
+ const alt=()=>invia({tipo:'altman-altezza',h:document.documentElement.scrollHeight});
+ try{new ResizeObserver(alt).observe(document.body);}catch(e){}
+ window.addEventListener('load',alt);alt();
+ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.getElementById(a.getAttribute('href').slice(1));if(!t)return;e.preventDefault();invia({tipo:'altman-vai',y:t.getBoundingClientRect().top+window.pageYOffset});}));
+}
+})();
+</script>
+</body>
+</html>
 
