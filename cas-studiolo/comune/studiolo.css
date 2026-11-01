@@ -143,6 +143,7 @@ details.altre .cards{margin-top:12px}
 .scale b{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px solid var(--ink)}
 .nullr{font-family:var(--f-data);font-size:13px}
 .lims{margin:0;padding-left:18px;font-size:13.5px;color:var(--muted);display:grid;gap:3px}
+.giud ul.voci{margin:0;padding-left:18px;font-size:14.5px;display:grid;gap:4px}
 .vuoto{font-size:13.5px;color:var(--muted);font-style:italic}
 
 /* fonti e metodo */

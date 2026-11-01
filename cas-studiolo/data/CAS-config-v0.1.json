@@ -1,7 +1,7 @@
 {
   "schema": "cas-editorial-config/0.1",
-  "config_version": "2026-11-01-c05-geep-proposta",
-  "stato": "proposta Geep c05 dopo revisione Claude: rubriche 1-2 invariate; integrazioni documentali 3-4; correzione motore di Claude da collaudare; non pubblicazione definitiva",
+  "config_version": "2026-11-01-c08",
+  "stato": "approvata da Claude e Geep: rubriche 1-6; rubrica 1 collaudata, rubriche 2-6 da collaudare su GitHub Pages dopo il caricamento",
   "regola": "Questo file contiene solo ordine, titoli, raggruppamenti e testi editoriali di raccordo. Nessun fatto, valore o giudizio: quelli si leggono dal dataset e dagli output dei modelli.",
   "file": {
     "dataset": "data/CAS-DATI-v0.4.json",
@@ -105,14 +105,14 @@
     {
       "id": "t5",
       "titolo": "Il futuro industriale di Aosta",
-      "stato": "in preparazione",
+      "stato": "da controllare",
       "cartella": "05-futuro",
       "sommario": "Piano industriale, investimenti, diversificazione, salvaguardie europee e prospettive 2027."
     },
     {
       "id": "t6",
       "titolo": "Quello che ancora non sappiamo",
-      "stato": "in preparazione",
+      "stato": "da controllare",
       "cartella": "06-incertezze",
       "sommario": "Informazioni mancanti, conflitti irrisolti e prove che potrebbero modificare le valutazioni."
     }
@@ -485,6 +485,196 @@
           ],
           "ipotesi": [
             "H1"
+          ]
+        }
+      }
+    },
+    {
+      "id": "t5",
+      "titolo": "Il futuro industriale di Aosta",
+      "domanda": "Che cosa è stato dichiarato sul futuro dello stabilimento, e da chi? Che cosa, invece, è già impegnato o misurabile?",
+      "gruppi": [
+        {
+          "titolo": "Il piano e la sua revisione",
+          "revisione": "FR1",
+          "titolo_revisione": "La ripresa attesa da luglio 2026, rivista a settembre"
+        },
+        {
+          "titolo": "Il 2027 secondo la direzione",
+          "osservazioni": [
+            "BUDGET_2027_MGMT",
+            "MGMT_OUTLOOK_2027"
+          ]
+        },
+        {
+          "titolo": "Investimenti e strategia: le intenzioni dichiarate",
+          "osservazioni": [
+            "STRATEGIC_MIMIT",
+            "SHAREHOLDER_VIEW_MGMT_2026",
+            "STRATEGY_DIVERSIFICATION_2026"
+          ]
+        },
+        {
+          "titolo": "Le richieste dei sindacati",
+          "osservazioni": [
+            "PLAN_REQUEST",
+            "PLAN_PRODUCT_REQUEST"
+          ]
+        },
+        {
+          "titolo": "Il lavoro nei prossimi mesi",
+          "osservazioni": [
+            "STAFF_2025_END",
+            "STAFF_CIG_EXHAUSTED",
+            "LABOR_INTEGRATIVO_2026"
+          ]
+        },
+        {
+          "titolo": "Energia",
+          "osservazioni": [
+            "ENERGY_HEDGES",
+            "ENERGY_PPA"
+          ]
+        }
+      ],
+      "etichette": {
+        "PLAN_2030_TARGETS": "Piano 2030: obiettivi e ripresa attesa da luglio 2026",
+        "WALSIN_EU_OUTLOOK_2026": "L'attesa della capogruppo per l'Europa",
+        "SAFEGUARD_EFFECT_SEPT_2026": "Settembre 2026: la salvaguardia non ha l'effetto atteso",
+        "BUDGET_2027_MGMT": "Budget 2027: «non in riduzione», ancora da approvare",
+        "MGMT_OUTLOOK_2027": "Prospettiva 2027 attribuita all'azienda, riferita dalla Cgil",
+        "STRATEGIC_MIMIT": "Interesse strategico e investimenti, come riferiti dalla Fim",
+        "SHAREHOLDER_VIEW_MGMT_2026": "L'azionista di controllo descritto dalla direzione",
+        "STRATEGY_DIVERSIFICATION_2026": "La risposta commerciale dichiarata",
+        "PLAN_REQUEST": "Volumi e numeri concreti: la richiesta sindacale",
+        "PLAN_PRODUCT_REQUEST": "Quali prodotti ad Aosta, e quanti",
+        "STAFF_2025_END": "Occupati ad Aosta a fine 2025",
+        "STAFF_CIG_EXHAUSTED": "Ammortizzatori esauriti fino a marzo 2027",
+        "LABOR_INTEGRATIVO_2026": "Contratto integrativo disdettato",
+        "ENERGY_HEDGES": "Coperture sul prezzo dell'elettricità",
+        "ENERGY_PPA": "Contratti di fornitura elettrica di lungo periodo (PPA)",
+        "LOAD_BY_PRODUCT_2026": "Carico diverso fra impianti",
+        "GROUP_RESULTS_BY_ENTITY_2025": "Risultati 2025 delle società del gruppo"
+      },
+      "cosa_manca": "Per dire qualcosa sul futuro dello stabilimento servirebbero impegni verificabili: investimenti deliberati, con importi e tempi; volumi assegnati ad Aosta per famiglia di prodotto; il budget 2027 approvato; l'esistenza e la copertura di contratti elettrici di lungo periodo. Nel dataset non c'è alcun investimento deliberato per Aosta: ci sono intenzioni dichiarate.",
+      "contesto": "Quasi tutto ciò che riguarda il futuro, in questa rubrica, è dichiarato: dalla direzione, dall'azionista per bocca della direzione, dai sindacati che riferiscono incontri al ministero o in Regione. Alcune dichiarazioni arrivano dopo più passaggi: MGMT_OUTLOOK_2027 va dall'azienda alla Regione, dalla Regione alla Cgil, dalla Cgil all'ANSA. Una previsione dichiarata prova che è stata fatta, non che si realizzerà; FR1 mostra che una previsione di inizio anno è già stata rivista.",
+      "colonne": {
+        "geep": {
+          "domanda": null,
+          "dimensioni": [],
+          "ipotesi": [],
+          "extra": [
+            {
+              "campo": "esito.non_concludere",
+              "titolo": "Da non concludere",
+              "nota": "Dall'esito complessivo della lettura Geep: non è una valutazione specifica sul futuro dello stabilimento."
+            }
+          ]
+        },
+        "claude": {
+          "domanda": null,
+          "dimensioni": [
+            "sim"
+          ],
+          "ipotesi": [],
+          "extra": [
+            {
+              "campo": "leve_interessate",
+              "titolo": "Leve interessate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "t6",
+      "titolo": "Quello che ancora non sappiamo",
+      "domanda": "Quali dati assenti, conflitti non risolti e verifiche future potrebbero cambiare le valutazioni sulla tenuta industriale di Aosta?",
+      "gruppi": [
+        {
+          "titolo": "I dati mancanti nel patrimonio comune",
+          "osservazioni": [
+            "ALLOC_GROUP_VOLUME",
+            "ALLOC_TRANSFER_EVIDENCE",
+            "PROD_REAL_STOP",
+            "OWN_MARZORATI_POST",
+            "ENERGY_PPA"
+          ]
+        },
+        {
+          "titolo": "C1 — Le due cifre della perdita della società",
+          "conflitto": "C1",
+          "titolo_conflitto": "Un risultato 2025, due importi da riconciliare",
+          "punto_da_chiarire": "Riconciliare il risultato del bilancio separato approvato con la cifra nella tabella di perimetro del consolidato; non attribuire una causa alla differenza."
+        },
+        {
+          "titolo": "C2 — Le partecipazioni alle date delle fonti",
+          "conflitto": "C2",
+          "titolo_conflitto": "70% e 71,83% non ancora riconciliati",
+          "punto_da_chiarire": "Accertare data, denominatore e possibili movimenti societari fra giugno e dicembre 2025."
+        },
+        {
+          "titolo": "C3 — Le fermate effettivamente avvenute",
+          "conflitto": "C3",
+          "titolo_conflitto": "Dichiarazioni sindacali e aziendali sulle fermate",
+          "punto_da_chiarire": "Rilevare giorni effettivi di fermo per reparto e periodo, distinguendoli dalle previsioni.",
+          "chiarirebbe": "PROD_REAL_STOP"
+        },
+        {
+          "titolo": "C4 — Un riferimento del Piano non chiarito",
+          "conflitto": "C4",
+          "titolo_conflitto": "EBITDA 2025: riferimento temporale e perimetro da chiarire",
+          "punto_da_chiarire": "Verificare a quale anno e perimetro si riferisca il 7% citato nel Piano, rispetto al consuntivo consolidato."
+        },
+        {
+          "titolo": "Le previsioni da verificare, non da trattare come fatti",
+          "revisione": "FR1",
+          "titolo_revisione": "Salvaguardie UE: attesa e revisione"
+        },
+        {
+          "titolo": "I documenti e le affermazioni da verificare in seguito",
+          "osservazioni": [
+            "BUDGET_2027_MGMT",
+            "MGMT_OUTLOOK_2027",
+            "PLAN_REQUEST",
+            "STRATEGIC_MIMIT",
+            "STRATEGY_DIVERSIFICATION_2026"
+          ]
+        }
+      ],
+      "etichette": {
+        "ALLOC_GROUP_VOLUME": "Volumi comparabili per stabilimento e famiglia: non disponibili",
+        "ALLOC_TRANSFER_EVIDENCE": "Tracce dirette di trasferimenti produttivi: non disponibili",
+        "PROD_REAL_STOP": "Giorni effettivi di fermo: non disponibili",
+        "OWN_MARZORATI_POST": "Quota Marzorati dopo gli aumenti di capitale: non accertata",
+        "ENERGY_PPA": "Copertura contrattuale PPA: non documentata",
+        "BUDGET_2027_MGMT": "Indicazioni sul budget 2027: dichiarazioni, non budget approvato",
+        "MGMT_OUTLOOK_2027": "Prospettiva 2027 attribuita all'azienda, riferita dalla Cgil",
+        "PLAN_REQUEST": "Richiesta del piano industriale",
+        "STRATEGIC_MIMIT": "Intenzione di investire ad Aosta, come riferita dalla Fim",
+        "STRATEGY_DIVERSIFICATION_2026": "Strategia commerciale dichiarata"
+      },
+      "cosa_manca": "I due modelli chiedono anzitutto volumi e capacità per stabilimento e famiglia di prodotto, giornate di fermo effettive e tracciabilità degli ordini. Servono inoltre informazioni sull’evoluzione dei margini nel 2026 e sul budget 2027 approvato. L’assenza di una prova diretta non dimostra il contrario di un’ipotesi.",
+      "contesto": "La rubrica è un inventario di limiti conoscitivi, non una settima conclusione. I cinque null del dataset, i quattro conflitti documentali e FR1 sono oggetti diversi: un dato non disponibile, due attestazioni da riconciliare e una previsione rivista non devono essere confusi. Le richieste di verifica nelle risposte Q4 delle due letture non diventano automaticamente nuove osservazioni del dataset.",
+      "colonne": {
+        "geep": {
+          "domanda": "Q4_dati_necessari",
+          "dimensioni": [
+            "tecnologia"
+          ],
+          "ipotesi": []
+        },
+        "claude": {
+          "domanda": "Q4_dati_che_cambierebbero_il_giudizio",
+          "dimensioni": [
+            "tec"
+          ],
+          "ipotesi": [],
+          "extra": [
+            {
+              "campo": "osservazioni_mancanti_che_pesano",
+              "titolo": "Dati mancanti che pesano sul giudizio"
+            }
           ]
         }
       }

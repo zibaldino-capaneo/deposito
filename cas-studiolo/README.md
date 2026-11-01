@@ -11,7 +11,7 @@ Pagine statiche per GitHub Pages, nella cartella `cas-studiolo/` del repository 
 | `comune/studiolo.js`, `comune/studiolo.css` | Il motore, unico per tutte le rubriche. Non calcola giudizi: legge e mostra |
 | `data/CAS-DATI-v0.4.json` | Base dati comune, congelata |
 | `data/CAS-Geep-v0.4.json` | Lettura Geep, `2026-11-01-geep04-independent` |
-| `data/CAS-Claude-v0.4.json` | Lettura Claude, `2026-11-01j` |
+| `data/CAS-Claude-v0.4.json` | Lettura Claude, `2026-11-01k` |
 | `data/CAS-config-v0.1.json` | Configurazione editoriale: ordine, cartelle, titoli, raggruppamenti, testi di raccordo. Nessun fatto né giudizio |
 | `archivio/maquette-t1-collaudata/` | Copia della maquette del tema 1 collaudata il 1° novembre 2026, con i suoi dati, invariata |
 

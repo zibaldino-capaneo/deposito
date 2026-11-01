@@ -1,263 +1,263 @@
 {
-  "schema": "cas-model-output/0.4",
-  "model": "model_claude",
-  "model_version": "2026-11-01j",
-  "dataset_id": "CAS-DATI-v0.4",
-  "versione_precedente": "2026-11-01i: correzione redazionale di Q1 e rinomina carico_std → carico_ridotto; valori invariati",
-  "regola": {
-    "allerta": "Una dimensione non acquisita, con r non null, supera la soglia.",
-    "soglia": 0.66,
-    "media": "Ponderata sulle sole dimensioni con r non null; solo descrittiva.",
-    "natura_dei_coefficienti": "Giudizi illustrativi del modello, motivati da osservazioni. Non sono misure né probabilità calibrate e non vanno presentati come tali in pubblico."
+ "schema": "cas-model-output/0.4",
+ "model": "model_claude",
+ "model_version": "2026-11-01k",
+ "dataset_id": "CAS-DATI-v0.4",
+ "versione_precedente": "2026-11-01j: correzione redazionale di quattro passaggi che parlavano ancora di «parte standard» o «prodotti standard», residui della versione h; valori, pesi, soglia e osservazioni invariati (la j, rispetto alla i: correzione redazionale di Q1 e rinomina carico_std → carico_ridotto, valori invariati)",
+ "regola": {
+  "allerta": "Una dimensione non acquisita, con r non null, supera la soglia.",
+  "soglia": 0.66,
+  "media": "Ponderata sulle sole dimensioni con r non null; solo descrittiva.",
+  "natura_dei_coefficienti": "Giudizi illustrativi del modello, motivati da osservazioni. Non sono misure né probabilità calibrate e non vanno presentati come tali in pubblico."
+ },
+ "cambiamento_principale": {
+  "cosa": "La dimensione «carico del sito» (r 0,75, peso 35) è divisa in due: «impianti a carico ridotto, non identificati» (peso 20) e «impianti dichiarati carichi: aerospazio e rifusione» (peso 15).",
+  "perche": "LOAD_BY_PRODUCT_2026 e STOP_MGMT_NOV attestano un carico eterogeneo: aerospazio molto carico, rifusioni operative, fermate concentrate sugli impianti dei prodotti in sofferenza. Un unico coefficiente di sito sopravvaluta il sottocarico degli impianti dichiarati carichi e sottovaluta quello degli impianti a carico ridotto. È la lettura per famiglia di prodotto che la v0.4 rende possibile, pur senza quantità.",
+  "effetto": "L'allerta resta, ma si sposta su una parte dello stabilimento. La media descrittiva scende da 0,67 a 0,60.",
+  "nota_dopo_riscontro_geep": "Nella versione h la prima parte si chiamava «prodotti lunghi standard». S6 non identifica così gli impianti sottocarichi: dice solo che alcuni prodotti sono in sofferenza. Il nome ora riporta l'attestazione, non la mia interpretazione. Valori e pesi 20/15 sono ipotesi del modello, non quote produttive."
+ },
+ "risposte_al_protocollo": {
+  "Q1_sito_sotto_caricato": {
+   "risposta": "In parte. Gli impianti a carico ridotto, non identificati, sì; aerospazio e rifusione no, secondo la direzione. Il rapporto fra carico e capacità non è misurato.",
+   "osservazioni": [
+    "PROD_2026_VS_2025",
+    "LOAD_BY_PRODUCT_2026",
+    "STOP_MGMT_NOV",
+    "STOP_UNION_OCT",
+    "STAFF_SOLIDARITY",
+    "STAFF_CIG_EXHAUSTED"
+   ],
+   "cautela": "PROD_2026_VS_2025 non distingue società e gruppo e non dà un rapporto carico/capacità (riserva Geep). L'eterogeneità per impianto è un'attestazione della direzione, non una misura."
   },
-  "cambiamento_principale": {
-    "cosa": "La dimensione «carico del sito» (r 0,75, peso 35) è divisa in due: «impianti a carico ridotto, non identificati» (peso 20) e «impianti dichiarati carichi: aerospazio e rifusione» (peso 15).",
-    "perche": "LOAD_BY_PRODUCT_2026 e STOP_MGMT_NOV attestano un carico eterogeneo: aerospazio molto carico, rifusioni operative, fermate concentrate sugli impianti dei prodotti in sofferenza. Un unico coefficiente di sito sopravvaluta il sottocarico della parte specialistica e sottovaluta quello della parte standard. È la lettura per famiglia di prodotto che la v0.4 rende possibile, pur senza quantità.",
-    "effetto": "L'allerta resta, ma si sposta su una parte dello stabilimento. La media descrittiva scende da 0,67 a 0,60.",
-    "nota_dopo_riscontro_geep": "Nella versione h la prima parte si chiamava «prodotti lunghi standard». S6 non identifica così gli impianti sottocarichi: dice solo che alcuni prodotti sono in sofferenza. Il nome ora riporta l'attestazione, non la mia interpretazione. Valori e pesi 20/15 sono ipotesi del modello, non quote produttive."
+  "Q2_domanda_diminuita": {
+   "risposta": "Sì, in Europa e negli USA, con un effetto prezzo superiore all'effetto volume nel 2025. A settembre 2026 la direzione rivede al ribasso l'attesa sulle salvaguardie UE.",
+   "osservazioni": [
+    "EU_DEMAND_2025",
+    "MARKET_US_CANCELLED",
+    "MARKET_US_EXPOSURE",
+    "REV_2025_DRIVERS",
+    "WALSIN_STAINLESS_2025",
+    "SALES_Q1_2026_VS_BUDGET",
+    "MARKET_CAUSE_MGMT_2026",
+    "SAFEGUARD_EFFECT_SEPT_2026"
+   ],
+   "revisione": "FR1"
   },
-  "risposte_al_protocollo": {
-    "Q1_sito_sotto_caricato": {
-      "risposta": "In parte. Gli impianti a carico ridotto, non identificati, sì; aerospazio e rifusione no, secondo la direzione. Il rapporto fra carico e capacità non è misurato.",
-      "osservazioni": [
-        "PROD_2026_VS_2025",
-        "LOAD_BY_PRODUCT_2026",
-        "STOP_MGMT_NOV",
-        "STOP_UNION_OCT",
-        "STAFF_SOLIDARITY",
-        "STAFF_CIG_EXHAUSTED"
-      ],
-      "cautela": "PROD_2026_VS_2025 non distingue società e gruppo e non dà un rapporto carico/capacità (riserva Geep). L'eterogeneità per impianto è un'attestazione della direzione, non una misura."
-    },
-    "Q2_domanda_diminuita": {
-      "risposta": "Sì, in Europa e negli USA, con un effetto prezzo superiore all'effetto volume nel 2025. A settembre 2026 la direzione rivede al ribasso l'attesa sulle salvaguardie UE.",
-      "osservazioni": [
-        "EU_DEMAND_2025",
-        "MARKET_US_CANCELLED",
-        "MARKET_US_EXPOSURE",
-        "REV_2025_DRIVERS",
-        "WALSIN_STAINLESS_2025",
-        "SALES_Q1_2026_VS_BUDGET",
-        "MARKET_CAUSE_MGMT_2026",
-        "SAFEGUARD_EFFECT_SEPT_2026"
-      ],
-      "revisione": "FR1"
-    },
-    "Q3_trasferimenti_infragruppo": {
-      "risposta": "Nessuna evidenza diretta.",
-      "osservazioni": [
-        "ALLOC_TRANSFER_EVIDENCE",
-        "ALLOC_GROUP_VOLUME",
-        "GROUP_PERIMETER",
-        "GROUP_RESULTS_BY_ENTITY_2025",
-        "MARKET_CAUSE_MGMT_2026"
-      ],
-      "ragionamento": "La direzione spiega la crisi solo con il mercato e non menziona gli altri siti: è una versione di parte, che non prova né esclude la riallocazione."
-    },
-    "Q4_dati_che_cambierebbero_il_giudizio": [
-      "Volumi per sito e per famiglia di prodotto, con la capacità (ALLOC_GROUP_VOLUME): direbbero se la parte standard di Aosta perde peso rispetto a Degerfors e agli altri siti.",
-      "Giorni effettivi di fermo per impianto (PROD_REAL_STOP).",
-      "Margini della società nel secondo semestre 2026, dopo la revisione FR1.",
-      "Budget 2027 approvato (BUDGET_2027_MGMT è una dichiarazione su un budget non ancora approvato)."
-    ]
-  },
-  "ipotesi_sulla_causa": [
-    {
-      "id": "H1",
-      "enunciato": "Riallocazione infragruppo.",
-      "a_favore": [
-        "GROUP_PERIMETER",
-        "PLAN_PRODUCT_REQUEST"
-      ],
-      "mancanti": [
-        "ALLOC_TRANSFER_EVIDENCE",
-        "ALLOC_GROUP_VOLUME"
-      ],
-      "stato": "possibile, senza evidenza diretta"
-    },
-    {
-      "id": "H2",
-      "enunciato": "Crisi di domanda e di prezzo sui prodotti esposti alla concorrenza asiatica.",
-      "a_favore": [
-        "EU_DEMAND_2025",
-        "MARKET_US_CANCELLED",
-        "REV_2025_DRIVERS",
-        "WALSIN_STAINLESS_2025",
-        "GROUP_RESULTS_BY_ENTITY_2025",
-        "MARKET_CAUSE_MGMT_2026",
-        "LOAD_BY_PRODUCT_2026"
-      ],
-      "stato": "meglio documentata; valutazione motivata, non esclusione di H1"
-    },
-    {
-      "nota": "Interpretazione del modello, non attestazione di S6: che soffrano i prodotti più esposti all'import asiatico è plausibile ma l'intervista non fa un confronto per famiglia. Da non trasferire nel dataset comune."
-    }
-  ],
-  "giudizi": [
-    {
-      "id": "carico_ridotto",
-      "nome": "Impianti a carico ridotto, non identificati",
-      "peso": 20,
-      "r": 0.8,
-      "acquisita": false,
-      "etichetta": "illustrativo",
-      "osservazioni": [
-        "PROD_2026_VS_2025",
-        "LOAD_BY_PRODUCT_2026",
-        "STOP_MGMT_NOV",
-        "STOP_UNION_OCT",
-        "STAFF_SOLIDARITY",
-        "STAFF_CIG_EXHAUSTED",
-        "EU_DEMAND_2025",
-        "MARKET_CAUSE_MGMT_2026"
-      ],
-      "motivazione": "È la parte su cui S6 colloca fermate e minori volumi. Interpretazione del modello, non attestata: sono gli impianti più esposti all'import asiatico. FR1 toglie la ripresa attesa da luglio 2026.",
-      "id_precedente": "carico_std (versioni 2026-11-01h e i)"
-    },
-    {
-      "id": "carico_spec",
-      "nome": "Impianti dichiarati carichi: aerospazio e rifusione",
-      "peso": 15,
-      "r": 0.3,
-      "acquisita": false,
-      "etichetta": "illustrativo",
-      "osservazioni": [
-        "LOAD_BY_PRODUCT_2026",
-        "STOP_MGMT_NOV",
-        "STRATEGY_DIVERSIFICATION_2026",
-        "GROUP_RESULTS_BY_ENTITY_2025"
-      ],
-      "motivazione": "Impianti aerospaziali descritti come molto carichi, rifusioni operative, strategia commerciale spostata su aerospazio, energia e leghe speciali. Nel gruppo la rifusione britannica è in utile: indizio di settore, non misura del carico di Aosta."
-    },
-    {
-      "id": "fin",
-      "nome": "Finanziaria",
-      "peso": 25,
-      "r": 0.7,
-      "acquisita": false,
-      "etichetta": "illustrativo",
-      "osservazioni": [
-        "FIN_PARENT_EBITDA_2025",
-        "FIN_PARENT_NET_2025",
-        "FIN_NET_2025",
-        "EBITDA_Q1_2026_VS_PLAN",
-        "FIN_CAPITAL_INCREASE_70",
-        "OWN_WALSIN_2025",
-        "FIN_PARENT_NFP_2025",
-        "FIN_BANK_MAR_50",
-        "FIN_BANK_MAR_60",
-        "SAFEGUARD_EFFECT_SEPT_2026"
-      ],
-      "motivazione": "Invariato. Tensione economica (EBITDA società −21,9 milioni, primo trimestre 2026 al 38% del piano), sostegno della capogruppo (sottoscrizione MEG oltre quota nel 2025), debito bancario tenuto distinto, PFN migliorata di circa 47 milioni. FR1 indebolisce l'equilibrio previsto per fine 2026, ma è una revisione di previsione e non sposta il valore da sola."
-    },
-    {
-      "id": "tec",
-      "nome": "Tecnologica (R&D)",
-      "peso": 15,
-      "r": null,
-      "acquisita": false,
-      "osservazioni": [
-        "STRATEGY_DIVERSIFICATION_2026"
-      ],
-      "motivazione": "STRATEGY_DIVERSIFICATION_2026 riguarda il mix commerciale, non la ricerca: non basta per un valore. Resta null."
-    },
-    {
-      "id": "dec",
-      "nome": "Decisionale: controllo societario formale",
-      "peso": 10,
-      "r": 0.85,
-      "acquisita": true,
-      "etichetta": "opinione del modello",
-      "osservazioni": [
-        "GOV_CHAIR_2022",
-        "GOV_BOARD_2025",
-        "OWN_WALSIN_2025",
-        "GOV_MEG_AUTONOMY_2025",
-        "GOV_AUDIT_EU_2025",
-        "SHAREHOLDER_VIEW_MGMT_2026"
-      ],
-      "motivazione": "0,85 qualifica il controllo societario formale, acquisito. Non misura il rischio di perdita industriale del sito né l'autonomia nell'allocazione degli ordini, che resta non osservata. Opinione del modello."
-    },
-    {
-      "id": "sim",
-      "nome": "Simbolico-identitaria",
-      "peso": 15,
-      "r": 0.3,
-      "acquisita": false,
-      "etichetta": "illustrativo",
-      "osservazioni": [
-        "STRATEGIC_MIMIT",
-        "PLAN_REQUEST",
-        "MGMT_OUTLOOK_2027",
-        "SHAREHOLDER_VIEW_MGMT_2026"
-      ],
-      "motivazione": "Invariato. Protegge dalla chiusura, non dal sottocarico; il livello assoluto di protezione non è misurabile."
-    }
-  ],
-  "esito": {
-    "giudizio": "allerta",
-    "oltre_soglia": [
-      "carico_ridotto",
-      "fin"
-    ],
-    "media_su_dimensioni_valutate": 0.6,
-    "calcolo": "(20×0,80 + 15×0,30 + 25×0,70 + 10×0,85 + 15×0,30) / 85 = 51 / 85 = 0,600",
-    "non_valutate": [
-      "tec"
-    ],
-    "confronto_con_2026-11-01g": "Stesse due aree in allerta, ma il sottocarico è circoscritto ai prodotti standard; la media scende per la divisione del carico, non per un miglioramento del quadro."
-  },
-  "leve_interessate": [
-    {
-      "leva": "Salvaguardia UE e CBAM",
-      "effetto_sul_modello": "Indebolita da FR1: non va più presentata come ripresa attesa da luglio 2026."
-    },
-    {
-      "leva": "Impegno di volumi per Aosta",
-      "effetto_sul_modello": "Va formulata per famiglia di prodotto: un impegno sui volumi di sito può coesistere con il sottocarico della parte standard."
-    }
-  ],
-  "osservazioni_ignorate": [
-    {
-      "id": "FIN_PARENT_NET_2025_SCOPE_TABLE",
-      "motivo": "C1: uso il civilistico approvato."
-    },
-    {
-      "id": "OWN_WALSIN_DECLARED_2025",
-      "motivo": "C2: uso l'attestazione della capogruppo, con data e nota esplicativa."
-    },
-    {
-      "id": "PLAN_2030_TARGETS",
-      "motivo": "C4 e FR1: usato solo come termine di confronto."
-    },
-    {
-      "id": "BUDGET_2027_MGMT",
-      "motivo": "Budget non approvato: citato in Q4, non nei coefficienti."
-    },
-    {
-      "id": "FIN_REVENUE_2025",
-      "motivo": "Crescita di perimetro (FIN_COMPARABILITY)."
-    },
-    {
-      "id": "OWN_WALSIN_HISTORY_2024",
-      "motivo": "Registrata senza interpretazione."
-    }
-  ],
-  "osservazioni_mancanti_che_pesano": [
-    "ALLOC_GROUP_VOLUME",
+  "Q3_trasferimenti_infragruppo": {
+   "risposta": "Nessuna evidenza diretta.",
+   "osservazioni": [
     "ALLOC_TRANSFER_EVIDENCE",
-    "PROD_REAL_STOP",
-    "ENERGY_PPA"
-  ],
-  "limiti": [
-    "Nessun coefficiente è una misura: il carico non ha un rapporto carico/capacità, la protezione simbolica non ha un livello assoluto.",
-    "La divisione del carico in due poggia su attestazioni della direzione (S6), senza quantità.",
-    "Pesi e soglia sono convenzioni del modello."
-  ],
-  "divergenza_con_geep": {
-    "oggetto": "Uso di coefficienti numerici",
-    "posizione_geep": "Nessun r: le misure disponibili non permettono una ripartizione quantitativa; giudizi solo qualitativi.",
-    "posizione_claude": "I coefficienti restano, come notazione ordinale dichiarata, perché il cruscotto serve a confrontare letture nel tempo (2025, 2026, 2027) e a mostrare l'effetto delle leve: senza un ordine comune queste due funzioni si perdono. Anche i giudizi qualitativi ordinano (accertato, indizio, non dimostrato); il numero rende esplicito quell'ordine e lo espone alla critica. Non va mai presentato come probabilità o misura.",
-    "stato": "divergenza legittima, conservata"
+    "ALLOC_GROUP_VOLUME",
+    "GROUP_PERIMETER",
+    "GROUP_RESULTS_BY_ENTITY_2025",
+    "MARKET_CAUSE_MGMT_2026"
+   ],
+   "ragionamento": "La direzione spiega la crisi solo con il mercato e non menziona gli altri siti: è una versione di parte, che non prova né esclude la riallocazione."
+  },
+  "Q4_dati_che_cambierebbero_il_giudizio": [
+   "Volumi per sito e per famiglia di prodotto, con la capacità (ALLOC_GROUP_VOLUME): direbbero se gli impianti a carico ridotto di Aosta perdono peso rispetto a Degerfors e agli altri siti.",
+   "Giorni effettivi di fermo per impianto (PROD_REAL_STOP).",
+   "Margini della società nel secondo semestre 2026, dopo la revisione FR1.",
+   "Budget 2027 approvato (BUDGET_2027_MGMT è una dichiarazione su un budget non ancora approvato)."
+  ]
+ },
+ "ipotesi_sulla_causa": [
+  {
+   "id": "H1",
+   "enunciato": "Riallocazione infragruppo.",
+   "a_favore": [
+    "GROUP_PERIMETER",
+    "PLAN_PRODUCT_REQUEST"
+   ],
+   "mancanti": [
+    "ALLOC_TRANSFER_EVIDENCE",
+    "ALLOC_GROUP_VOLUME"
+   ],
+   "stato": "possibile, senza evidenza diretta"
+  },
+  {
+   "id": "H2",
+   "enunciato": "Crisi di domanda e di prezzo sui prodotti esposti alla concorrenza asiatica.",
+   "a_favore": [
+    "EU_DEMAND_2025",
+    "MARKET_US_CANCELLED",
+    "REV_2025_DRIVERS",
+    "WALSIN_STAINLESS_2025",
+    "GROUP_RESULTS_BY_ENTITY_2025",
+    "MARKET_CAUSE_MGMT_2026",
+    "LOAD_BY_PRODUCT_2026"
+   ],
+   "stato": "meglio documentata; valutazione motivata, non esclusione di H1"
+  },
+  {
+   "nota": "Interpretazione del modello, non attestazione di S6: che soffrano i prodotti più esposti all'import asiatico è plausibile ma l'intervista non fa un confronto per famiglia. Da non trasferire nel dataset comune."
   }
+ ],
+ "giudizi": [
+  {
+   "id": "carico_ridotto",
+   "nome": "Impianti a carico ridotto, non identificati",
+   "peso": 20,
+   "r": 0.8,
+   "acquisita": false,
+   "etichetta": "illustrativo",
+   "osservazioni": [
+    "PROD_2026_VS_2025",
+    "LOAD_BY_PRODUCT_2026",
+    "STOP_MGMT_NOV",
+    "STOP_UNION_OCT",
+    "STAFF_SOLIDARITY",
+    "STAFF_CIG_EXHAUSTED",
+    "EU_DEMAND_2025",
+    "MARKET_CAUSE_MGMT_2026"
+   ],
+   "motivazione": "È la parte su cui S6 colloca fermate e minori volumi. Interpretazione del modello, non attestata: sono gli impianti più esposti all'import asiatico. FR1 toglie la ripresa attesa da luglio 2026.",
+   "id_precedente": "carico_std (versioni 2026-11-01h e i)"
+  },
+  {
+   "id": "carico_spec",
+   "nome": "Impianti dichiarati carichi: aerospazio e rifusione",
+   "peso": 15,
+   "r": 0.3,
+   "acquisita": false,
+   "etichetta": "illustrativo",
+   "osservazioni": [
+    "LOAD_BY_PRODUCT_2026",
+    "STOP_MGMT_NOV",
+    "STRATEGY_DIVERSIFICATION_2026",
+    "GROUP_RESULTS_BY_ENTITY_2025"
+   ],
+   "motivazione": "Impianti aerospaziali descritti come molto carichi, rifusioni operative, strategia commerciale spostata su aerospazio, energia e leghe speciali. Nel gruppo la rifusione britannica è in utile: indizio di settore, non misura del carico di Aosta."
+  },
+  {
+   "id": "fin",
+   "nome": "Finanziaria",
+   "peso": 25,
+   "r": 0.7,
+   "acquisita": false,
+   "etichetta": "illustrativo",
+   "osservazioni": [
+    "FIN_PARENT_EBITDA_2025",
+    "FIN_PARENT_NET_2025",
+    "FIN_NET_2025",
+    "EBITDA_Q1_2026_VS_PLAN",
+    "FIN_CAPITAL_INCREASE_70",
+    "OWN_WALSIN_2025",
+    "FIN_PARENT_NFP_2025",
+    "FIN_BANK_MAR_50",
+    "FIN_BANK_MAR_60",
+    "SAFEGUARD_EFFECT_SEPT_2026"
+   ],
+   "motivazione": "Invariato. Tensione economica (EBITDA società −21,9 milioni, primo trimestre 2026 al 38% del piano), sostegno della capogruppo (sottoscrizione MEG oltre quota nel 2025), debito bancario tenuto distinto, PFN migliorata di circa 47 milioni. FR1 indebolisce l'equilibrio previsto per fine 2026, ma è una revisione di previsione e non sposta il valore da sola."
+  },
+  {
+   "id": "tec",
+   "nome": "Tecnologica (R&D)",
+   "peso": 15,
+   "r": null,
+   "acquisita": false,
+   "osservazioni": [
+    "STRATEGY_DIVERSIFICATION_2026"
+   ],
+   "motivazione": "STRATEGY_DIVERSIFICATION_2026 riguarda il mix commerciale, non la ricerca: non basta per un valore. Resta null."
+  },
+  {
+   "id": "dec",
+   "nome": "Decisionale: controllo societario formale",
+   "peso": 10,
+   "r": 0.85,
+   "acquisita": true,
+   "etichetta": "opinione del modello",
+   "osservazioni": [
+    "GOV_CHAIR_2022",
+    "GOV_BOARD_2025",
+    "OWN_WALSIN_2025",
+    "GOV_MEG_AUTONOMY_2025",
+    "GOV_AUDIT_EU_2025",
+    "SHAREHOLDER_VIEW_MGMT_2026"
+   ],
+   "motivazione": "0,85 qualifica il controllo societario formale, acquisito. Non misura il rischio di perdita industriale del sito né l'autonomia nell'allocazione degli ordini, che resta non osservata. Opinione del modello."
+  },
+  {
+   "id": "sim",
+   "nome": "Simbolico-identitaria",
+   "peso": 15,
+   "r": 0.3,
+   "acquisita": false,
+   "etichetta": "illustrativo",
+   "osservazioni": [
+    "STRATEGIC_MIMIT",
+    "PLAN_REQUEST",
+    "MGMT_OUTLOOK_2027",
+    "SHAREHOLDER_VIEW_MGMT_2026"
+   ],
+   "motivazione": "Invariato. Protegge dalla chiusura, non dal sottocarico; il livello assoluto di protezione non è misurabile."
+  }
+ ],
+ "esito": {
+  "giudizio": "allerta",
+  "oltre_soglia": [
+   "carico_ridotto",
+   "fin"
+  ],
+  "media_su_dimensioni_valutate": 0.6,
+  "calcolo": "(20×0,80 + 15×0,30 + 25×0,70 + 10×0,85 + 15×0,30) / 85 = 51 / 85 = 0,600",
+  "non_valutate": [
+   "tec"
+  ],
+  "confronto_con_2026-11-01g": "Stesse due aree in allerta, ma il sottocarico è circoscritto agli impianti a carico ridotto, non identificati; la media scende per la divisione del carico, non per un miglioramento del quadro."
+ },
+ "leve_interessate": [
+  {
+   "leva": "Salvaguardia UE e CBAM",
+   "effetto_sul_modello": "Indebolita da FR1: non va più presentata come ripresa attesa da luglio 2026."
+  },
+  {
+   "leva": "Impegno di volumi per Aosta",
+   "effetto_sul_modello": "Va formulata per famiglia di prodotto: un impegno sui volumi di sito può coesistere con il sottocarico degli impianti a carico ridotto."
+  }
+ ],
+ "osservazioni_ignorate": [
+  {
+   "id": "FIN_PARENT_NET_2025_SCOPE_TABLE",
+   "motivo": "C1: uso il civilistico approvato."
+  },
+  {
+   "id": "OWN_WALSIN_DECLARED_2025",
+   "motivo": "C2: uso l'attestazione della capogruppo, con data e nota esplicativa."
+  },
+  {
+   "id": "PLAN_2030_TARGETS",
+   "motivo": "C4 e FR1: usato solo come termine di confronto."
+  },
+  {
+   "id": "BUDGET_2027_MGMT",
+   "motivo": "Budget non approvato: citato in Q4, non nei coefficienti."
+  },
+  {
+   "id": "FIN_REVENUE_2025",
+   "motivo": "Crescita di perimetro (FIN_COMPARABILITY)."
+  },
+  {
+   "id": "OWN_WALSIN_HISTORY_2024",
+   "motivo": "Registrata senza interpretazione."
+  }
+ ],
+ "osservazioni_mancanti_che_pesano": [
+  "ALLOC_GROUP_VOLUME",
+  "ALLOC_TRANSFER_EVIDENCE",
+  "PROD_REAL_STOP",
+  "ENERGY_PPA"
+ ],
+ "limiti": [
+  "Nessun coefficiente è una misura: il carico non ha un rapporto carico/capacità, la protezione simbolica non ha un livello assoluto.",
+  "La divisione del carico in due poggia su attestazioni della direzione (S6), senza quantità.",
+  "Pesi e soglia sono convenzioni del modello."
+ ],
+ "divergenza_con_geep": {
+  "oggetto": "Uso di coefficienti numerici",
+  "posizione_geep": "Nessun r: le misure disponibili non permettono una ripartizione quantitativa; giudizi solo qualitativi.",
+  "posizione_claude": "I coefficienti restano, come notazione ordinale dichiarata, perché il cruscotto serve a confrontare letture nel tempo (2025, 2026, 2027) e a mostrare l'effetto delle leve: senza un ordine comune queste due funzioni si perdono. Anche i giudizi qualitativi ordinano (accertato, indizio, non dimostrato); il numero rende esplicito quell'ordine e lo espone alla critica. Non va mai presentato come probabilità o misura.",
+  "stato": "divergenza legittima, conservata"
+ }
 }

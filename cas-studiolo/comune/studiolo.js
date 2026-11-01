@@ -84,6 +84,7 @@
         if (!col) { errors.push(`Tema ${t.id}: colonna ${k} non configurata.`); continue; }
         const qs = k === "geep" ? M.geep.risposte_protocollo : M.claude.risposte_al_protocollo;
         if (col.domanda && !(qs||{})[col.domanda]) errors.push(`Tema ${t.id}: risposta ${col.domanda} assente nella lettura ${k}.`);
+        (col.extra||[]).forEach(x => { if (campo(M[k], x.campo) == null) errors.push(`Tema ${t.id}: campo ${x.campo} assente nella lettura ${k}.`); });
       }
     });
     // ID citati dai modelli che non esistono nel dataset
@@ -174,7 +175,7 @@
   }
   function notCited(temaIds, used){
     const miss = temaIds.filter(id => !used.has(id));
-    return miss.length ? `<p class="small muted">Osservazioni della rubrica non citate da questa lettura: ${miss.map(id=>`<button type="button" class="chip" data-goto="${esc(id)}">${esc(id)}</button>`).join(" ")}</p>` : `<p class="small muted">Questa lettura cita tutte le osservazioni della rubrica.</p>`;
+    return miss.length ? `<p class="small muted">Osservazioni della rubrica non citate nelle parti di questa lettura mostrate qui: ${miss.map(id=>`<button type="button" class="chip" data-goto="${esc(id)}">${esc(id)}</button>`).join(" ")}</p>` : `<p class="small muted">Le parti di questa lettura mostrate qui citano tutte le osservazioni della rubrica.</p>`;
   }
   function senzaDimensioni(t, k){
     const m = (C.mappa_rubriche||[]).find(x => x.rubrica === t.id) || {};
@@ -184,10 +185,35 @@
     const e = (C.ipotesi_enunciati||{})[h];
     return e ? `<p class="ipotesi-enunciato">${esc(h)}: ${esc(e)}</p>` : "";
   }
+  // sigle del dataset citate dentro un testo libero (per esempio le risposte Q4)
+  function sigleNelTesto(txt){
+    return [...new Set((String(txt).match(/[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+/g) || []).filter(id => OBS[id]))];
+  }
+  // parti di una risposta al protocollo oltre al testo principale: elenchi (es. «priorita») o risposta in forma di elenco
+  function elenchiRisposta(q){
+    const liste = Array.isArray(q) ? [q] : Object.values(q || {}).filter(Array.isArray).filter(a => a.every(x => typeof x === "string") && !a.every(x => OBS[x]));
+    return liste.map(a => `<ul class="voci">${a.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`).join("");
+  }
+  // sezioni aggiuntive di una lettura, scelte dalla configurazione (colonne.<modello>.extra):
+  // il motore mostra il campo così com'è nel file della lettura, senza riformularlo
+  function campo(m, path){ return path.split(".").reduce((o, k) => o == null ? undefined : o[k], m); }
+  function extraBlocks(m, col, used){
+    return (col.extra||[]).map(x => {
+      const v = campo(m, x.campo);
+      if (v == null) return "";
+      const items = Array.isArray(v) ? v : [v];
+      if (used) items.forEach(i => { if (typeof i === "string" && OBS[i]) used.add(i); });
+      return `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>${esc(x.titolo||x.campo)}</h4></div>
+        <ul class="voci">${items.map(it => {
+          if (it && typeof it === "object"){ const vals = Object.values(it); return `<li><b>${esc(vals[0])}</b>${vals.length>1 ? ": " + esc(vals.slice(1).join(" · ")) : ""}</li>`; }
+          return OBS[it] ? `<li><button type="button" class="chip ${OBS[it].status==="missing"?"miss":""}" data-goto="${esc(it)}">${esc(it)}</button></li>` : `<li>${esc(it)}</li>`;
+        }).join("")}</ul>${x.nota ? `<p class="small muted">${esc(x.nota)}</p>` : ""}</div>`;
+    }).join("");
+  }
   function geepColumn(t, temaIds){
     const m = M.geep, col = t.colonne.geep, nl = C.nomi_letture.geep;
     const q = (m.risposte_protocollo||{})[col.domanda] || {};
-    const used = new Set(q.evidenze || []);
+    const used = new Set(q.evidenze && q.evidenze.length ? q.evidenze : sigleNelTesto(JSON.stringify(q)));
     const dims = (m.dimensioni||[]).filter(d => col.dimensioni.includes(d.id));
     dims.forEach(d => (d.evidenze||[]).forEach(i => used.add(i)));
     const hyp = (col.ipotesi||[]).filter(h => (m.ipotesi||{})[h]);
@@ -196,8 +222,9 @@
       <p class="metodo">${esc(nl.metodo)}</p>
       ${col.domanda ? `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
         <p class="testo"><b>${esc(q.esito||"")}</b></p>
-        <p class="testo">${esc(q.ragionamento||"")}</p>
-        ${chips(q.evidenze||[])}
+        ${q.ragionamento?`<p class="testo">${esc(q.ragionamento)}</p>`:""}
+        ${elenchiRisposta(q)}
+        ${chips(q.evidenze && q.evidenze.length ? q.evidenze : sigleNelTesto(JSON.stringify(q)))}
       </div>` : ""}
       ${dims.length ? dims.map(d => `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Dimensione «${esc(d.id)}»</h4></div>
         <p class="testo">${esc(d.giudizio||"")}</p>
@@ -207,6 +234,7 @@
         ${enunciato(h)}
         <p class="testo">${esc(m.ipotesi[h])}</p>
         ${m.ipotesi.cooccorrenza?`<p class="small muted">Compresenza di H1 e H2: ${esc(m.ipotesi.cooccorrenza)}.</p>`:""}</div>`).join("")}
+      ${extraBlocks(m, col, used)}
       ${notCited(temaIds, used)}
       ${(m.limiti||[]).length?`<div><h4>Limiti dichiarati</h4><ul class="lims">${m.limiti.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div>`:""}
     </section>`;
@@ -215,7 +243,7 @@
     const m = M.claude, col = t.colonne.claude, nl = C.nomi_letture.claude;
     const q = (m.risposte_al_protocollo||{})[col.domanda] || {};
     const thr = (m.regola||{}).soglia;
-    const used = new Set(q.osservazioni || []);
+    const used = new Set(q.osservazioni || sigleNelTesto(JSON.stringify(q)));
     const dims = (m.giudizi||[]).filter(d => col.dimensioni.includes(d.id));
     dims.forEach(d => (d.osservazioni||[]).forEach(i => used.add(i)));
     (m.osservazioni_mancanti_che_pesano||[]).forEach(i => { if (temaIds.includes(i)) used.add(i); });
@@ -227,10 +255,11 @@
       <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small mono">${esc(m.model)} · ${esc(m.model_version)} · ${esc(m.dataset_id)}</span></div>
       <p class="metodo">${esc(nl.metodo)}</p>
       ${col.domanda ? `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
-        <p class="testo"><b>${esc(q.risposta||"")}</b></p>
+        ${q.risposta?`<p class="testo"><b>${esc(q.risposta)}</b></p>`:""}
+        ${elenchiRisposta(Array.isArray(q) ? q : {})}
         ${q.cautela?`<p class="testo">${esc(q.cautela)}</p>`:""}
         ${q.ragionamento?`<p class="testo">${esc(q.ragionamento)}</p>`:""}
-        ${chips(q.osservazioni||[])}
+        ${chips(q.osservazioni || sigleNelTesto(JSON.stringify(q)))}
         ${q.revisione?`<p class="small muted">Richiama la previsione rivista <button type="button" class="chip" data-goto="${esc(q.revisione)}">${esc(q.revisione)}</button></p>`:""}
       </div>` : ""}
       ${dims.length ? dims.map(d => {
@@ -239,7 +268,7 @@
         <p class="rline"><span class="mono">r ${d.r==null?"null":nf(d.r,2)}</span>
           ${d.r!=null?`<span class="scale" role="img" aria-label="r ${nf(d.r,2)} su scala da 0 a 1, soglia ${nf(thr,2)}"><i style="width:${d.r*100}%"></i><b style="left:${thr*100}%"></b></span>`:""}
           <span class="muted">peso ${esc(d.peso)}</span>
-          <span class="${over?"st disputed":"muted"}">${over?"sopra la soglia":"sotto la soglia"} ${thr!=null?nf(thr,2):""}</span></p>
+          <span class="${over?"st disputed":"muted"}">${d.r==null ? "non valutata: nessun valore" : (over?"sopra la soglia":"sotto la soglia") + " " + (thr!=null?nf(thr,2):"")}</span></p>
         ${d.etichetta?`<p class="small muted">${esc(d.etichetta)}: notazione ordinale del giudizio, non probabilità né misura.</p>`:""}
         <p class="testo">${esc(d.motivazione||"")}</p>
         ${chips(d.osservazioni||[])}</div>`;
@@ -250,6 +279,7 @@
         ${(h.a_favore||[]).length?`<p class="small muted">A favore:</p>${chips(h.a_favore)}`:""}
         ${(h.mancanti||[]).length?`<p class="small muted">Mancano:</p>${chips(h.mancanti)}`:""}</div>`).join("")}
       ${noteIp.map(x => `<p class="small muted">${esc(x.nota)}</p>`).join("")}
+      ${extraBlocks(m, col, used)}
       ${notCited(temaIds, used)}
       ${(m.limiti||[]).length?`<div><h4>Limiti dichiarati</h4><ul class="lims">${m.limiti.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div>`:""}
     </section>`;
