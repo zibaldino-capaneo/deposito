@@ -1,7 +1,7 @@
 {
   "schema": "cas-editorial-config/0.1",
-  "config_version": "2026-11-01-c09",
-  "stato": "rubriche 1-6 collaudate su GitHub Pages il 1° novembre 2026; fase A chiusa",
+  "config_version": "2026-11-01-c10",
+  "stato": "fase B approvata da Claude e Geep: ingresso alla Mantegna, mappa in breve, navigazione fra rubriche, tavolozza dello Zibaldino; rubriche 1-6 collaudate",
   "regola": "Questo file contiene solo ordine, titoli, raggruppamenti e testi editoriali di raccordo. Nessun fatto, valore o giudizio: quelli si leggono dal dataset e dagli output dei modelli.",
   "file": {
     "dataset": "data/CAS-DATI-v0.4.json",
@@ -24,8 +24,8 @@
     }
   },
   "testata": {
-    "titolo": "Cogne: il carico, il mercato, le scelte",
-    "titolo_stato": "provvisorio",
+    "titolo": "Cogne, Acciai Speciali: il carico, il mercato, le scelte",
+    "titolo_stato": "definitivo",
     "data": "1 novembre 2026",
     "autori": [
       "Paolo Carena",
@@ -34,7 +34,14 @@
     ],
     "domanda_guida": "Che cosa documenta la difficoltà produttiva di Cogne ad Aosta, quali cause sono meglio sostenute e che cosa rimane non dimostrato?",
     "perimetro": "Cogne Acciai Speciali S.p.A., il gruppo che controlla, lo stabilimento di Aosta. I tre perimetri non coincidono e ogni dato dice a quale appartiene.",
-    "delimitazione": "Non è una previsione di chiusura, né un'accusa di riallocazione."
+    "delimitazione": "Non è una previsione di chiusura, né un'accusa di riallocazione.",
+    "titolo_righe": [
+      "Cogne, Acciai Speciali:",
+      "il carico, il mercato, le scelte"
+    ],
+    "sottotitolo": "La volontà di restare?",
+    "titolo_breve": "Studiolo CAS · Cogne, Acciai Speciali",
+    "firma": "Uno Studiolo di Paolo Carena, Claude e ChatGPT (Geep). Ricerca aperta, novembre 2026."
   },
   "come_si_legge": [
     {
@@ -703,5 +710,48 @@
     "_regola": "Enunciati brevi delle ipotesi, comuni alle due letture; i giudizi stanno nei file dei modelli.",
     "H1": "Riallocazione infragruppo: lavoro spostato da Aosta verso altri stabilimenti del gruppo.",
     "H2": "Crisi di domanda e di prezzo."
-  }
+  },
+  "mappa": {
+    "titolo": "La mappa in breve",
+    "nota": "Che cosa sappiamo, che cosa no, e come le due letture si collocano. Non è una sintesi concordata: ogni affermazione porta la sigla che la sostiene e rimanda alla rubrica dove si verifica.",
+    "voci": [
+      {
+        "etichetta": "Documentato",
+        "testo": "Nel 2025 i ricavi della società calano del 10%: 3 punti per i minori volumi, 7 per l'effetto del prezzo delle materie prime (REV_2025_DRIVERS). La società chiude in perdita il 2024 e il 2025 (FIN_PARENT_NET_2024, FIN_PARENT_NET_2025; per il 2025 un secondo documento riporta una cifra diversa, C1). Il capitale viene aumentato nel settembre 2024 e di nuovo nel 2025 (OWN_CAPITAL_INCREASE_45_2024, FIN_CAPITAL_INCREASE_70). La produzione registrata nel 2026 è inferiore a quella del 2025, senza che il documento distingua società e gruppo (PROD_2026_VS_2025)."
+      },
+      {
+        "etichetta": "Dichiarato, non misurato",
+        "testo": "Il carico è diverso fra impianti (LOAD_BY_PRODUCT_2026). Le fermate di fine anno sono raccontate in due modi (C3). La direzione attribuisce la crisi ai dazi americani e all'import asiatico (MARKET_CAUSE_MGMT_2026). Sul 2027 ci sono solo previsioni (BUDGET_2027_MGMT, MGMT_OUTLOOK_2027), e una previsione di inizio anno è già stata rivista (FR1)."
+      },
+      {
+        "etichetta": "Non documentato",
+        "testo": "Spostamenti di lavoro verso altri stabilimenti del gruppo: nessuna traccia diretta, né a favore né contro (ALLOC_TRANSFER_EVIDENCE, ALLOC_GROUP_VOLUME). Il rapporto fra carico e capacità per impianto e i giorni di fermo effettivi (PROD_REAL_STOP). Investimenti deliberati per Aosta: nessuno documentato nelle fonti acquisite."
+      },
+      {
+        "etichetta": "Dove le letture concordano",
+        "testo": "Geep e Claude individuano due aree critiche comuni: tensione economico-finanziaria e sottocarico selettivo, quest'ultimo documentato attraverso dichiarazioni ma non quantificato rispetto alla capacità degli impianti. Entrambi considerano la crisi di domanda e di prezzo (H2) meglio documentata dell'ipotesi di riallocazione infragruppo (H1), che rimane possibile ma non dimostrata."
+      },
+      {
+        "etichetta": "Dove le letture differiscono",
+        "testo": "Geep formula giudizi qualitativi e non attribuisce coefficienti dove manca una misura adeguata. Claude utilizza coefficienti illustrativi ordinali, esplicitamente non interpretabili come probabilità né come misure. Le differenze di metodo rimangono visibili; non comportano necessariamente conclusioni differenti."
+      }
+    ]
+  },
+  "archivio": [
+    {
+      "etichetta": "Lettura Geep precedente",
+      "file": "archivio/letture/CAS-Geep-v0.4_geep04-independent.json",
+      "nota": "2026-11-01-geep04-independent"
+    },
+    {
+      "etichetta": "Lettura Claude precedente",
+      "file": "archivio/letture/CAS-Claude-v0.4_2026-11-01j.json",
+      "nota": "2026-11-01j"
+    },
+    {
+      "etichetta": "Prima maquette della rubrica 1",
+      "file": "archivio/maquette-t1-collaudata/",
+      "nota": "collaudata il 1° novembre 2026"
+    }
+  ]
 }

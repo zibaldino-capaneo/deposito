@@ -1,26 +1,27 @@
 /* Layout: colonna di lettura larga; testata, legenda, indice; per tema una fascia comune a tutta larghezza (fatti), poi due colonne di giudizio, poi le fonti. Su telefono tutto in sequenza. */
+/* Tavolozza dello Zibaldino (carta e bruni, come Mantegna e H€BDOMA$); i colori degli stati restano distinti */
 :root{
-  --bg:#edf0f1; --surface:#fbfcfc; --ink:#1c232b; --muted:#56616c; --line:#cbd2d8; --line-soft:#dfe4e8;
-  --accent:#2c5b7a; --accent-soft:#dde8ef;
-  --geep:#5e4f86; --claude:#9a5420;
-  --st-reported:#2c5b7a; --st-attributed:#8a6412; --st-derived:#4f6b3a; --st-disputed:#a23a2c; --st-missing:#6b7480;
-  --st-revision:#6a4c93; --hatch:#dfe3e6; --flash:#fff1c9;
-  --f-display:"Charter","Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --bg:#f3eddf; --surface:#fbf8f1; --ink:#2d2924; --muted:#6a5c4a; --line:#cbbba7; --line-soft:#e3d9c8;
+  --accent:#77572f; --accent-soft:#ece2cf;
+  --geep:#5b4f86; --claude:#9a5420;
+  --st-reported:#2a5876; --st-attributed:#80600f; --st-derived:#476434; --st-disputed:#a23a2c; --st-missing:#5f6670;
+  --st-revision:#674a90; --hatch:#e6dccb; --flash:#f8e5b4;
+  --f-display:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
   --f-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --f-data:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#14181d; --surface:#1b2027; --ink:#e3e7eb; --muted:#9aa4ae; --line:#333c46; --line-soft:#272e36;
-  --accent:#7fb0d1; --accent-soft:#1f3140;
-  --geep:#a99ad6; --claude:#e09a5f;
-  --st-reported:#7fb0d1; --st-attributed:#d8ae4f; --st-derived:#9cc07f; --st-disputed:#ec7d6e; --st-missing:#97a1ab;
-  --st-revision:#b9a1dc; --hatch:#262d35; --flash:#3b3420; color-scheme:dark}}
+  --bg:#1c1915; --surface:#25211c; --ink:#ece4d6; --muted:#b4a68f; --line:#4a4236; --line-soft:#342e27;
+  --accent:#d9b37e; --accent-soft:#3a3125;
+  --geep:#b4a6e0; --claude:#e6a066;
+  --st-reported:#8dbadb; --st-attributed:#dcb257; --st-derived:#a3c787; --st-disputed:#ef8576; --st-missing:#a7adb5;
+  --st-revision:#c1a9e3; --hatch:#2f2a23; --flash:#4a3d22; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#14181d; --surface:#1b2027; --ink:#e3e7eb; --muted:#9aa4ae; --line:#333c46; --line-soft:#272e36;
-  --accent:#7fb0d1; --accent-soft:#1f3140;
-  --geep:#a99ad6; --claude:#e09a5f;
-  --st-reported:#7fb0d1; --st-attributed:#d8ae4f; --st-derived:#9cc07f; --st-disputed:#ec7d6e; --st-missing:#97a1ab;
-  --st-revision:#b9a1dc; --hatch:#262d35; --flash:#3b3420; color-scheme:dark}
+  --bg:#1c1915; --surface:#25211c; --ink:#ece4d6; --muted:#b4a68f; --line:#4a4236; --line-soft:#342e27;
+  --accent:#d9b37e; --accent-soft:#3a3125;
+  --geep:#b4a6e0; --claude:#e6a066;
+  --st-reported:#8dbadb; --st-attributed:#dcb257; --st-derived:#a3c787; --st-disputed:#ef8576; --st-missing:#a7adb5;
+  --st-revision:#c1a9e3; --hatch:#2f2a23; --flash:#4a3d22; color-scheme:dark}
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.55;
@@ -171,7 +172,26 @@ details.nc .chips{margin-top:6px}
 .rub p{font-size:14.5px}
 .rub .apri{font-weight:600;font-size:14px}
 
+.head h1{font-size:clamp(28px,4.6vw,44px);line-height:1.12}
+.motto{font-family:var(--f-data);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:2px 0 4px}
+.mappa{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:20px 22px;display:grid;gap:12px}
+.mappa dl{display:grid;grid-template-columns:minmax(150px,200px) 1fr;gap:10px 22px;margin:0}
+.mappa dt{font-family:var(--f-data);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;padding-top:3px}
+.mappa dd{margin:0;font-size:15.5px;max-width:78ch}
+a.sigla{font-family:var(--f-data);font-size:12px;color:var(--accent);text-decoration:none;border-bottom:1px dotted currentColor}
+a.sigla:hover{border-bottom-style:solid}
+.rub{grid-template-columns:auto 1fr;gap:6px 14px}
+.rub .num{font-family:var(--f-data);font-size:13px;color:var(--accent);padding-top:3px}
+.rub > div{display:grid;gap:8px}
+.doc ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.passi{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 18px;font-size:14px;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:8px 0}
+.passi a{text-decoration:none;font-weight:600}
+.passi a:hover{text-decoration:underline}
+.firma{border-top:1px solid var(--line);padding-top:14px;font-size:13.5px;color:var(--muted)}
+
 @media (max-width:760px){
+  .mappa dl{grid-template-columns:1fr;gap:2px 0}
+  .mappa dd{margin-bottom:10px}
   .letture,.conflitto .pair{grid-template-columns:1fr}
   .band{padding:16px}
   .cards{grid-template-columns:1fr}

@@ -363,9 +363,61 @@
         </dl>
       </section>`;
   }
+  // dove vive per la prima volta una sigla (osservazione, conflitto, revisione, ipotesi): serve ai rimandi dall'ingresso
+  function dove(id){
+    for (const x of C.indice){
+      const t = C.temi.find(tt => tt.id === x.id); if (!t) continue;
+      if (OBS[id] && idsOfTheme(t).includes(id)) return {t, anchor: slug(id, t.id)};
+      if (/^C\d+$/.test(id) && t.gruppi.some(g => g.conflitto === id)) return {t, anchor: slug(id, t.id)};
+      if (/^FR\d+$/.test(id) && t.gruppi.some(g => g.revisione === id)) return {t, anchor: slug(id, t.id)};
+      if (/^H\d+$/.test(id) && ["geep","claude"].some(k => ((t.colonne[k]||{}).ipotesi||[]).includes(id))) return {t, anchor: t.id};
+    }
+    return null;
+  }
+  // testo con sigle: ogni sigla nota diventa un rimando alla rubrica che la contiene
+  function testoConRimandi(txt){
+    const voce = id => C.indice.find(x => x.id === id);
+    return esc(txt).replace(/\b([A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+|C\d+|FR\d+|H\d+)\b/g, m => {
+      const d = dove(m); if (!d) return m;
+      return `<a class="sigla" href="${BASE}${voce(d.t.id).cartella}/#${d.anchor}">${m}</a>`;
+    });
+  }
+  function testata(voce, n){
+    const h = C.testata, fa = D.freeze_audit || {};
+    const righe = h.titolo_righe || [h.titolo];
+    return `
+      <span class="eyebrow">Lo Zibaldino di Capaneo · ${voce ? `Rubrica ${n} di ${C.indice.length} · ${esc(voce.titolo)}` : "Indice dell'ambiente di ricerca"}</span>
+      <h1>${righe.map(esc).join("<br>")}</h1>
+      ${h.sottotitolo ? `<p class="motto">«${esc(h.sottotitolo)}»</p>` : ""}
+      <div class="meta"><span>${esc(h.data)}</span><span>${h.autori.map(esc).join(", ")}</span>${h.titolo_stato && h.titolo_stato !== "definitivo" ? `<span>Titolo ${esc(h.titolo_stato)}</span>` : ""}</div>
+      ${voce ? "" : `<p class="guida">${esc(h.domanda_guida)}</p>
+      <p class="limiti">${esc(h.perimetro)} <span class="delim">${esc(h.delimitazione)}</span></p>`}
+      <p class="prov">Dati: ${esc(D.dataset_id)}, congelata il ${esc(fa.date||D.as_of)}. Letture: ${esc(M.geep.model_version)} e ${esc(M.claude.model_version)}.</p>`;
+  }
+  function mappa(){
+    const m = C.mappa; if (!m) return "";
+    return `<section aria-labelledby="mappa-h" class="mappa">
+        <h2 id="mappa-h">${esc(m.titolo || "La mappa in breve")}</h2>
+        ${m.nota ? `<p class="small muted" style="max-width:80ch">${esc(m.nota)}</p>` : ""}
+        <dl>${m.voci.map(v => `<dt>${esc(v.etichetta)}</dt><dd>${testoConRimandi(v.testo)}</dd>`).join("")}</dl>
+      </section>`;
+  }
+  function documentazione(){
+    const f = C.file, arch = C.archivio || [];
+    const riga = (et, file, nota) => `<li><a href="${BASE}${esc(file)}">${esc(et)}</a> <span class="mono small muted">${esc(file)}</span>${nota ? ` <span class="small muted">· ${esc(nota)}</span>` : ""}</li>`;
+    return `<section aria-labelledby="doc-h" class="doc">
+        <h2 id="doc-h">Documentazione e dati replicabili</h2>
+        <p class="small muted" style="max-width:80ch">Tutto ciò che la pagina mostra viene da questi file. Si possono scaricare e rileggere senza passare dall'interfaccia.</p>
+        <ul>
+          ${riga("Base dati comune", f.dataset, `${D.dataset_id}, congelata il ${(D.freeze_audit||{}).date||D.as_of}`)}
+          ${riga("Lettura Geep", f.modelli.geep, M.geep.model_version)}
+          ${riga("Lettura Claude", f.modelli.claude, M.claude.model_version)}
+          ${riga("Configurazione editoriale", "data/CAS-config-v0.1.json", C.config_version)}
+          ${arch.map(a => riga(a.etichetta, a.file, a.nota)).join("")}
+        </ul>
+      </section>`;
+  }
   function render(){
-    const h = C.testata;
-    const fa = D.freeze_audit || {};
     const sviluppati = C.temi.map(t => t.id);
     const tema = RUB ? C.temi.find(t => t.id === RUB) : null;
     const voce = RUB ? C.indice.find(x => x.id === RUB) : null;
@@ -373,52 +425,65 @@
     const link = x => `${BASE}${x.cartella}/`;
     if (RUB && !tema) errors.push(`La pagina dichiara la rubrica ${RUB}, che non è sviluppata nella configurazione.`);
 
-    document.getElementById("testata").innerHTML = `
-      <span class="eyebrow">Lo Zibaldino · studiolo${voce ? ` · rubrica ${n} di ${C.indice.length}` : ` · ingresso`}</span>
-      <h1>${esc(h.titolo)}</h1>
-      <div class="meta"><span>${esc(h.data)}</span><span>${h.autori.map(esc).join(", ")}</span><span>Titolo ${esc(h.titolo_stato)}</span></div>
-      <p class="guida">${esc(h.domanda_guida)}</p>
-      <p class="limiti">${esc(h.perimetro)} <span class="delim">${esc(h.delimitazione)}</span></p>
-      <p class="prov">Dati: ${esc(D.dataset_id)}, congelata il ${esc(fa.date||D.as_of)}. Letture: ${esc(M.geep.model_version)} e ${esc(M.claude.model_version)}.</p>`;
+    document.getElementById("testata").innerHTML = testata(voce, n);
 
     const sec = document.createElement("div");
     sec.className = "wrap"; sec.style.margin = "0"; sec.style.maxWidth = "none";
 
     if (tema){
+      const dev = C.indice.filter(x => sviluppati.includes(x.id));
+      const i = dev.findIndex(x => x.id === RUB);
+      const prev = dev[i-1], next = dev[i+1];
+      const passi = `<nav class="passi" aria-label="Fra le rubriche">
+          <a href="${BASE}">← Ingresso</a>
+          ${prev ? `<a href="${link(prev)}">‹ ${esc(prev.titolo)}</a>` : `<span></span>`}
+          ${next ? `<a href="${link(next)}">${esc(next.titolo)} ›</a>` : `<span></span>`}
+        </nav>`;
       const toc = C.indice.map(x => {
-        const dev = sviluppati.includes(x.id), on = x.id === RUB;
-        return `<li class="${dev?"dev":"off"} ${on?"on":""}">${dev && !on ? `<a href="${link(x)}">${esc(x.titolo)}</a>` : esc(x.titolo)} <span class="small">· ${esc(x.stato)}</span></li>`;
+        const d = sviluppati.includes(x.id), on = x.id === RUB;
+        return `<li class="${d?"dev":"off"} ${on?"on":""}">${d && !on ? `<a href="${link(x)}">${esc(x.titolo)}</a>` : esc(x.titolo)}</li>`;
       }).join("");
       const s = themeSection(tema);
       sec.innerHTML = `
+        ${passi}
+        <nav aria-label="Rubriche"><ol class="toc">${toc}</ol></nav>
         ${legenda()}
-        <nav aria-label="Rubriche"><ol class="toc">${toc}</ol><p class="small" style="margin-top:8px"><a href="${BASE}">← Ingresso dello studiolo</a></p></nav>
         ${s.html}
+        ${passi}
         ${metodo(`la rubrica ha ${s.n} osservazioni`)}`;
-      document.title = `${tema.titolo} · Studiolo CAS`;
+      document.title = `${tema.titolo} · ${(C.testata.titolo_breve || "Studiolo CAS")}`;
     } else {
       let nTot = 0;
       const dist = new Set();
       C.temi.forEach(t => { const ids = idsOfTheme(t); nTot += ids.length; ids.forEach(i => dist.add(i)); });
       const nDist = dist.size;
       sec.innerHTML = `
+        ${mappa()}
         ${legenda()}
         <section aria-labelledby="rub-h" style="display:grid;gap:14px">
-          <h2 id="rub-h">Le sei rubriche</h2>
-          <p class="small muted" style="max-width:80ch">Ogni rubrica ha la stessa struttura: i fatti comuni a tutta larghezza, le due letture indipendenti, la passeggiata fra le fonti. Si possono leggere in qualsiasi ordine.</p>
-          <ol class="rubriche">${C.indice.map((x, i) => {
-            const dev = sviluppati.includes(x.id);
-            return `<li class="rub ${dev?"dev":"off"}">
-              <span class="eyebrow">Rubrica ${i+1} / ${C.indice.length} · ${esc(x.stato)}</span>
-              <h3>${dev ? `<a href="${link(x)}">${esc(x.titolo)}</a>` : esc(x.titolo)}</h3>
+          <h2 id="rub-h">Percorso suggerito</h2>
+          <p class="small muted" style="max-width:80ch">Sei rubriche con la stessa struttura: i fatti comuni a tutta larghezza, le due letture indipendenti, la passeggiata fra le fonti. Si possono leggere in ordine o scegliendo direttamente.</p>
+          <ol class="rubriche">${C.indice.map((x, k) => {
+            const d = sviluppati.includes(x.id);
+            return `<li class="rub ${d?"dev":"off"}">
+              <span class="num">${String(k+1).padStart(2,"0")}</span>
+              <div><h3>${d ? `<a href="${link(x)}">${esc(x.titolo)}</a>` : esc(x.titolo)}</h3>
               ${x.sommario?`<p>${esc(x.sommario)}</p>`:""}
-              ${dev ? `<a class="apri" href="${link(x)}">Apri la rubrica →</a>` : ""}
+              ${d ? `<a class="apri" href="${link(x)}">Entra →</a>` : `<span class="small muted">${esc(x.stato)}</span>`}</div>
             </li>`;
           }).join("")}</ol>
         </section>
-        ${metodo(`le rubriche sviluppate (${sviluppati.length}) richiamano ${nDist} delle ${(D.observations||[]).length} osservazioni del dataset (${nTot} richiami in tutto)`)}`;
+        ${documentazione()}
+        ${metodo(`le rubriche sviluppate (${sviluppati.length}) richiamano ${nDist} delle ${(D.observations||[]).length} osservazioni del dataset (${nTot} richiami in tutto)`)}
+        <footer class="firma">${esc(C.testata.firma || "")}</footer>`;
+      document.title = C.testata.titolo_breve || "Studiolo CAS";
     }
     app.appendChild(sec);
+    // arrivo da un rimando dell'ingresso: porta all'elemento e lo evidenzia
+    if (location.hash){
+      const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (el){ setTimeout(() => { vaiA(el); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1600); }, 60); }
+    }
   }
   // «Lo direbbe X» solo se X è un'osservazione diversa dalle due in conflitto;
   // «dato mancante» solo se X è davvero mancante nel dataset
