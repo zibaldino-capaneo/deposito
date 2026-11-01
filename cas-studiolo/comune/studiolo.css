@@ -75,7 +75,7 @@ button{font:inherit;color:inherit}
 .band .domanda{font-family:var(--f-display);font-size:clamp(20px,2.6vw,25px);max-width:60ch}
 .gruppo{display:grid;gap:12px}
 .gruppo>h3{border-bottom:1px solid var(--line-soft);padding-bottom:6px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
 .card{border:1px solid var(--line);border-radius:5px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0;background:var(--surface);transition:background .4s}
 .card.flash{background:var(--flash)}
 .card .top{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between}
@@ -163,7 +163,7 @@ details.nc .chips{margin-top:6px}
 .check.err{border:1.5px solid var(--st-disputed);color:var(--st-disputed)}
 .check ul{margin:6px 0 0;padding-left:18px}
 
-.rubriche{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.rubriche{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
 .rub{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:8px;align-content:start}
 .rub.dev{border-color:var(--accent)}
 .rub.off{color:var(--muted)}
@@ -182,8 +182,9 @@ a.sigla{font-family:var(--f-data);font-size:12px;color:var(--accent);text-decora
 a.sigla:hover{border-bottom-style:solid}
 .rub{grid-template-columns:auto 1fr;gap:6px 14px}
 .rub .num{font-family:var(--f-data);font-size:13px;color:var(--accent);padding-top:3px}
-.rub > div{display:grid;gap:8px}
+.rub > div{display:grid;gap:8px;min-width:0}
 .doc ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.doc li{min-width:0;overflow-wrap:anywhere}
 .passi{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 18px;font-size:14px;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:8px 0}
 .passi a{text-decoration:none;font-weight:600}
 .passi a:hover{text-decoration:underline}
