@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cogne, studiolo CAS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: colonna di lettura larga; testata, legenda, indice; per tema una fascia comune a tutta larghezza (fatti), poi due colonne di giudizio, poi le fonti. Su telefono tutto in sequenza. */
+:root{
+  --bg:#edf0f1; --surface:#fbfcfc; --ink:#1c232b; --muted:#56616c; --line:#cbd2d8; --line-soft:#dfe4e8;
+  --accent:#2c5b7a; --accent-soft:#dde8ef;
+  --geep:#5e4f86; --claude:#9a5420;
+  --st-reported:#2c5b7a; --st-attributed:#8a6412; --st-derived:#4f6b3a; --st-disputed:#a23a2c; --st-missing:#6b7480;
+  --hatch:#dfe3e6; --flash:#fff1c9;
+  --f-display:"Charter","Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --f-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --f-data:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14181d; --surface:#1b2027; --ink:#e3e7eb; --muted:#9aa4ae; --line:#333c46; --line-soft:#272e36;
+  --accent:#7fb0d1; --accent-soft:#1f3140;
+  --geep:#a99ad6; --claude:#e09a5f;
+  --st-reported:#7fb0d1; --st-attributed:#d8ae4f; --st-derived:#9cc07f; --st-disputed:#ec7d6e; --st-missing:#97a1ab;
+  --hatch:#262d35; --flash:#3b3420; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14181d; --surface:#1b2027; --ink:#e3e7eb; --muted:#9aa4ae; --line:#333c46; --line-soft:#272e36;
+  --accent:#7fb0d1; --accent-soft:#1f3140;
+  --geep:#a99ad6; --claude:#e09a5f;
+  --st-reported:#7fb0d1; --st-attributed:#d8ae4f; --st-derived:#9cc07f; --st-disputed:#ec7d6e; --st-missing:#97a1ab;
+  --hatch:#262d35; --flash:#3b3420; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;gap:30px}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,4.4vw,42px)}
+h2{font-size:clamp(22px,3vw,28px)}
+h3{font-size:19px}
+h4{font-size:16px}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-data);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+
+/* testata */
+.head{display:grid;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:20px}
+.head .meta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13.5px;color:var(--muted)}
+.head .guida{font-family:var(--f-display);font-size:19px;max-width:62ch}
+.head .limiti{max-width:70ch}
+.head .delim{font-weight:600}
+.prov{font-size:13px;color:var(--muted)}
+
+/* legenda */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 22px}
+.legend div{display:grid;gap:4px;min-width:0}
+.legend p{font-size:13.5px;color:var(--muted)}
+.legend .st{justify-self:start}
+
+/* chip di stato */
+.st{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-data);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.st.reported{color:var(--st-reported)} .st.attributed{color:var(--st-attributed)} .st.derived{color:var(--st-derived)}
+.st.disputed{color:var(--st-disputed)} .st.missing{color:var(--st-missing)} .st.giudizio{color:var(--ink);border-style:dashed}
+
+/* indice */
+.toc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.toc li{font-size:14px;padding:6px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+.toc li.on{border-color:var(--accent);color:var(--accent);font-weight:600}
+.toc li.off{color:var(--muted)}
+.toc li.off span{font-size:12px}
+
+/* fascia del tema */
+.tema{display:grid;gap:22px}
+.band{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:22px;display:grid;gap:22px}
+.band .domanda{font-family:var(--f-display);font-size:clamp(20px,2.6vw,25px);max-width:60ch}
+.gruppo{display:grid;gap:12px}
+.gruppo>h3{border-bottom:1px solid var(--line-soft);padding-bottom:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:5px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0;background:var(--surface);transition:background .4s}
+.card.flash{background:var(--flash)}
+.card .top{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between}
+.card h4{font-family:var(--f-body);font-size:15px;font-weight:600}
+.card .val{font-size:15px}
+.card .meta{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:12.5px;color:var(--muted)}
+.card .id{font-family:var(--f-data);font-size:11.5px;color:var(--muted)}
+.card.missing{background-image:repeating-linear-gradient(135deg,transparent 0 8px,var(--hatch) 8px 10px)}
+.card.missing .val{font-family:var(--f-data)}
+.card .avv{font-size:13px;border-left:2px solid var(--line);padding-left:8px;color:var(--muted)}
+.card .uso{font-size:12.5px;color:var(--muted)}
+.kv{display:grid;grid-template-columns:auto auto;gap:2px 14px;font-size:13.5px;justify-content:start}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right}
+
+.fonti-btn{display:flex;flex-wrap:wrap;gap:6px}
+.fbtn{font-size:12.5px;padding:3px 8px;border:1px solid var(--line);border-radius:3px;background:transparent;cursor:pointer}
+.fbtn[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+.fdet{border:1px solid var(--line-soft);border-radius:4px;padding:10px 12px;font-size:13.5px;display:grid;gap:4px;background:var(--bg)}
+.fdet b{font-weight:600}
+
+/* conflitto */
+.conflitto{border:1.5px solid var(--st-disputed);border-radius:6px;padding:16px;display:grid;gap:12px}
+.conflitto .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.conflitto .nota{font-size:14px}
+.chiarire{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+
+.cosa-manca{border-left:3px solid var(--st-missing);padding:4px 0 4px 12px;max-width:75ch}
+.contesto{font-size:14px;color:var(--muted);max-width:80ch}
+
+details.altre{border-top:1px solid var(--line-soft);padding-top:12px}
+details.altre summary{cursor:pointer;font-weight:600;font-size:14.5px}
+details.altre .cards{margin-top:12px}
+
+/* due letture */
+.letture{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.lettura{display:grid;gap:14px;min-width:0;padding-top:10px;border-top:3px solid var(--line)}
+.lettura.geep{border-top-color:var(--geep)} .lettura.claude{border-top-color:var(--claude)}
+.lettura .chi{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.lettura .metodo{font-size:13.5px;color:var(--muted)}
+.giud{border:1.5px dashed var(--line);border-radius:6px;padding:14px;display:grid;gap:8px;background:transparent}
+.giud .lab{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.giud .testo{font-size:14.5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-family:var(--f-data);font-size:11.5px;padding:2px 7px;border-radius:3px;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.miss{border-style:dashed}
+.rline{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13.5px}
+.scale{position:relative;height:10px;width:min(220px,100%);background:var(--line-soft);border-radius:2px}
+.scale i{position:absolute;inset:0 auto 0 0;background:var(--claude);border-radius:2px}
+.scale b{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px solid var(--ink)}
+.nullr{font-family:var(--f-data);font-size:13px}
+.lims{margin:0;padding-left:18px;font-size:13.5px;color:var(--muted);display:grid;gap:3px}
+.vuoto{font-size:13.5px;color:var(--muted);font-style:italic}
+
+/* fonti e metodo */
+.fonti-lista{display:grid;gap:10px}
+.fonte{border-bottom:1px solid var(--line-soft);padding-bottom:10px;display:grid;gap:4px;font-size:14px}
+.fonte .usi{font-size:13px;color:var(--muted)}
+.metodo{display:grid;gap:8px;font-size:13.5px}
+.metodo dl{display:grid;grid-template-columns:minmax(140px,max-content) 1fr;gap:4px 16px;margin:0}
+.metodo dt{color:var(--muted)} .metodo dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.check{padding:10px 14px;border-radius:5px;font-size:14px}
+.check.ok{border:1px solid var(--st-derived);color:var(--st-derived)}
+.check.err{border:1.5px solid var(--st-disputed);color:var(--st-disputed)}
+.check ul{margin:6px 0 0;padding-left:18px}
+
+@media (max-width:760px){
+  .letture,.conflitto .pair{grid-template-columns:1fr}
+  .band{padding:16px}
+  .cards{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap" id="app">
+  <header class="head" id="testata"><p class="muted">Caricamento dei dati…</p></header>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const CFG_URL = "data/CAS-config-v0.1.json";
+  const app = document.getElementById("app");
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const nf = (v, d) => v.toLocaleString("it-IT", {minimumFractionDigits:d, maximumFractionDigits:d});
+  const slug = id => "o-" + id.toLowerCase().replace(/_/g, "-");
+
+  const STATUS = { reported:"Registrato", attributed:"Dichiarato", derived:"Derivato", disputed:"Contestato", missing:"Mancante", unverified:"Non verificato" };
+  const REVIEW = {
+    verified_primary:"fonte primaria", verified_secondary:"fonte secondaria", verified_official_web:"pagina ufficiale",
+    verified_attribution:"dichiarazione verificata sul testo", verified_attribution_not_actual_stoppage:"dichiarazione, non fermata avvenuta",
+    verified_attribution_primary_union_communique:"dichiarazione verificata sul comunicato", derived_assumption_explicit:"ipotesi dichiarata",
+    pending:"da verificare", pending_direct_source_check:"fonte diretta da verificare", disputed:"contestato", missing:""
+  };
+  const ENTITY = {
+    Aosta_site:"Stabilimento di Aosta", Aosta_site_selected_departments:"Alcuni reparti di Aosta", CAS_SpA:"Cogne S.p.A.",
+    CAS_SpA_parent:"Cogne S.p.A., bilancio separato", group_consolidated:"Gruppo, consolidato", CAS_SpA_and_group_ambiguous:"Società o gruppo: non specificato",
+    Aosta_site_vs_group:"Aosta rispetto al gruppo", sector:"Settore", group_entities:"Società del gruppo", group:"Gruppo",
+    CAS_SpA_or_site_unspecified:"Società o sito: non specificato", CAS_SpA_and_group:"Società e gruppo"
+  };
+  const UNIT = { EUR_million:"mln €", persons:"persone", percent:"%", percent_approx:"% circa", tonne:"t", days:"giorni", EUR:"€" };
+  const STYPE = {
+    official_primary_financial_statements:"Bilancio ufficiale", official_listed_parent_filing:"Documento ufficiale della capogruppo",
+    official_company_press_release:"Comunicato della società", official_company_page:"Pagina della società", official_investor_page:"Pagina investitori",
+    journalism:"Articolo", journalism_union_claim:"Articolo su dichiarazioni sindacali", journalism_citing_filing:"Articolo che cita un documento",
+    management_interview:"Intervista a un dirigente", interview:"Intervista", union_communique:"Comunicato sindacale", trade_press:"Stampa di settore", aggregator:"Aggregatore di dati"
+  };
+
+  // Traduzioni di sola visualizzazione: il dataset resta invariato e l'originale è mostrato sotto
+  const TRAD = {
+    PROD_2026_VS_2025: "I volumi di produzione registrati nel 2026 sono inferiori a quelli dell'anno precedente."
+  };
+
+  let D, M = {}, C, OBS = {}, SRC = {}, CONF = {};
+  const errors = [];
+
+  function fetchJSON(u){ return fetch(u).then(r => { if(!r.ok) throw new Error(u + ": HTTP " + r.status); return r.json(); }); }
+
+  // raccoglie gli ID di osservazione citati in un oggetto, escluse le chiavi indicate
+  function idsIn(obj, skip){
+    const out = new Set();
+    (function walk(x, key){
+      if (skip && skip.includes(key)) return;
+      if (typeof x === "string"){ if (OBS[x]) out.add(x); return; }
+      if (Array.isArray(x)) x.forEach(v => walk(v));
+      else if (x && typeof x === "object") Object.entries(x).forEach(([k,v]) => walk(v, k));
+    })(obj);
+    return out;
+  }
+  function ignoredBy(model){
+    const m = new Map();
+    (model.osservazioni_ignorate || []).forEach(o => m.set(o.id, o.motivo));
+    return m;
+  }
+
+  function validate(){
+    const a = C.attesi;
+    if (D.dataset_id !== a.dataset_id) errors.push(`Dataset atteso ${a.dataset_id}, trovato ${D.dataset_id}.`);
+    for (const k of ["geep","claude"]){
+      const m = M[k], e = a.modelli[k];
+      if (!m) { errors.push(`Output del modello ${k} mancante.`); continue; }
+      if (m.model !== e.model) errors.push(`Modello ${k}: atteso ${e.model}, trovato ${m.model}.`);
+      if (m.dataset_id !== e.dataset_id) errors.push(`Modello ${k}: riferito a ${m.dataset_id}, atteso ${e.dataset_id}.`);
+    }
+    let n = 0;
+    C.temi.forEach(t => {
+      t.gruppi.forEach(g => {
+        (g.osservazioni || []).forEach(id => { n++; if (!OBS[id]) errors.push(`Tema ${t.id}: osservazione ${id} assente dal dataset.`); });
+        if (g.conflitto && !CONF[g.conflitto]) errors.push(`Tema ${t.id}: conflitto ${g.conflitto} assente.`);
+        if (g.chiarirebbe && !OBS[g.chiarirebbe]) errors.push(`Tema ${t.id}: osservazione ${g.chiarirebbe} assente.`);
+      });
+    });
+    // ID citati dai modelli che non esistono nel dataset
+    for (const k of ["geep","claude"]){
+      const txt = JSON.stringify(M[k] || {});
+      (txt.match(/"[A-Z][A-Z0-9_]{3,}"/g) || []).map(s => s.slice(1,-1))
+        .filter(s => /_/.test(s) && !OBS[s] && !/^(FR\d|C\d|H\d|Q\d)/.test(s))
+        .forEach(s => errors.push(`Modello ${k}: cita ${s}, assente dal dataset.`));
+    }
+    return n;
+  }
+
+  /* ---------- rendering dei fatti ---------- */
+  function fmtValue(o){
+    const v = o.value, u = UNIT[o.unit] || "";
+    if (v === null || v === undefined) return `<span class="val mono">null</span> <span class="muted small">dato non disponibile, non zero</span>`;
+    if (typeof v === "number") return `<span class="val mono">${nf(v, Number.isInteger(v)?0:(Math.abs(v)<100?2:1))}${u ? " " + esc(u) : ""}</span>`;
+    if (typeof v === "object") {
+      return `<dl class="kv">${Object.entries(v).map(([k,x]) => `<dt>${esc(k.replace(/_/g," "))}</dt><dd class="mono">${typeof x==="number"?nf(x,Math.abs(x)<100?1:0):esc(x)}${typeof x==="number"&&u?" "+esc(u):""}</dd>`).join("")}</dl>`;
+    }
+    if (TRAD[o.id]) return `<p class="val">${esc(TRAD[o.id])}</p><p class="small muted">Testo originale nel dataset: <span lang="en">«${esc(v)}»</span></p>`;
+    return `<p class="val">${esc(v)}</p>`;
+  }
+  function pagesFor(o, sid){
+    const p = o.pdf_page;
+    if (p == null) return "";
+    if (typeof p === "number") return String(p);
+    if (Array.isArray(p)) return p.join(", ");
+    if (typeof p === "object" && p[sid]) return [].concat(p[sid]).join(", ");
+    return "";
+  }
+  function provesText(o){
+    const s = o.status;
+    if (s === "reported") return "Che il dato è scritto in questo documento.";
+    if (s === "attributed") return "Che la parte indicata lo ha dichiarato.";
+    if (s === "derived") return "Il risultato del calcolo, se l'ipotesi regge.";
+    if (s === "disputed") return "Che una parte lo sostiene; un'altra fonte dice diversamente.";
+    if (s === "missing") return "Niente: nessuna fonte riporta il dato.";
+    return "";
+  }
+  function usageLine(id){
+    const parts = [];
+    for (const k of ["geep","claude"]){
+      const m = M[k]; if (!m) continue;
+      const nome = C.nomi_letture[k].firma;
+      const ign = ignoredBy(m);
+      if (ign.has(id)) parts.push(`${nome}: non usata (${esc(ign.get(id))})`);
+      else if (idsIn(m, ["osservazioni_ignorate"]).has(id)) parts.push(`${nome}: citata`);
+      else parts.push(`${nome}: non citata`);
+    }
+    return parts.join(" · ");
+  }
+  function card(id, t){
+    const o = OBS[id]; if (!o) return `<div class="card"><p>Osservazione ${esc(id)} assente.</p></div>`;
+    const lab = (t.etichette && t.etichette[id]) || id;
+    const st = o.status || "reported";
+    const rev = REVIEW[o.review] || "";
+    const srcs = (o.source_ids || []);
+    return `<article class="card ${st==="missing"?"missing":""}" id="${slug(id)}" data-obs="${esc(id)}">
+      <div class="top"><h4>${esc(lab)}</h4><span class="st ${esc(st)}">${esc(STATUS[st]||st)}</span></div>
+      ${fmtValue(o)}
+      <div class="meta"><span>${esc(o.period||"")}</span><span>${esc(ENTITY[o.entity]||o.entity||"")}</span>${rev?`<span>${esc(rev)}</span>`:""}</div>
+      ${o.note?`<p class="avv">${esc(o.note)}</p>`:""}
+      ${srcs.length?`<div class="fonti-btn">${srcs.map(s => `<button type="button" class="fbtn" aria-expanded="false" data-src="${esc(s)}" data-obs="${esc(id)}">${esc(s)} · ${esc((SRC[s]||{}).publisher||"fonte")}</button>`).join("")}</div><div class="fslot" hidden></div>`:""}
+      <p class="uso">${usageLine(id)}</p>
+      <span class="id">${esc(id)}</span>
+    </article>`;
+  }
+  function sourceDetail(sid, oid){
+    const s = SRC[sid] || {}, o = OBS[oid] || {};
+    const pg = pagesFor(o, sid);
+    const notProve = o.note || (o.status === "attributed" ? "Che l'affermazione sia vera, o la sua causa." : "Ciò che il documento non dice.");
+    return `<div class="fdet">
+      <span><b>${esc(s.publisher||sid)}</b>${s.date?` · ${esc(s.date)}`:""} · ${esc(STYPE[s.type]||s.type||"")}</span>
+      ${s.title?`<span>${esc(s.title)}</span>`:""}
+      ${s.intervistato?`<span>${esc(s.intervistato)}</span>`:""}
+      ${pg?`<span>Pagina del PDF: <span class="mono">${esc(pg)}</span></span>`:""}
+      ${s.url?`<span><a href="${esc(s.url)}" target="_blank" rel="noopener">Apri il documento</a></span>`:""}
+      <span><b>Prova:</b> ${esc(provesText(o))}</span>
+      <span><b>Non prova:</b> ${esc(notProve)}</span>
+    </div>`;
+  }
+
+  /* ---------- rendering delle letture ---------- */
+  function chips(ids){
+    return `<div class="chips">${ids.map(id => `<button type="button" class="chip ${OBS[id]&&OBS[id].status==="missing"?"miss":""}" data-goto="${esc(id)}">${esc(id)}</button>`).join("")}</div>`;
+  }
+  function notCited(model, temaIds, used){
+    const miss = temaIds.filter(id => !used.has(id));
+    return miss.length ? `<p class="small muted">Osservazioni del tema non citate da questa lettura: ${miss.map(id=>`<button type="button" class="chip" data-goto="${esc(id)}">${esc(id)}</button>`).join(" ")}</p>` : `<p class="small muted">Questa lettura cita tutte le osservazioni del tema.</p>`;
+  }
+  function geepColumn(t, temaIds){
+    const m = M.geep, col = t.colonne.geep, nl = C.nomi_letture.geep;
+    const q = (m.risposte_protocollo||{})[col.domanda] || {};
+    const used = new Set(q.evidenze || []);
+    const dims = (m.dimensioni||[]).filter(d => col.dimensioni.includes(d.id));
+    dims.forEach(d => (d.evidenze||[]).forEach(i => used.add(i)));
+    return `<section class="lettura geep" aria-label="${esc(nl.nome)}">
+      <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small mono">${esc(m.model)} · ${esc(m.model_version)} · ${esc(m.dataset_id)}</span></div>
+      <p class="metodo">${esc(nl.metodo)}</p>
+      <div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
+        <p class="testo"><b>${esc(q.esito||"")}</b></p>
+        <p class="testo">${esc(q.ragionamento||"")}</p>
+        ${chips(q.evidenze||[])}
+      </div>
+      ${dims.length ? dims.map(d => `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Dimensione «${esc(d.id)}»</h4></div>
+        <p class="testo">${esc(d.giudizio||"")}</p>
+        <p class="rline"><span class="nullr">r = null</span><span class="muted">${esc(d.natura_null||"nessun coefficiente")}</span></p>
+        ${chips(d.evidenze||[])}</div>`).join("") : `<p class="vuoto">Questa lettura non tratta il tema come dimensione.</p>`}
+      ${notCited(m, temaIds, used)}
+      ${(m.limiti||[]).length?`<div><h4>Limiti dichiarati</h4><ul class="lims">${m.limiti.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div>`:""}
+    </section>`;
+  }
+  function claudeColumn(t, temaIds){
+    const m = M.claude, col = t.colonne.claude, nl = C.nomi_letture.claude;
+    const q = (m.risposte_al_protocollo||{})[col.domanda] || {};
+    const thr = (m.regola||{}).soglia;
+    const used = new Set(q.osservazioni || []);
+    const dims = (m.giudizi||[]).filter(d => col.dimensioni.includes(d.id));
+    dims.forEach(d => (d.osservazioni||[]).forEach(i => used.add(i)));
+    (m.osservazioni_mancanti_che_pesano||[]).forEach(i => { if (temaIds.includes(i)) used.add(i); });
+    return `<section class="lettura claude" aria-label="${esc(nl.nome)}">
+      <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small mono">${esc(m.model)} · ${esc(m.model_version)} · ${esc(m.dataset_id)}</span></div>
+      <p class="metodo">${esc(nl.metodo)}</p>
+      <div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
+        <p class="testo"><b>${esc(q.risposta||"")}</b></p>
+        ${q.cautela?`<p class="testo">${esc(q.cautela)}</p>`:""}
+        ${chips(q.osservazioni||[])}
+      </div>
+      ${dims.length ? dims.map(d => {
+        const over = d.r != null && thr != null && d.r > thr && !d.acquisita;
+        return `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>${esc(d.nome||d.id)}</h4></div>
+        <p class="rline"><span class="mono">r ${d.r==null?"null":nf(d.r,2)}</span>
+          ${d.r!=null?`<span class="scale" role="img" aria-label="r ${nf(d.r,2)} su scala da 0 a 1, soglia ${nf(thr,2)}"><i style="width:${d.r*100}%"></i><b style="left:${thr*100}%"></b></span>`:""}
+          <span class="muted">peso ${esc(d.peso)}</span>
+          <span class="${over?"st disputed":"muted"}">${over?"sopra la soglia":"sotto la soglia"} ${thr!=null?nf(thr,2):""}</span></p>
+        ${d.etichetta?`<p class="small muted">${esc(d.etichetta)}: notazione ordinale del giudizio, non probabilità né misura.</p>`:""}
+        <p class="testo">${esc(d.motivazione||"")}</p>
+        ${chips(d.osservazioni||[])}</div>`;
+      }).join("") : `<p class="vuoto">Questa lettura non tratta il tema come dimensione.</p>`}
+      ${notCited(m, temaIds, used)}
+      ${(m.limiti||[]).length?`<div><h4>Limiti dichiarati</h4><ul class="lims">${m.limiti.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div>`:""}
+    </section>`;
+  }
+
+  /* ---------- pagina ---------- */
+  function render(){
+    const h = C.testata;
+    const fa = D.freeze_audit || {};
+    document.getElementById("testata").innerHTML = `
+      <span class="eyebrow">Lo Zibaldino · studiolo · maquette del tema 1</span>
+      <h1>${esc(h.titolo)}</h1>
+      <div class="meta"><span>${esc(h.data)}</span><span>${h.autori.map(esc).join(", ")}</span><span>Titolo ${esc(h.titolo_stato)}</span></div>
+      <p class="guida">${esc(h.domanda_guida)}</p>
+      <p class="limiti">${esc(h.perimetro)} <span class="delim">${esc(h.delimitazione)}</span></p>
+      <p class="prov">Dati: ${esc(D.dataset_id)}, congelata il ${esc(fa.date||D.as_of)}. Letture: ${esc(M.geep.model_version)} e ${esc(M.claude.model_version)}.</p>`;
+
+    const t = C.temi[0];
+    // ID del tema: gruppi + conflitto
+    const temaIds = [];
+    t.gruppi.forEach(g => { (g.osservazioni||[]).forEach(i => temaIds.push(i)); if (g.conflitto) CONF[g.conflitto].osservazioni.forEach(i => temaIds.push(i)); });
+    // ID citati dalle letture per questo tema e assenti dalla fascia
+    const cited = new Set();
+    const qg = M.geep.risposte_protocollo[t.colonne.geep.domanda] || {};
+    (qg.evidenze||[]).forEach(i=>cited.add(i));
+    M.geep.dimensioni.filter(d=>t.colonne.geep.dimensioni.includes(d.id)).forEach(d=>(d.evidenze||[]).forEach(i=>cited.add(i)));
+    const qc = M.claude.risposte_al_protocollo[t.colonne.claude.domanda] || {};
+    (qc.osservazioni||[]).forEach(i=>cited.add(i));
+    M.claude.giudizi.filter(d=>t.colonne.claude.dimensioni.includes(d.id)).forEach(d=>(d.osservazioni||[]).forEach(i=>cited.add(i)));
+    const altre = [...cited].filter(i => !temaIds.includes(i) && OBS[i]);
+
+    const sec = document.createElement("div");
+    sec.className = "wrap"; sec.style.margin = "0"; sec.style.maxWidth = "none";
+    sec.innerHTML = `
+      <section aria-labelledby="leg-h" class="panel">
+        <h2 id="leg-h" style="margin-bottom:12px">Come si legge</h2>
+        <div class="legend">${C.come_si_legge.map(x => `<div><span class="st ${esc(x.chiave)}">${esc(x.etichetta)}</span><p>${esc(x.testo)}</p></div>`).join("")}</div>
+      </section>
+      <nav aria-label="Temi"><ol class="toc">${C.indice.map(x => `<li class="${x.id===t.id?"on":"off"}">${esc(x.titolo)}${x.id!==t.id?` <span>· ${esc(x.stato)}</span>`:""}</li>`).join("")}</ol></nav>
+
+      <section class="tema" aria-labelledby="t1-h">
+        <div class="band">
+          <div style="display:grid;gap:8px"><span class="eyebrow">Tema 1 · i fatti, uguali per entrambe le letture</span>
+            <h2 id="t1-h">${esc(t.titolo)}</h2>
+            <p class="domanda">${esc(t.domanda)}</p></div>
+          ${t.gruppi.map(g => g.conflitto ? conflictBlock(g, t) : `<div class="gruppo"><h3>${esc(g.titolo)}</h3><div class="cards">${g.osservazioni.map(i => card(i, t)).join("")}</div></div>`).join("")}
+          <div class="gruppo"><h3>Cosa manca per concludere</h3><p class="cosa-manca">${esc(t.cosa_manca)}</p><p class="contesto">${esc(t.contesto)}</p></div>
+          ${altre.length?`<details class="altre" id="altre"><summary>Altre osservazioni citate dalle letture (${altre.length}): appartengono ad altri temi</summary><div class="cards">${altre.map(i=>card(i,t)).join("")}</div></details>`:""}
+        </div>
+
+        <div style="display:grid;gap:8px"><span class="eyebrow">Tema 1 · due letture indipendenti degli stessi fatti</span>
+          <p class="small muted" style="max-width:80ch">Le due colonne non sono sulla stessa scala. Un null della lettura Geep significa che manca la misura; non equivale a zero e non va confrontato con un coefficiente della lettura Claude. Ogni sigla rimanda all'osservazione citata.</p></div>
+        <div class="letture">${geepColumn(t, temaIds)}${claudeColumn(t, temaIds)}</div>
+      </section>
+
+      <section aria-labelledby="fonti-h" style="display:grid;gap:12px">
+        <h2 id="fonti-h">Partire da una fonte</h2>
+        <p class="small muted">Ogni fonte usata in questo tema, con le osservazioni che ne derivano.</p>
+        <div class="fonti-lista">${sourceIndex([...temaIds, ...altre])}</div>
+      </section>
+
+      <section aria-labelledby="met-h" class="metodo">
+        <h2 id="met-h">Metodo e versioni</h2>
+        <div class="check ${errors.length?"err":"ok"}">${errors.length?`Controlli all'avvio: ${errors.length} problemi. I dati interessati non vanno considerati affidabili.<ul>${errors.map(e=>`<li>${esc(e)}</li>`).join("")}</ul>`:`Controlli all'avvio superati: dataset e letture riferiti a ${esc(D.dataset_id)}, ${temaIds.length} osservazioni del tema e tutte le sigle citate dalle letture trovate nel dataset.`}</div>
+        <dl>
+          <dt>Base dati</dt><dd>${esc(D.dataset_id)} · ${esc((D.observations||[]).length)} osservazioni, ${esc((D.sources||[]).length)} fonti, ${esc((D.conflicts||[]).length)} conflitti aperti, ${esc((D.missing||[]).length)} dati mancanti</dd>
+          <dt>Congelamento</dt><dd>${esc(fa.date||"")} · ${esc(fa.by||"")} · ${esc(fa.type||"")}</dd>
+          <dt>Lettura Geep</dt><dd>${esc(M.geep.model_version)}</dd>
+          <dt>Lettura Claude</dt><dd>${esc(M.claude.model_version)}</dd>
+          <dt>Configurazione</dt><dd>${esc(C.config_version)} · ${esc(C.stato)}</dd>
+          <dt>Regola</dt><dd>La pagina non calcola giudizi: mostra quelli già scritti nei file delle due letture.</dd>
+        </dl>
+      </section>`;
+    app.appendChild(sec);
+  }
+  function conflictBlock(g, t){
+    const c = CONF[g.conflitto];
+    return `<div class="gruppo"><h3>${esc(g.titolo)}</h3>
+      <div class="conflitto"><div class="lab" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="st disputed">Conflitto ${esc(c.id)}</span><h4>${esc(g.titolo_conflitto)}</h4></div>
+        <p class="nota">${esc(c.nota)}</p>
+        <div class="pair">${c.osservazioni.map(i => card(i, t)).join("")}</div>
+        <p class="chiarire"><b>Da chiarire:</b> ${esc(g.punto_da_chiarire)} Lo direbbe <button type="button" class="chip miss" data-goto="${esc(g.chiarirebbe)}">${esc(g.chiarirebbe)}</button>, che oggi è un dato mancante.</p>
+      </div></div>`;
+  }
+  function sourceIndex(ids){
+    const by = new Map();
+    ids.forEach(i => (OBS[i].source_ids||[]).forEach(s => { if(!by.has(s)) by.set(s, []); if(!by.get(s).includes(i)) by.get(s).push(i); }));
+    return [...by.entries()].sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true})).map(([s, os]) => {
+      const x = SRC[s] || {};
+      return `<div class="fonte"><span><b class="mono">${esc(s)}</b> · ${esc(x.publisher||"")}${x.date?` · ${esc(x.date)}`:""} · ${esc(STYPE[x.type]||x.type||"")}${x.url?` · <a href="${esc(x.url)}" target="_blank" rel="noopener">documento</a>`:""}</span>
+        <span class="usi">Osservazioni: ${chips(os)}</span></div>`;
+    }).join("");
+  }
+
+  /* ---------- interazione ---------- */
+  app.addEventListener("click", e => {
+    const fb = e.target.closest(".fbtn");
+    if (fb){
+      const cardEl = fb.closest(".card"), slot = cardEl.querySelector(".fslot");
+      const open = fb.getAttribute("aria-expanded") === "true";
+      cardEl.querySelectorAll(".fbtn").forEach(b => b.setAttribute("aria-expanded","false"));
+      if (open){ slot.hidden = true; slot.innerHTML = ""; }
+      else { fb.setAttribute("aria-expanded","true"); slot.innerHTML = sourceDetail(fb.dataset.src, fb.dataset.obs); slot.hidden = false; }
+      postHeight(); return;
+    }
+    const go = e.target.closest("[data-goto]");
+    if (go){
+      const id = go.dataset.goto;
+      let el = document.getElementById(slug(id));
+      if (el){
+        const det = el.closest("details"); if (det && !det.open) det.open = true;
+        el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+        el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1400);
+        el.setAttribute("tabindex","-1"); el.focus({preventScroll:true});
+      }
+    }
+  });
+
+  // altezza per l'incorporamento in Blogger (iframe)
+  function postHeight(){
+    if (window.parent === window) return;
+    try { window.parent.postMessage({ type:"cas-studiolo-height", height: document.documentElement.scrollHeight }, "*"); } catch(e){}
+  }
+  if ("ResizeObserver" in window) new ResizeObserver(postHeight).observe(document.body);
+  window.addEventListener("load", postHeight);
+
+  /* ---------- avvio ---------- */
+  fetchJSON(CFG_URL).then(cfg => {
+    C = cfg;
+    return Promise.all([fetchJSON(C.file.dataset), fetchJSON(C.file.modelli.geep), fetchJSON(C.file.modelli.claude)]);
+  }).then(([d, g, c]) => {
+    D = d; M.geep = g; M.claude = c;
+    D.observations.forEach(o => OBS[o.id] = o);
+    D.sources.forEach(s => SRC[s.id] = s);
+    (D.conflicts||[]).forEach(x => CONF[x.id] = x);
+    validate();
+    render();
+    postHeight();
+  }).catch(err => {
+    document.getElementById("testata").innerHTML = `<h1>Studiolo CAS</h1><div class="check err">I dati non si sono caricati: ${esc(err.message)}. La pagina va aperta da un server (GitHub Pages o simile), non come file locale.</div>`;
+  });
+})();
+</script>
+
+</body>
+</html>

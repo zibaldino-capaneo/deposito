@@ -1,7 +1,7 @@
 {
   "schema": "cas-editorial-config/0.1",
-  "config_version": "2026-11-01-c01",
-  "stato": "bozza per il controllo Geep; solo il tema 1 è sviluppato",
+  "config_version": "2026-11-01-c03",
+  "stato": "bozza per il controllo Geep; struttura a cartelle; sviluppate le rubriche 1 (collaudata) e 2 (da controllare)",
   "regola": "Questo file contiene solo ordine, titoli, raggruppamenti e testi editoriali di raccordo. Nessun fatto, valore o giudizio: quelli si leggono dal dataset e dagli output dei modelli.",
   "file": {
     "dataset": "data/CAS-DATI-v0.4.json",
@@ -13,61 +13,200 @@
   "attesi": {
     "dataset_id": "CAS-DATI-v0.4",
     "modelli": {
-      "geep": { "model": "model_geep", "dataset_id": "CAS-DATI-v0.4" },
-      "claude": { "model": "model_claude", "dataset_id": "CAS-DATI-v0.4" }
+      "geep": {
+        "model": "model_geep",
+        "dataset_id": "CAS-DATI-v0.4"
+      },
+      "claude": {
+        "model": "model_claude",
+        "dataset_id": "CAS-DATI-v0.4"
+      }
     }
   },
-
   "testata": {
     "titolo": "Cogne: il carico, il mercato, le scelte",
     "titolo_stato": "provvisorio",
     "data": "1 novembre 2026",
-    "autori": ["Paolo Carena", "Claude", "ChatGPT"],
+    "autori": [
+      "Paolo Carena",
+      "Claude",
+      "ChatGPT"
+    ],
     "domanda_guida": "Che cosa documenta la difficoltà produttiva di Cogne ad Aosta, quali cause sono meglio sostenute e che cosa rimane non dimostrato?",
     "perimetro": "Cogne Acciai Speciali S.p.A., il gruppo che controlla, lo stabilimento di Aosta. I tre perimetri non coincidono e ogni dato dice a quale appartiene.",
     "delimitazione": "Non è una previsione di chiusura, né un'accusa di riallocazione."
   },
-
   "come_si_legge": [
-    { "chiave": "reported", "etichetta": "Registrato", "testo": "Un dato contenuto in un documento: un bilancio, un comunicato, un atto." },
-    { "chiave": "attributed", "etichetta": "Dichiarato", "testo": "Ciò che una parte afferma: la direzione, un sindacato, la capogruppo. Prova che è stato detto, non che sia vero." },
-    { "chiave": "derived", "etichetta": "Derivato", "testo": "Ottenuto con un calcolo da altri dati, sotto un'ipotesi dichiarata." },
-    { "chiave": "disputed", "etichetta": "Contestato", "testo": "Due fonti affermano cose diverse sullo stesso fatto. Le mostriamo affiancate, senza fonderle." },
-    { "chiave": "missing", "etichetta": "Mancante", "testo": "Un dato che servirebbe e nessuna fonte riporta. Vale null: non zero, non «nessun problema»." },
-    { "chiave": "giudizio", "etichetta": "Giudizio", "testo": "Una lettura di un modello, motivata dai dati che cita. I giudizi stanno sotto i fatti, in due colonne, e non sono fatti." }
+    {
+      "chiave": "reported",
+      "etichetta": "Registrato",
+      "testo": "Un dato contenuto in un documento: un bilancio, un comunicato, un atto."
+    },
+    {
+      "chiave": "attributed",
+      "etichetta": "Dichiarato",
+      "testo": "Ciò che una parte afferma: la direzione, un sindacato, la capogruppo. Prova che è stato detto, non che sia vero."
+    },
+    {
+      "chiave": "derived",
+      "etichetta": "Derivato",
+      "testo": "Ottenuto con un calcolo da altri dati, sotto un'ipotesi dichiarata."
+    },
+    {
+      "chiave": "disputed",
+      "etichetta": "Contestato",
+      "testo": "Due fonti affermano cose diverse sullo stesso fatto. Le mostriamo affiancate, senza fonderle."
+    },
+    {
+      "chiave": "missing",
+      "etichetta": "Mancante",
+      "testo": "Un dato che servirebbe e nessuna fonte riporta. Vale null: non zero, non «nessun problema»."
+    },
+    {
+      "chiave": "revisione",
+      "etichetta": "Previsione rivista",
+      "testo": "Un'attesa dichiarata in un momento e aggiornata più tardi. Non è un conflitto fra fonti: mostra come è cambiata l'aspettativa."
+    },
+    {
+      "chiave": "giudizio",
+      "etichetta": "Giudizio",
+      "testo": "Una lettura di un modello, motivata dai dati che cita. I giudizi stanno sotto i fatti, in due colonne, e non sono fatti."
+    }
   ],
-
   "indice": [
-    { "id": "t1", "titolo": "Dove manca lavoro?", "stato": "maquette" },
-    { "id": "t2", "titolo": "Domanda e mercati", "stato": "in preparazione" },
-    { "id": "t3", "titolo": "Tenuta economico-finanziaria", "stato": "in preparazione" },
-    { "id": "t4", "titolo": "Chi controlla, chi decide, chi assegna gli ordini?", "stato": "in preparazione" },
-    { "id": "t5", "titolo": "Il futuro industriale di Aosta", "stato": "in preparazione" },
-    { "id": "t6", "titolo": "Quello che ancora non sappiamo", "stato": "in preparazione" }
+    {
+      "id": "t1",
+      "titolo": "Dove manca lavoro?",
+      "stato": "collaudata",
+      "cartella": "01-carico",
+      "sommario": "Carichi produttivi, differenze fra impianti, fermate e dati mancanti."
+    },
+    {
+      "id": "t2",
+      "titolo": "Domanda e mercati",
+      "stato": "da controllare",
+      "cartella": "02-mercati",
+      "sommario": "Crisi siderurgica, dazi americani, concorrenza asiatica e andamento degli ordini."
+    },
+    {
+      "id": "t3",
+      "titolo": "Tenuta economico-finanziaria",
+      "stato": "in preparazione",
+      "cartella": "03-finanza",
+      "sommario": "Bilanci, perdite, liquidità, indebitamento e sostegno degli azionisti."
+    },
+    {
+      "id": "t4",
+      "titolo": "Chi controlla, chi decide, chi assegna gli ordini?",
+      "stato": "in preparazione",
+      "cartella": "04-governance",
+      "sommario": "Proprietà, governance, autonomia di Aosta e ipotesi di riallocazione produttiva."
+    },
+    {
+      "id": "t5",
+      "titolo": "Il futuro industriale di Aosta",
+      "stato": "in preparazione",
+      "cartella": "05-futuro",
+      "sommario": "Piano industriale, investimenti, diversificazione, salvaguardie europee e prospettive 2027."
+    },
+    {
+      "id": "t6",
+      "titolo": "Quello che ancora non sappiamo",
+      "stato": "in preparazione",
+      "cartella": "06-incertezze",
+      "sommario": "Informazioni mancanti, conflitti irrisolti e prove che potrebbero modificare le valutazioni."
+    }
   ],
-
   "mappa_rubriche": [
-    { "rubrica": "t1", "geep": ["carico"], "claude": ["carico_ridotto", "carico_spec"] },
-    { "rubrica": "t2", "geep": ["mercato"], "claude": [], "nota_claude": "Nessuna dimensione: il tema è trattato in Q2 e nell'ipotesi H2." },
-    { "rubrica": "t3", "geep": ["finanza"], "claude": ["fin"] },
-    { "rubrica": "t4", "geep": ["controllo_societario", "allocazione"], "claude": ["dec"] },
-    { "rubrica": "t5", "geep": [], "claude": ["sim"], "nota_geep": "Nessuna dimensione corrispondente." },
-    { "rubrica": "t6", "geep": ["tecnologia"], "claude": ["tec"] }
+    {
+      "rubrica": "t1",
+      "geep": [
+        "carico"
+      ],
+      "claude": [
+        "carico_ridotto",
+        "carico_spec"
+      ]
+    },
+    {
+      "rubrica": "t2",
+      "geep": [
+        "mercato"
+      ],
+      "claude": [],
+      "nota_claude": "Nessuna dimensione: il tema è trattato in Q2 e nell'ipotesi H2."
+    },
+    {
+      "rubrica": "t3",
+      "geep": [
+        "finanza"
+      ],
+      "claude": [
+        "fin"
+      ]
+    },
+    {
+      "rubrica": "t4",
+      "geep": [
+        "controllo_societario",
+        "allocazione"
+      ],
+      "claude": [
+        "dec"
+      ]
+    },
+    {
+      "rubrica": "t5",
+      "geep": [],
+      "claude": [
+        "sim"
+      ],
+      "nota_geep": "Nessuna dimensione corrispondente."
+    },
+    {
+      "rubrica": "t6",
+      "geep": [
+        "tecnologia"
+      ],
+      "claude": [
+        "tec"
+      ]
+    }
   ],
-
   "temi": [
     {
       "id": "t1",
       "titolo": "Dove manca lavoro?",
       "domanda": "Lo stabilimento di Aosta lavora meno di prima? Dove manca il lavoro, e dove no?",
       "gruppi": [
-        { "titolo": "Produzione e carico per impianto", "osservazioni": ["PROD_2026_VS_2025", "LOAD_BY_PRODUCT_2026"] },
-        { "titolo": "Le fermate di fine anno", "conflitto": "C3",
+        {
+          "titolo": "Produzione e carico per impianto",
+          "osservazioni": [
+            "PROD_2026_VS_2025",
+            "LOAD_BY_PRODUCT_2026"
+          ]
+        },
+        {
+          "titolo": "Le fermate di fine anno",
+          "conflitto": "C3",
           "titolo_conflitto": "Lo stesso calendario di fermate, due racconti",
           "punto_da_chiarire": "Quanti giorni di fermo, e in quali impianti.",
-          "chiarirebbe": "PROD_REAL_STOP" },
-        { "titolo": "Lavoro e ammortizzatori", "osservazioni": ["STAFF_SOLIDARITY", "STAFF_CIG_EXHAUSTED"] },
-        { "titolo": "Dati che mancano", "osservazioni": ["PROD_REAL_STOP", "ALLOC_GROUP_VOLUME"] }
+          "chiarirebbe": "PROD_REAL_STOP"
+        },
+        {
+          "titolo": "Lavoro e ammortizzatori",
+          "osservazioni": [
+            "STAFF_SOLIDARITY",
+            "STAFF_CIG_EXHAUSTED"
+          ]
+        },
+        {
+          "titolo": "Dati che mancano",
+          "osservazioni": [
+            "PROD_REAL_STOP",
+            "ALLOC_GROUP_VOLUME"
+          ]
+        }
       ],
       "etichette": {
         "PROD_2026_VS_2025": "Produzione 2026 rispetto al 2025",
@@ -87,14 +226,120 @@
       "cosa_manca": "Per dire quanto lavoro manca, e dove, servirebbero ore e tonnellate per impianto messe a confronto con la capacità, e i giorni di fermo effettivi. Oggi nessuna fonte li riporta.",
       "contesto": "In questo tema convivono quattro tipi di affermazione: un dato di bilancio (la produzione 2026 più bassa), dichiarazioni di parte (sindacati e direzione sulle fermate), una previsione (le fermate di novembre e dicembre non sono ancora avvenute) e dati che non esistono. Le prime tre si leggono in modo diverso; la quarta non va riempita.",
       "colonne": {
-        "geep": { "domanda": "Q1_sito_sottocaricato", "dimensioni": ["carico"] },
-        "claude": { "domanda": "Q1_sito_sotto_caricato", "dimensioni": ["carico_ridotto", "carico_spec"] }
+        "geep": {
+          "domanda": "Q1_sito_sottocaricato",
+          "dimensioni": [
+            "carico"
+          ],
+          "ipotesi": []
+        },
+        "claude": {
+          "domanda": "Q1_sito_sotto_caricato",
+          "dimensioni": [
+            "carico_ridotto",
+            "carico_spec"
+          ],
+          "ipotesi": []
+        }
+      }
+    },
+    {
+      "id": "t2",
+      "titolo": "Domanda e mercati",
+      "domanda": "La domanda per i prodotti di Cogne è calata? Che cosa dicono i conti, che cosa dichiarano le parti, e che cosa è cambiato nelle previsioni?",
+      "gruppi": [
+        {
+          "titolo": "Volumi e prezzi nei conti",
+          "osservazioni": [
+            "REV_2025_DRIVERS",
+            "FIN_PARENT_SALES_T_2024",
+            "FIN_PARENT_SALES_T_2025",
+            "SALES_Q1_2026_VS_BUDGET"
+          ]
+        },
+        {
+          "titolo": "Dazi americani e importazioni asiatiche",
+          "osservazioni": [
+            "EU_DEMAND_2025",
+            "MARKET_US_EXPOSURE",
+            "MARKET_US_CANCELLED",
+            "WALSIN_STAINLESS_2025"
+          ]
+        },
+        {
+          "titolo": "Le salvaguardie europee",
+          "revisione": "FR1",
+          "titolo_revisione": "La ripresa attesa da luglio, rivista a settembre"
+        },
+        {
+          "titolo": "La lettura della direzione",
+          "osservazioni": [
+            "MARKET_CAUSE_MGMT_2026",
+            "STRATEGY_DIVERSIFICATION_2026"
+          ]
+        }
+      ],
+      "etichette": {
+        "REV_2025_DRIVERS": "Ricavi 2025: quanto dai volumi, quanto dai prezzi",
+        "FIN_PARENT_SALES_T_2024": "Tonnellate vendute dalla società, 2024",
+        "FIN_PARENT_SALES_T_2025": "Tonnellate vendute dalla società, 2025",
+        "SALES_Q1_2026_VS_BUDGET": "Vendite del primo trimestre 2026 rispetto al budget",
+        "EU_DEMAND_2025": "Domanda attesa per area geografica",
+        "MARKET_US_EXPOSURE": "Peso degli Stati Uniti sull'export",
+        "MARKET_US_CANCELLED": "Ordini cancellati dai clienti americani",
+        "WALSIN_STAINLESS_2025": "L'inossidabile secondo la capogruppo Walsin",
+        "PLAN_2030_TARGETS": "Piano 2030: la ripresa attesa da luglio 2026",
+        "WALSIN_EU_OUTLOOK_2026": "L'attesa della capogruppo per l'Europa",
+        "SAFEGUARD_EFFECT_SEPT_2026": "Settembre 2026: la salvaguardia non ha l'effetto atteso",
+        "MARKET_CAUSE_MGMT_2026": "La causa della crisi secondo la direzione",
+        "STRATEGY_DIVERSIFICATION_2026": "La risposta commerciale dichiarata",
+        "LOAD_BY_PRODUCT_2026": "Carico diverso fra impianti",
+        "GROUP_RESULTS_BY_ENTITY_2025": "Risultati 2025 delle società del gruppo"
+      },
+      "cosa_manca": "Per dire quanta parte delle difficoltà di Aosta viene dal mercato servirebbero ordini e volumi per famiglia di prodotto e per stabilimento, confrontabili nel tempo. Le fonti descrivono la pressione sul settore e sulla società, ma non la distribuiscono fra gli impianti.",
+      "contesto": "Qui convivono dati di bilancio (volumi e prezzi del 2025), dichiarazioni (della direzione, della capogruppo, del direttore generale sugli ordini americani) e previsioni. Le cause indicate dalla direzione provano che la direzione le indica, non il nesso causale. Una previsione rivista non è un conflitto: FR1 aggiorna un'attesa, non smentisce un fatto.",
+      "colonne": {
+        "geep": {
+          "domanda": "Q2_domanda_diminuita",
+          "dimensioni": [
+            "mercato"
+          ],
+          "ipotesi": [
+            "H2"
+          ]
+        },
+        "claude": {
+          "domanda": "Q2_domanda_diminuita",
+          "dimensioni": [],
+          "ipotesi": [
+            "H2"
+          ]
+        }
       }
     }
   ],
-
   "nomi_letture": {
-    "geep": { "nome": "Lettura Geep", "firma": "ChatGPT", "metodo": "Gradi di evidenza e giudizi qualitativi. Nessun coefficiente numerico." },
-    "claude": { "nome": "Lettura Claude", "firma": "Claude", "metodo": "Dimensioni con coefficienti illustrativi da 0 a 1 e soglia di allerta 0,66. I numeri sono una notazione ordinale del giudizio, non probabilità né misure." }
+    "geep": {
+      "nome": "Lettura Geep",
+      "firma": "ChatGPT",
+      "metodo": "Gradi di evidenza e giudizi qualitativi. Nessun coefficiente numerico.",
+      "breve": "Geep"
+    },
+    "claude": {
+      "nome": "Lettura Claude",
+      "firma": "Claude",
+      "metodo": "Dimensioni con coefficienti illustrativi da 0 a 1 e soglia di allerta 0,66. I numeri sono una notazione ordinale del giudizio, non probabilità né misure.",
+      "breve": "Claude"
+    }
+  },
+  "traduzioni": {
+    "_regola": "Traduzioni di sola visualizzazione dei valori in inglese: il dataset resta invariato e la pagina mostra anche l'originale.",
+    "PROD_2026_VS_2025": "I volumi di produzione registrati nel 2026 sono inferiori a quelli dell'anno precedente.",
+    "SALES_Q1_2026_VS_BUDGET": "Volumi di vendita del gruppo in linea con il budget o leggermente superiori; prezzi medi di vendita leggermente inferiori al budget."
+  },
+  "ipotesi_enunciati": {
+    "_regola": "Enunciati brevi delle ipotesi, comuni alle due letture; i giudizi stanno nei file dei modelli.",
+    "H1": "Riallocazione infragruppo: lavoro spostato da Aosta verso altri stabilimenti del gruppo.",
+    "H2": "Crisi di domanda e di prezzo."
   }
 }
