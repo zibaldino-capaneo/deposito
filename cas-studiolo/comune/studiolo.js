@@ -194,11 +194,11 @@
     return `<section class="lettura geep" aria-label="${esc(nl.nome)}">
       <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small mono">${esc(m.model)} · ${esc(m.model_version)} · ${esc(m.dataset_id)}</span></div>
       <p class="metodo">${esc(nl.metodo)}</p>
-      <div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
+      ${col.domanda ? `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
         <p class="testo"><b>${esc(q.esito||"")}</b></p>
         <p class="testo">${esc(q.ragionamento||"")}</p>
         ${chips(q.evidenze||[])}
-      </div>
+      </div>` : ""}
       ${dims.length ? dims.map(d => `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Dimensione «${esc(d.id)}»</h4></div>
         <p class="testo">${esc(d.giudizio||"")}</p>
         <p class="rline"><span class="nullr">r = null</span><span class="muted">${esc(d.natura_null||"nessun coefficiente")}</span></p>
@@ -226,13 +226,13 @@
     return `<section class="lettura claude" aria-label="${esc(nl.nome)}">
       <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small mono">${esc(m.model)} · ${esc(m.model_version)} · ${esc(m.dataset_id)}</span></div>
       <p class="metodo">${esc(nl.metodo)}</p>
-      <div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
+      ${col.domanda ? `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
         <p class="testo"><b>${esc(q.risposta||"")}</b></p>
         ${q.cautela?`<p class="testo">${esc(q.cautela)}</p>`:""}
         ${q.ragionamento?`<p class="testo">${esc(q.ragionamento)}</p>`:""}
         ${chips(q.osservazioni||[])}
         ${q.revisione?`<p class="small muted">Richiama la previsione rivista <button type="button" class="chip" data-goto="${esc(q.revisione)}">${esc(q.revisione)}</button></p>`:""}
-      </div>
+      </div>` : ""}
       ${dims.length ? dims.map(d => {
         const over = d.r != null && thr != null && d.r > thr && !d.acquisita;
         return `<div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>${esc(d.nome||d.id)}</h4></div>
@@ -383,13 +383,21 @@
     }
     app.appendChild(sec);
   }
+  // «Lo direbbe X» solo se X è un'osservazione diversa dalle due in conflitto;
+  // «dato mancante» solo se X è davvero mancante nel dataset
+  function chiarirebbe(g, c){
+    const id = g.chiarirebbe;
+    if (!id || !OBS[id] || c.osservazioni.includes(id)) return "";
+    const miss = OBS[id].status === "missing";
+    return ` Lo direbbe <button type="button" class="chip ${miss?"miss":""}" data-goto="${esc(id)}">${esc(id)}</button>${miss ? ", che oggi è un dato mancante" : ""}.`;
+  }
   function conflictBlock(g, t){
     const c = CONF[g.conflitto];
     return `<div class="gruppo"><h3>${esc(g.titolo)}</h3>
       <div class="conflitto" id="${slug(c.id, t.id)}"><div class="lab" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="st disputed">Conflitto ${esc(c.id)}</span><h4>${esc(g.titolo_conflitto)}</h4></div>
         <p class="nota">${esc(c.nota)}</p>
         <div class="pair">${c.osservazioni.map(i => card(i, t)).join("")}</div>
-        <p class="chiarire"><b>Da chiarire:</b> ${esc(g.punto_da_chiarire)} Lo direbbe <button type="button" class="chip miss" data-goto="${esc(g.chiarirebbe)}">${esc(g.chiarirebbe)}</button>, che oggi è un dato mancante.</p>
+        <p class="chiarire"><b>Da chiarire:</b> ${esc(g.punto_da_chiarire)}${chiarirebbe(g, c)}</p>
       </div></div>`;
   }
   function revisionBlock(g, t){

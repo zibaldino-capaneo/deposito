@@ -1,7 +1,7 @@
 {
   "schema": "cas-editorial-config/0.1",
-  "config_version": "2026-11-01-c04-geep-proposta",
-  "stato": "proposta Geep: rubriche 1-2 invariate; rubriche 3-4 organiche per revisione Claude e collaudo Firefox; non pubblicazione definitiva",
+  "config_version": "2026-11-01-c05-geep-proposta",
+  "stato": "proposta Geep c05 dopo revisione Claude: rubriche 1-2 invariate; integrazioni documentali 3-4; correzione motore di Claude da collaudare; non pubblicazione definitiva",
   "regola": "Questo file contiene solo ordine, titoli, raggruppamenti e testi editoriali di raccordo. Nessun fatto, valore o giudizio: quelli si leggono dal dataset e dagli output dei modelli.",
   "file": {
     "dataset": "data/CAS-DATI-v0.4.json",
@@ -329,15 +329,15 @@
             "FIN_PARENT_REVENUE_2025",
             "FIN_PARENT_EBITDA_2024",
             "FIN_PARENT_EBITDA_2025",
-            "FIN_PARENT_PRETAX_2025"
+            "FIN_PARENT_PRETAX_2025",
+            "FIN_PARENT_NET_2024"
           ]
         },
         {
           "titolo": "Risultati netti: un conflitto da non assorbire",
           "conflitto": "C1",
           "titolo_conflitto": "Risultato 2025 della società: due importi documentali",
-          "punto_da_chiarire": "Riconciliare la perdita del bilancio separato con il valore nella tabella di perimetro del consolidato.",
-          "chiarirebbe": "FIN_PARENT_NET_2025_SCOPE_TABLE"
+          "punto_da_chiarire": "Riconciliare la perdita del bilancio separato con il valore nella tabella di perimetro del consolidato."
         },
         {
           "titolo": "Consolidato e comparabilità",
@@ -347,6 +347,7 @@
             "FIN_CON_EBITDA_2024",
             "FIN_CON_EBITDA_2025",
             "FIN_NET_2024",
+            "FIN_PRETAX_2025",
             "FIN_NET_2025",
             "FIN_COMPARABILITY"
           ]
@@ -356,6 +357,8 @@
           "osservazioni": [
             "FIN_PARENT_NFP_2025",
             "FIN_CON_NFP_2025",
+            "OWN_CAPITAL_INCREASE_45_2024",
+            "FIN_CON_INVENTORIES_2025",
             "FIN_CAPITAL_INCREASE_70",
             "FIN_BANK_MAR_50",
             "FIN_BANK_MAR_60",
@@ -366,8 +369,7 @@
           "titolo": "Piano e consuntivo non sono lo stesso oggetto",
           "conflitto": "C4",
           "titolo_conflitto": "Il riferimento EBITDA 2025 nel Piano 2030",
-          "punto_da_chiarire": "Chiarire il riferimento temporale e il perimetro della percentuale indicata nel Piano.",
-          "chiarirebbe": "PLAN_2030_TARGETS"
+          "punto_da_chiarire": "Chiarire il riferimento temporale e il perimetro della percentuale indicata nel Piano."
         }
       ],
       "etichette": {
@@ -375,11 +377,15 @@
         "FIN_PARENT_NET_2025_SCOPE_TABLE": "Risultato 2025 nella tabella di perimetro",
         "FIN_NET_2025": "Risultato netto 2025 del consolidato",
         "FIN_CAPITAL_INCREASE_70": "Aumento di capitale 2025 interamente versato",
-        "FIN_BANK_MAR_50": "Finanziamento bancario: prima voce",
-        "FIN_BANK_MAR_60": "Finanziamento bancario: seconda voce",
+        "FIN_BANK_MAR_50": "Linea CTBC Bank: 50 milioni a breve termine",
+        "FIN_BANK_MAR_60": "Linea Bank of Taiwan: 60 milioni, triennale",
         "EBITDA_Q1_2026_VS_PLAN": "Primo trimestre 2026 rispetto al piano",
         "FIN_COMPARABILITY": "Confronti consolidati e variazioni di perimetro",
-        "PLAN_2030_TARGETS": "Obiettivi del Piano 2030"
+        "PLAN_2030_TARGETS": "Obiettivi del Piano 2030",
+        "FIN_PARENT_NET_2024": "Perdita netta della società nel 2024",
+        "OWN_CAPITAL_INCREASE_45_2024": "Aumento di capitale nel settembre 2024",
+        "FIN_PRETAX_2025": "Risultato ante imposte consolidato 2025",
+        "FIN_CON_INVENTORIES_2025": "Rimanenze consolidate al 31 dicembre 2025"
       },
       "cosa_manca": "I bilanci misurano la tenuta di società e gruppo, non il carico effettivo dei singoli impianti di Aosta. Servirebbero flussi e fabbisogni specifici del sito, scadenze finanziarie e una riconciliazione documentale di C1.",
       "contesto": "Qui sono affiancati risultati consuntivi, posizioni finanziarie, interventi dei soci e obiettivi dichiarati. Il capitale versato è un fatto; la tenuta futura e la permanenza dei carichi produttivi sono giudizi distinti. Il conflitto C4 non trasforma una previsione in dato consuntivo.",
@@ -409,8 +415,7 @@
           "titolo": "Assetto proprietario: fonti non allineate",
           "conflitto": "C2",
           "titolo_conflitto": "Partecipazione Walsin/MEG: percentuali da riconciliare",
-          "punto_da_chiarire": "Fissare la data e il perimetro di ciascuna percentuale, senza attribuire alla differenza un trasferimento di ordini.",
-          "chiarirebbe": "OWN_WALSIN_DECLARED_2025"
+          "punto_da_chiarire": "Fissare la data e il perimetro di ciascuna percentuale, senza attribuire alla differenza un trasferimento di ordini."
         },
         {
           "titolo": "Capitale e passaggi societari",
@@ -453,7 +458,7 @@
       "etichette": {
         "OWN_WALSIN_2025": "Quota rilevata nella fonte Walsin",
         "OWN_WALSIN_DECLARED_2025": "Quota indicata dalla documentazione CAS",
-        "GOV_MEG_AUTONOMY_2025": "Autonomia rivendicata o descritta",
+        "GOV_MEG_AUTONOMY_2025": "Autonomia dichiarata dalla società",
         "GROUP_PERIMETER": "Perimetro societario del gruppo",
         "PLAN_PRODUCT_REQUEST": "Richiesta di indicazioni su prodotti e produzione",
         "ALLOC_GROUP_VOLUME": "Volumi ripartiti fra i siti del gruppo: dato mancante",
