@@ -10,9 +10,10 @@ Pagine statiche per GitHub Pages, nella cartella `cas-studiolo/` del repository 
 | `01-carico/`, `02-mercati/` … | Una cartella per rubrica. La `index.html` è un guscio che dichiara la rubrica e carica il motore comune |
 | `comune/studiolo.js`, `comune/studiolo.css` | Il motore, unico per tutte le rubriche. Non calcola giudizi: legge e mostra |
 | `data/CAS-DATI-v0.4.json` | Base dati comune, congelata |
-| `data/CAS-Geep-v0.4.json` | Lettura Geep, `2026-11-01-geep04-independent` |
+| `data/CAS-Geep-v0.4.json` | Lettura Geep, `2026-11-01-geep05-editorial` |
 | `data/CAS-Claude-v0.4.json` | Lettura Claude, `2026-11-01k` |
 | `data/CAS-config-v0.1.json` | Configurazione editoriale: ordine, cartelle, titoli, raggruppamenti, testi di raccordo. Nessun fatto né giudizio |
+| `archivio/letture/` | Versioni superate delle due letture, conservate invariate |
 | `archivio/maquette-t1-collaudata/` | Copia della maquette del tema 1 collaudata il 1° novembre 2026, con i suoi dati, invariata |
 
 Rubriche nuove: si aggiunge la rubrica nella configurazione e una cartella con il guscio. Il motore non si copia.

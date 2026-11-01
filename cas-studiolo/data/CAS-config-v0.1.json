@@ -1,7 +1,7 @@
 {
   "schema": "cas-editorial-config/0.1",
-  "config_version": "2026-11-01-c08",
-  "stato": "approvata da Claude e Geep: rubriche 1-6; rubrica 1 collaudata, rubriche 2-6 da collaudare su GitHub Pages dopo il caricamento",
+  "config_version": "2026-11-01-c09",
+  "stato": "rubriche 1-6 collaudate su GitHub Pages il 1° novembre 2026; fase A chiusa",
   "regola": "Questo file contiene solo ordine, titoli, raggruppamenti e testi editoriali di raccordo. Nessun fatto, valore o giudizio: quelli si leggono dal dataset e dagli output dei modelli.",
   "file": {
     "dataset": "data/CAS-DATI-v0.4.json",
@@ -84,35 +84,35 @@
     {
       "id": "t2",
       "titolo": "Domanda e mercati",
-      "stato": "da controllare",
+      "stato": "collaudata",
       "cartella": "02-mercati",
       "sommario": "Crisi siderurgica, dazi americani, concorrenza asiatica e andamento degli ordini."
     },
     {
       "id": "t3",
       "titolo": "Tenuta economico-finanziaria",
-      "stato": "da controllare",
+      "stato": "collaudata",
       "cartella": "03-finanza",
       "sommario": "Bilanci, perdite, liquidità, indebitamento e sostegno degli azionisti."
     },
     {
       "id": "t4",
       "titolo": "Chi controlla, chi decide, chi assegna gli ordini?",
-      "stato": "da controllare",
+      "stato": "collaudata",
       "cartella": "04-governance",
       "sommario": "Proprietà, governance, autonomia di Aosta e ipotesi di riallocazione produttiva."
     },
     {
       "id": "t5",
       "titolo": "Il futuro industriale di Aosta",
-      "stato": "da controllare",
+      "stato": "collaudata",
       "cartella": "05-futuro",
       "sommario": "Piano industriale, investimenti, diversificazione, salvaguardie europee e prospettive 2027."
     },
     {
       "id": "t6",
       "titolo": "Quello che ancora non sappiamo",
-      "stato": "da controllare",
+      "stato": "collaudata",
       "cartella": "06-incertezze",
       "sommario": "Informazioni mancanti, conflitti irrisolti e prove che potrebbero modificare le valutazioni."
     }

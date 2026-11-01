@@ -175,8 +175,13 @@
   }
   function notCited(temaIds, used){
     const miss = temaIds.filter(id => !used.has(id));
-    return miss.length ? `<p class="small muted">Osservazioni della rubrica non citate nelle parti di questa lettura mostrate qui: ${miss.map(id=>`<button type="button" class="chip" data-goto="${esc(id)}">${esc(id)}</button>`).join(" ")}</p>` : `<p class="small muted">Le parti di questa lettura mostrate qui citano tutte le osservazioni della rubrica.</p>`;
+    if (!miss.length) return `<p class="small muted">Le parti di questa lettura mostrate qui citano tutte le osservazioni della rubrica.</p>`;
+    // elenco tecnico, chiuso all'apertura: non deve pesare più dei giudizi
+    return `<details class="nc"><summary>Osservazioni della rubrica non citate qui (${miss.length})</summary>
+      <p class="small muted">Il conteggio riconosce solo le sigle scritte nelle parti di lettura mostrate in questa rubrica: un riferimento descritto a parole non viene contato. Non misura l'attenzione della lettura alle fonti.</p>
+      <div class="chips">${miss.map(id=>`<button type="button" class="chip" data-goto="${esc(id)}">${esc(id)}</button>`).join("")}</div></details>`;
   }
+
   function senzaDimensioni(t, k){
     const m = (C.mappa_rubriche||[]).find(x => x.rubrica === t.id) || {};
     return `<p class="vuoto">${esc(m["nota_" + k] || "Questa lettura non tratta il tema come dimensione.")}</p>`;
@@ -393,7 +398,9 @@
       document.title = `${tema.titolo} · Studiolo CAS`;
     } else {
       let nTot = 0;
-      C.temi.forEach(t => nTot += idsOfTheme(t).length);
+      const dist = new Set();
+      C.temi.forEach(t => { const ids = idsOfTheme(t); nTot += ids.length; ids.forEach(i => dist.add(i)); });
+      const nDist = dist.size;
       sec.innerHTML = `
         ${legenda()}
         <section aria-labelledby="rub-h" style="display:grid;gap:14px">
@@ -409,7 +416,7 @@
             </li>`;
           }).join("")}</ol>
         </section>
-        ${metodo(`le rubriche sviluppate (${sviluppati.length}) hanno in tutto ${nTot} osservazioni`)}`;
+        ${metodo(`le rubriche sviluppate (${sviluppati.length}) richiamano ${nDist} delle ${(D.observations||[]).length} osservazioni del dataset (${nTot} richiami in tutto)`)}`;
     }
     app.appendChild(sec);
   }

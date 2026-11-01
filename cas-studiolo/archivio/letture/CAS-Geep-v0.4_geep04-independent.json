@@ -1,0 +1,223 @@
+{
+  "schema": "cas-model-output/0.4",
+  "model": "model_geep",
+  "model_version": "2026-11-01-geep04-independent",
+  "dataset_id": "CAS-DATI-v0.4",
+  "approccio": "Valutazione qualitativa a criteri di evidenza, senza ereditare pesi, soglia o coefficienti Claude; non è una probabilità né un indice quantitativo.",
+  "regole": {
+    "accertato": "risultato numerico di bilancio o dichiarazione verificata come dichiarazione (non verità causale)",
+    "indizio": "compatibilità senza test discriminante",
+    "non_dimostrato": "manca osservazione diretta",
+    "non_quantificabile": "mancano denominatore e misura omogenei"
+  },
+  "risposte_protocollo": {
+    "Q1_sito_sottocaricato": {
+      "esito": "sottocarico selettivo dichiarato; entità non quantificabile",
+      "evidenze": [
+        "LOAD_BY_PRODUCT_2026",
+        "STOP_MGMT_NOV",
+        "STOP_UNION_OCT",
+        "PROD_2026_VS_2025",
+        "PROD_REAL_STOP",
+        "ALLOC_GROUP_VOLUME",
+        "STAFF_CIG_EXHAUSTED"
+      ],
+      "ragionamento": "Esistono fermate programmate e attestazione di disomogeneità. La direzione identifica aerospazio molto carico e rifusioni operative; non identifica un elenco verificabile di reparti standard né rapporto produzione/capacità. Non inferire che tutti i prodotti lunghi standard siano sottocarichi."
+    },
+    "Q2_domanda_diminuita": {
+      "esito": "pressione di mercato ben documentata, ma non misura del portafoglio ordini per famiglia Aosta",
+      "evidenze": [
+        "EU_DEMAND_2025",
+        "MARKET_US_CANCELLED",
+        "REV_2025_DRIVERS",
+        "WALSIN_STAINLESS_2025",
+        "MARKET_CAUSE_MGMT_2026",
+        "SAFEGUARD_EFFECT_SEPT_2026",
+        "SALES_Q1_2026_VS_BUDGET"
+      ],
+      "ragionamento": "Il civilistico 2025 distingue effetto volumi e prezzi; pressione europea e shock USA sono coerenti con H2. Le causazioni ulteriori di S6 sono dichiarazioni dell azienda, non osservazioni causali indipendenti."
+    },
+    "Q3_trasferimenti_infragruppo": {
+      "esito": "non dimostrati, non esclusi",
+      "evidenze": [
+        "ALLOC_TRANSFER_EVIDENCE",
+        "ALLOC_GROUP_VOLUME",
+        "GROUP_PERIMETER",
+        "GROUP_RESULTS_BY_ENTITY_2025",
+        "PLAN_PRODUCT_REQUEST"
+      ],
+      "ragionamento": "La rete internazionale consente riallocazione, ma non si conoscono ordini trasferiti, volumi comparabili, margini per famiglia e capacità produttiva per sito. I risultati contabili dei siti non sostituiscono i flussi fisici."
+    },
+    "Q4_dati_necessari": {
+      "esito": "prima un denominatore industriale comune",
+      "priorita": [
+        "tonnellate e ore macchina per impianto e famiglia Aosta, 2024-2026",
+        "capacita tecnico-pratica e giorni fermo effettivi per reparto",
+        "ordine/cliente-famiglia e localizzazione evasione negli stabilimenti, confrontabile nel tempo",
+        "margine per famiglia e quantità, a perimetro e prezzi comparabili",
+        "budget 2027 approvato e risultati 2026 successivi alla revisione salvaguardie"
+      ]
+    }
+  },
+  "dimensioni": [
+    {
+      "id": "carico",
+      "giudizio": "criticita selettiva con distribuzione ignota",
+      "r": null,
+      "natura_null": "insufficienza di misura, non assenza di rischio",
+      "evidenze": [
+        "LOAD_BY_PRODUCT_2026",
+        "STOP_MGMT_NOV",
+        "STOP_UNION_OCT",
+        "PROD_2026_VS_2025",
+        "PROD_REAL_STOP",
+        "ALLOC_GROUP_VOLUME",
+        "STAFF_CIG_EXHAUSTED"
+      ]
+    },
+    {
+      "id": "finanza",
+      "giudizio": "tensione materiale accertata nel 2025 e nel preconsuntivo Q1 2026; attenuata da sostegno e riduzione PFN",
+      "r": null,
+      "evidenze": [
+        "FIN_PARENT_EBITDA_2025",
+        "FIN_PARENT_NET_2025",
+        "FIN_NET_2025",
+        "EBITDA_Q1_2026_VS_PLAN",
+        "FIN_CAPITAL_INCREASE_70",
+        "FIN_PARENT_NFP_2025",
+        "FIN_BANK_MAR_50",
+        "FIN_BANK_MAR_60"
+      ]
+    },
+    {
+      "id": "mercato",
+      "giudizio": "pressione esterna sostanzialmente documentata; effetto specifico sui singoli impianti da verificare",
+      "r": null,
+      "evidenze": [
+        "EU_DEMAND_2025",
+        "MARKET_US_CANCELLED",
+        "REV_2025_DRIVERS",
+        "WALSIN_STAINLESS_2025",
+        "MARKET_CAUSE_MGMT_2026",
+        "SAFEGUARD_EFFECT_SEPT_2026",
+        "SALES_Q1_2026_VS_BUDGET"
+      ]
+    },
+    {
+      "id": "allocazione",
+      "giudizio": "rischio possibile, assenza di evidenze dirette di riallocazione",
+      "r": null,
+      "evidenze": [
+        "ALLOC_TRANSFER_EVIDENCE",
+        "ALLOC_GROUP_VOLUME",
+        "GROUP_PERIMETER",
+        "GROUP_RESULTS_BY_ENTITY_2025",
+        "PLAN_PRODUCT_REQUEST"
+      ]
+    },
+    {
+      "id": "controllo_societario",
+      "giudizio": "controllo maggioritario certo a giugno 2025; autonomia di allocazione non osservata",
+      "r": null,
+      "evidenze": [
+        "OWN_WALSIN_2025",
+        "OWN_WALSIN_DECLARED_2025",
+        "GOV_BOARD_2025",
+        "GOV_MEG_AUTONOMY_2025",
+        "SHAREHOLDER_VIEW_MGMT_2026"
+      ]
+    },
+    {
+      "id": "tecnologia",
+      "giudizio": "non valutabile dalla v0.4",
+      "r": null,
+      "evidenze": []
+    }
+  ],
+  "ipotesi": {
+    "H1": "possibile; non supportata direttamente",
+    "H2": "meglio documentata per esposizione a domanda e prezzi, non prova sufficiente di spiegazione esclusiva",
+    "cooccorrenza": "possibile"
+  },
+  "esito": {
+    "allerta_descrittiva": [
+      "tensione finanziaria",
+      "fermate / sottocarico selettivi dichiarati"
+    ],
+    "non_concludere": [
+      "riallocazione infragruppo",
+      "quota di capacità inutilizzata del sito",
+      "rischio di chiusura quantitativo"
+    ],
+    "media": null
+  },
+  "osservazioni_utilizzate": [
+    "ALLOC_GROUP_VOLUME",
+    "ALLOC_TRANSFER_EVIDENCE",
+    "BUDGET_2027_MGMT",
+    "EBITDA_Q1_2026_VS_PLAN",
+    "EU_DEMAND_2025",
+    "FIN_BANK_MAR_50",
+    "FIN_BANK_MAR_60",
+    "FIN_CAPITAL_INCREASE_70",
+    "FIN_NET_2025",
+    "FIN_PARENT_EBITDA_2025",
+    "FIN_PARENT_NET_2025",
+    "FIN_PARENT_NFP_2025",
+    "GOV_BOARD_2025",
+    "GOV_MEG_AUTONOMY_2025",
+    "GROUP_PERIMETER",
+    "GROUP_RESULTS_BY_ENTITY_2025",
+    "LOAD_BY_PRODUCT_2026",
+    "MARKET_CAUSE_MGMT_2026",
+    "MARKET_US_CANCELLED",
+    "OWN_WALSIN_2025",
+    "OWN_WALSIN_DECLARED_2025",
+    "PLAN_2030_TARGETS",
+    "PLAN_PRODUCT_REQUEST",
+    "PROD_2026_VS_2025",
+    "PROD_REAL_STOP",
+    "REV_2025_DRIVERS",
+    "SAFEGUARD_EFFECT_SEPT_2026",
+    "SALES_Q1_2026_VS_BUDGET",
+    "SHAREHOLDER_VIEW_MGMT_2026",
+    "STAFF_CIG_EXHAUSTED",
+    "STOP_MGMT_NOV",
+    "STOP_UNION_OCT",
+    "STRATEGY_DIVERSIFICATION_2026",
+    "WALSIN_STAINLESS_2025"
+  ],
+  "osservazioni_ignorate": [
+    {
+      "id": "FIN_PARENT_NET_2025_SCOPE_TABLE",
+      "motivo": "Conflitto C1, registrata ma non usata come perdita civilistica"
+    },
+    {
+      "id": "OWN_MARZORATI_2025_DERIVED",
+      "motivo": "Quota ipotetica non necessaria al giudizio industriale"
+    },
+    {
+      "id": "ENERGY_PPA",
+      "motivo": "Assenza di dato, nessun effetto numerico attribuito"
+    },
+    {
+      "id": "GOV_AUDIT_EU_2025",
+      "motivo": "Governance di audit non dimostra trasferimenti produttivi"
+    },
+    {
+      "id": "FIN_REVENUE_2025",
+      "motivo": "Ricavo consolidato con modifica perimetro, inadatto a misurare domanda Aosta"
+    },
+    {
+      "id": "GROUP_STAFF_AVG_2025",
+      "motivo": "Perimetro occupazionale di gruppo non confrontabile con il sito"
+    }
+  ],
+  "limiti": [
+    "S6 è intervista a dirigente e prova delle sue dichiarazioni, non dei relativi nessi causali",
+    "Suddivisione standard/specialità non estratta come coppia quantitativa dal dataset",
+    "Non attribuire una percentuale numerica di rischio senza misura e taratura",
+    "Non aggiornare né la v0.4 congelata né il modello Claude"
+  ]
+}

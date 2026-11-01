@@ -1,7 +1,7 @@
 {
   "schema": "cas-model-output/0.4",
   "model": "model_geep",
-  "model_version": "2026-11-01-geep04-independent",
+  "model_version": "2026-11-01-geep05-editorial",
   "dataset_id": "CAS-DATI-v0.4",
   "approccio": "Valutazione qualitativa a criteri di evidenza, senza ereditare pesi, soglia o coefficienti Claude; non è una probabilità né un indice quantitativo.",
   "regole": {
@@ -217,7 +217,6 @@
   "limiti": [
     "S6 è intervista a dirigente e prova delle sue dichiarazioni, non dei relativi nessi causali",
     "Suddivisione standard/specialità non estratta come coppia quantitativa dal dataset",
-    "Non attribuire una percentuale numerica di rischio senza misura e taratura",
-    "Non aggiornare né la v0.4 congelata né il modello Claude"
+    "Non attribuire una percentuale numerica di rischio senza misura e taratura"
   ]
 }
