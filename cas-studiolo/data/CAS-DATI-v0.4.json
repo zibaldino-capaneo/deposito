@@ -1,0 +1,1678 @@
+{
+  "schema": "cas-common-observations/0.4",
+  "dataset_id": "CAS-DATI-v0.4",
+  "as_of": "2026-11-01",
+  "stato": "congelata come baseline documentale; audit strutturale e confronto v0.3, non audit esaustivo di ciascuna fonte",
+  "scope": "Cogne Acciai Speciali / gruppo e stabilimento Aosta: non confondere i perimetri",
+  "purpose": "Base dati comune e indipendente dai modelli Claude e Geep. Nessun punteggio, soglia o ipotesi causale incorporata.",
+  "provenienza": [
+    "CAS-AOSTA-2026-11-01-v02 (Geep)",
+    "CAS_Claude_v02_proposte_al_dataset, con le riserve del passo 3 Geep",
+    "CAS-AOSTA-2026-11-01-v03-PROPOSAL (Geep, bilanci 2025)",
+    "CAS_Claude_step4 e step5 (seconda lettura, fonte Walsin 2Q25)",
+    "CAS-DATI-v0.4_proposte_S6 (Claude), approvate da Geep con precisioni sul passaggio S6"
+  ],
+  "conventions": {
+    "amounts": "milioni di EUR salvo indicazione contraria",
+    "value_null": "dato non disponibile o non verificato; non equivale a zero",
+    "statuses": [
+      "reported",
+      "attributed",
+      "derived",
+      "unverified",
+      "missing",
+      "disputed"
+    ],
+    "source_policy": "Ogni osservazione conserva fonte, data, perimetro, qualificazione e grado di precisione; le affermazioni discordanti non vengono fuse",
+    "pdf_page": "pagina del PDF, copertina = 1",
+    "review_values": [
+      "verified_primary",
+      "verified_secondary",
+      "verified_official_web",
+      "verified_attribution_not_actual_stoppage",
+      "derived_assumption_explicit",
+      "pending",
+      "pending_direct_source_check",
+      "disputed",
+      "missing",
+      "verified_attribution",
+      "verified_attribution_primary_union_communique"
+    ]
+  },
+  "sources": [
+    {
+      "id": "P_SEP25",
+      "publisher": "Cogne Acciai Speciali S.p.A.",
+      "date": "2026",
+      "type": "official_primary_financial_statements",
+      "title": "Separate Financial Statements 2025 (105 pp., EU-IFRS)",
+      "file": "1b59e7_5ae6ab709bbd49128aff3eff5f8540da.pdf",
+      "url": "https://www.cogne.com/en/termini-investor-relations",
+      "verification": "read_by_both_models"
+    },
+    {
+      "id": "P_CON25",
+      "publisher": "Cogne Acciai Speciali S.p.A.",
+      "date": "2026",
+      "type": "official_primary_financial_statements",
+      "title": "Consolidated Financial Statements 2025 (117 pp., EU-IFRS)",
+      "file": "1b59e7_7e233cb49cc94007adb38d0bddeedb9e.pdf",
+      "url": "https://www.cogne.com/en/termini-investor-relations",
+      "verification": "read_by_both_models"
+    },
+    {
+      "id": "P_WLC_2Q25",
+      "publisher": "Walsin Lihwa Corporation",
+      "date": "2026-01",
+      "type": "official_listed_parent_filing",
+      "title": "Consolidated Financial Statements, six months ended June 30, 2025 and 2024",
+      "url": "https://www.walsin.com/wp-content/uploads/2026/01/2Q25-Consolidated-Financial-Statements.pdf",
+      "verification": "read_by_claude_confirmed_by_geep"
+    },
+    {
+      "id": "S1",
+      "publisher": "Cogne Acciai Speciali",
+      "date": null,
+      "type": "official_investor_page",
+      "url": "https://www.cogne.com/termini-investor-relations",
+      "note": "Archivio dei bilanci 2025 e 2024; PDF 2025 analizzati e catalogati separatamente come P_SEP25 e P_CON25.",
+      "verification": "verified"
+    },
+    {
+      "id": "S2",
+      "publisher": "RaiNews TGR Valle d'Aosta",
+      "date": "2026-05-12",
+      "type": "journalism",
+      "url": "https://www.rainews.it/tgr/vda/video/2026/05/cogne-bilancio-in-rosso-da-60-milioni-2c39af64-b904-43fc-9766-49a51f2d9955.html",
+      "verification": "verified"
+    },
+    {
+      "id": "S3",
+      "publisher": "ANSA",
+      "date": "2026-05-16",
+      "type": "journalism",
+      "url": "https://www.ansa.it/valledaosta/notizie/2026/05/16/cogne-acciai-speciali-in-rosso-per-61-milioni-cgil-dato-allarmante_f954921d-d819-416f-ab29-86bd4e7e930b.html",
+      "verification": "verified"
+    },
+    {
+      "id": "S4",
+      "publisher": "RaiNews TGR Valle d'Aosta",
+      "date": "2026-01-13",
+      "type": "interview",
+      "url": "https://www.rainews.it/tgr/vda/video/2026/01/cogne-acciai-speciali-nel-2025-azzerato-lexport-verso-gli-usa-8044bdbe-7180-4052-99fb-f20c2d377caf.html",
+      "verification": "verified"
+    },
+    {
+      "id": "S5",
+      "publisher": "RaiNews TGR Valle d'Aosta",
+      "date": "2026-10-16",
+      "type": "journalism_union_claim",
+      "url": "https://www.rainews.it/tgr/vda/video/2026/10/cogne-sindacati-produzione-acciaio-42b4e651-d9d7-4934-99c8-95d73ccb6e90.html",
+      "verification": "not_rechecked_in_v02"
+    },
+    {
+      "id": "S6",
+      "publisher": "La Stampa (edizione di Aosta)",
+      "date": "2026-11-01",
+      "type": "management_interview",
+      "url": "https://www.lastampa.it/aosta/2026/11/01/news/cogne_no_impianti_chiusi-15784393/",
+      "verification": "testo integrale letto, acquisito tramite Paolo il 2026-11-01",
+      "intervistato": "Andy Vuillermin, direttore commerciale dal 1/1/2024, in azienda dal 1996, anche a nome dei vertici aziendali"
+    },
+    {
+      "id": "S7",
+      "publisher": "Fim-Cisl",
+      "date": "2026-09-30",
+      "type": "union_communique",
+      "url": "https://www.fim-cisl.it/2026/09/30/cogne-acciai-speciali-secondo-incontro-al-mimit-serve-continuare-il-confronto-sul-futuro-delle-acciaierie-e-sulle-condizioni-di-lavoro/",
+      "verification": "verified_direct_2026-11-01"
+    },
+    {
+      "id": "S8",
+      "publisher": "ANSA",
+      "date": "2026-10-20",
+      "type": "journalism_union_claim",
+      "url": "https://www.ansa.it/valledaosta/notizie/2026/10/20/cogne-acciai-speciali-in-crisi-sindacati-chiedono-trasparenza_d9eb5e11-8aae-41d1-913b-d7475bc30f52.html",
+      "verification": "not_rechecked_in_v02"
+    },
+    {
+      "id": "S9",
+      "publisher": "ANSA",
+      "date": "2026-09-10",
+      "type": "journalism",
+      "url": "https://videoembed.ansa.it/valledaosta/notizie/2026/09/10/incontro-tra-i-sindacati-e-la-cogne-accordo-su-75-contratti-a-termine_685028e6-ba88-49da-902b-1f2d2515ef72.html",
+      "verification": "not_rechecked_in_v02"
+    },
+    {
+      "id": "S10",
+      "publisher": "Cogne Acciai Speciali",
+      "date": "2022-11-30",
+      "type": "official_company_press_release",
+      "url": "https://www.cogne.com/post/comunicato-stampa-4",
+      "verification": "verified"
+    },
+    {
+      "id": "S11",
+      "publisher": "La Prima Linea",
+      "date": "2026-10-16",
+      "type": "journalism_union_claim",
+      "url": "https://www.laprimalinea.it/2026/10/16/leggi-notizia/argomenti/economia-16/articolo/cogne-acciai-speciali-rischio-stop-tra-novembre-e-dicembre-allarme-dei-sindacati.html",
+      "verification": "verified"
+    },
+    {
+      "id": "S12",
+      "publisher": "RaiNews TGR Valle d’Aosta",
+      "date": "2026-05-14",
+      "type": "journalism",
+      "url": "https://www.rainews.it/tgr/vda/video/2026/05/cogne-acciai-speciali-bilancio-2025-in-rosso-per-oltre-oltre-60-milioni-cd1eb5aa-389f-4d75-9e35-15444296a550.html",
+      "verification": "verified"
+    },
+    {
+      "id": "S13",
+      "publisher": "SteelRadar",
+      "date": "2025-01",
+      "type": "trade_press",
+      "url": "https://www.steelradar.com/en/walsin-lihwa-invests-in-indonesia-and-europe/",
+      "verification": "verified",
+      "note": "Riporta la delibera del CdA Walsin del 6/1/2025 e la quota risultante"
+    },
+    {
+      "id": "S14",
+      "publisher": "Walsin Lihwa Corporation",
+      "date": "2026-04",
+      "type": "official_listed_parent_filing",
+      "url": "https://www.walsin.com/wp-content/uploads/2026/04/%E8%AD%B0%E4%BA%8B%E6%89%8B%E5%86%8A-%E8%8B%B1%E6%96%87%E7%89%88.pdf",
+      "verification": "verified",
+      "note": "2026 Annual Shareholders' Meeting Handbook: relazione 2025, operazioni con parti correlate 2025, partecipazioni in Cina, comitato di audit"
+    },
+    {
+      "id": "S15",
+      "publisher": "AostaSera",
+      "date": "2026-05",
+      "type": "journalism",
+      "url": "https://aostasera.it/notizie/economia/cogne-acciai-chiede-la-cassa-integrazione-guadagni-straordinaria-per-contratti-di-solidarieta-per-101-lavoratori/",
+      "verification": "verified",
+      "note": "Cifre puntuali del consolidato 2025 e 2024"
+    },
+    {
+      "id": "S16",
+      "publisher": "Aostaoggi",
+      "date": "2026-05",
+      "type": "journalism_citing_filing",
+      "url": "https://www.aostaoggi.it/economia/33542-cogne-acciai-speciali-approva-il-bilancio-consolidato-2025-con-un-rosso-di-61-milioni",
+      "verification": "verified",
+      "note": "Fonte secondaria con datazione dell’aumento da 70 milioni non corretta; documenti primari P_SEP25/P_CON25 attestano il 23 gennaio 2025."
+    },
+    {
+      "id": "S17",
+      "publisher": "Regione Valle d'Aosta (rilancio ANSA)",
+      "date": "2026-05-16",
+      "type": "journalism",
+      "url": "https://www.regione.vda.it/notizie/details_i.asp?id=532274",
+      "verification": "verified"
+    },
+    {
+      "id": "S18",
+      "publisher": "Gazzetta Matin",
+      "date": "2026-05-11",
+      "type": "journalism",
+      "url": "https://www.gazzettamatin.com/2026/05/11/cogne-acciai-speciali-bilancio-2025-rosso-per-60-milioni/",
+      "verification": "verified"
+    },
+    {
+      "id": "S19",
+      "publisher": "aziende.it (dati Registro imprese)",
+      "date": "2026-09-07",
+      "type": "aggregator",
+      "url": "https://www.aziende.it/cogne-acciai-speciali-s-p-a-in-forma-abbrevi",
+      "verification": "verified",
+      "note": "Fonte terziaria"
+    },
+    {
+      "id": "S20",
+      "publisher": "Collettiva",
+      "date": "2026-10-20",
+      "type": "journalism_union_claim",
+      "url": "https://www.collettiva.it/copertine/lavoro/cogne-acciai-speciali-sindacati-hwvxf4x8",
+      "verification": "verified"
+    },
+    {
+      "id": "S21",
+      "publisher": "Sbircia la notizia",
+      "date": "2026-10-17",
+      "type": "journalism",
+      "url": "https://www.sbircialanotizia.it/articoli/2026/10/17/cogne-ferie-87l7v/",
+      "verification": "verified"
+    },
+    {
+      "id": "S22",
+      "publisher": "La Vallée Notizie",
+      "date": "2026-10-21",
+      "type": "journalism_union_claim",
+      "url": "https://www.lavalleenotizie.it/regione/cogne-acciai-speciali-la-crisi-e-grave-allarme-dei-sindacati-per-uno-stop-della-produzione-a-novembre-e-dicembre/",
+      "verification": "verified"
+    },
+    {
+      "id": "S23",
+      "publisher": "Cogne Acciai Speciali",
+      "date": null,
+      "type": "official_company_page",
+      "url": "https://www.cogne.com/en/chi-siamo-cogne",
+      "verification": "verified",
+      "note": "Cronologia acquisizioni e aumenti di capitale 2022-2024"
+    }
+  ],
+  "observations": [
+    {
+      "id": "EBITDA_Q1_2026_VS_PLAN",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent_and_group",
+      "period": "2026-Q1",
+      "value": {
+        "gruppo_piano": 10,
+        "gruppo_preconsuntivo": 6,
+        "societa_piano": 6.5,
+        "societa_preconsuntivo": 2.5
+      },
+      "unit": "EUR_million",
+      "status": "reported",
+      "pdf_page": 15,
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "note": "La società singola è più lontana dal piano del gruppo: circa il 38% del previsto contro il 60%.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_BANK_MAR_50",
+      "topic": "finance",
+      "entity": "CAS_SpA",
+      "period": "2026-03",
+      "measure": "bank_facility",
+      "value": 50,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25",
+        "S2"
+      ],
+      "note": "CTBC Bank (Taiwan), breve termine, a sostegno degli impegni finanziari.",
+      "review": "verified_primary",
+      "pdf_page": [
+        97
+      ]
+    },
+    {
+      "id": "FIN_BANK_MAR_60",
+      "topic": "finance",
+      "entity": "CAS_SpA",
+      "period": "2026-03",
+      "measure": "bank_facility",
+      "value": 60,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25",
+        "S2"
+      ],
+      "note": "Bank of Taiwan, triennale; consente il rimborso anticipato di linee esistenti. Non additivo come liquidità netta.",
+      "review": "verified_primary",
+      "pdf_page": [
+        97
+      ]
+    },
+    {
+      "id": "FIN_COMPARABILITY",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2024-FY2025",
+      "measure": "perimeter_caveat",
+      "value": "Consolidamento per esercizio intero di DMV/Mannesmann Stainless Tubes nel 2025; non dedurre crescita organica dalla differenza dei ricavi",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S3"
+      ],
+      "review": "verified_secondary"
+    },
+    {
+      "id": "FIN_CON_EBITDA_2024",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2024",
+      "measure": "EBITDA",
+      "value": 51.112,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_CON_EBITDA_2025",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2025",
+      "measure": "EBITDA",
+      "value": 9.95,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_CON_INVENTORIES_2025",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "2025-12-31",
+      "measure": "inventories",
+      "value": 467.68,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "573,275 al 31/12/2024."
+    },
+    {
+      "id": "FIN_CON_NFP_2025",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "2025-12-31",
+      "measure": "net_financial_position",
+      "value": -412.976,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "−455,669 al 31/12/2024."
+    },
+    {
+      "id": "FIN_NET_2024",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2024",
+      "measure": "net_result",
+      "value": 8.094,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25"
+      ],
+      "pdf_page": [
+        8,
+        13
+      ],
+      "review": "verified_primary",
+      "note": "Comparativo rideterminato EU-IFRS."
+    },
+    {
+      "id": "FIN_NET_2025",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2025",
+      "measure": "net_result",
+      "value": -60.927,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25",
+        "S2",
+        "S3"
+      ],
+      "pdf_page": [
+        8,
+        13
+      ],
+      "review": "verified_primary",
+      "note": "Risultato netto consolidato. Quota attribuibile ai soci della capogruppo: −62,723."
+    },
+    {
+      "id": "FIN_PARENT_EBITDA_2024",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2024",
+      "measure": "EBITDA",
+      "value": 10.064,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_PARENT_EBITDA_2025",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "EBITDA",
+      "value": -21.853,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_PARENT_NET_2024",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2024",
+      "measure": "net_result",
+      "value": -34.119,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "Comparativo rideterminato EU-IFRS; la stampa riportava 37,4 su base precedente."
+    },
+    {
+      "id": "FIN_PARENT_NET_2025",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "net_result",
+      "value": -38.492,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8,
+        13
+      ],
+      "review": "verified_primary",
+      "note": "Bilancio civilistico approvato. Vedi conflitto C1 con FIN_PARENT_NET_2025_SCOPE_TABLE."
+    },
+    {
+      "id": "FIN_PARENT_NET_2025_SCOPE_TABLE",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "net_result_as_shown_in_consolidation_scope_table",
+      "value": -59.925,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25",
+        "S18"
+      ],
+      "pdf_page": [
+        38
+      ],
+      "review": "verified_primary",
+      "note": "Tabella delle società consolidate, «as per the last approved financial statements»; patrimonio netto 492,876. Base non spiegata dal documento. Origine della cifra di Gazzetta Matin."
+    },
+    {
+      "id": "FIN_PARENT_NFP_2025",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "2025-12-31",
+      "measure": "net_financial_position",
+      "value": -296.721,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "−343,640 al 31/12/2024."
+    },
+    {
+      "id": "FIN_PARENT_PRETAX_2025",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "pre_tax_result",
+      "value": -20.074,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        13
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_PARENT_REVENUE_2024",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2024",
+      "measure": "revenue",
+      "value": 643.691,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_PARENT_REVENUE_2025",
+      "topic": "finance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "revenue",
+      "value": 586.541,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "L'aggregatore S19 riportava 581,6."
+    },
+    {
+      "id": "FIN_PRETAX_2025",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2025",
+      "measure": "pre_tax_result",
+      "value": -80.986,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25",
+        "S15",
+        "S18"
+      ],
+      "pdf_page": [
+        13
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_REVENUE_2024",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2024",
+      "measure": "revenue",
+      "value": 900.4,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25",
+        "S15"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "Comparativo rideterminato EU-IFRS; DMV consolidato solo da novembre 2024 (FIN_COMPARABILITY)."
+    },
+    {
+      "id": "FIN_REVENUE_2025",
+      "topic": "finance",
+      "entity": "group_consolidated",
+      "period": "FY2025",
+      "measure": "revenue",
+      "value": 1024.939,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25",
+        "S15"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_CAPITAL_INCREASE_70",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "FY2025",
+      "measure": "capital_increase_paid",
+      "value": 70,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25",
+        "P_CON25"
+      ],
+      "note": "CdA del 23/1/2025, interamente sottoscritto e versato nel 2025: 54.983.898 azioni da 1 euro più 15,016 milioni di sovrapprezzo. SEP p. 83: 55 milioni deliberati a gennaio 2025, 15 milioni deliberati nel 2022. Nessun aumento risulta deliberato nel 2026.",
+      "review": "verified_primary",
+      "pdf_page": {
+        "P_SEP25": [
+          11,
+          75,
+          83
+        ],
+        "P_CON25": [
+          11
+        ]
+      }
+    },
+    {
+      "id": "OWN_CAPITAL_INCREASE_45_2024",
+      "topic": "ownership",
+      "entity": "CAS_SpA_parent",
+      "period": "2024-09-06",
+      "measure": "capital_increase",
+      "value": 45,
+      "unit": "EUR_million",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25",
+        "S23"
+      ],
+      "pdf_page": [
+        75
+      ],
+      "review": "verified_primary",
+      "note": "33.644.860 azioni più 11,355 milioni di sovrapprezzo."
+    },
+    {
+      "id": "OWN_MARZORATI_2022",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "2022-11-30",
+      "measure": "marzorati_share_at_closing",
+      "value": 30,
+      "unit": "percent",
+      "status": "reported",
+      "precision": "exact_as_announced",
+      "source_ids": [
+        "S10"
+      ],
+      "review": "verified_primary",
+      "note": "Dato storico al closing, non quota corrente"
+    },
+    {
+      "id": "OWN_MARZORATI_2025_DERIVED",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "2025-06-30",
+      "measure": "marzorati_share_after_injection",
+      "value": 28.17,
+      "unit": "percent",
+      "status": "derived",
+      "source_ids": [
+        "P_WLC_2Q25",
+        "S10"
+      ],
+      "note": "100 − 71,83. Unica ipotesi residua: nessun altro socio in CAS oltre a MEG e alla famiglia Marzorati. Non è quota attestata.",
+      "review": "derived_assumption_explicit"
+    },
+    {
+      "id": "OWN_MARZORATI_POST",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "2026",
+      "measure": "marzorati_share_post_transaction",
+      "value": null,
+      "unit": "percent",
+      "status": "missing",
+      "source_ids": [],
+      "note": "Non inferire diluizione senza sottoscrizioni, valori e diritti",
+      "review": "missing"
+    },
+    {
+      "id": "OWN_SHARE_CAPITAL_2025",
+      "topic": "ownership",
+      "entity": "CAS_SpA_parent",
+      "period": "2025-12-31",
+      "measure": "share_capital",
+      "value": 494191925,
+      "unit": "EUR",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25",
+        "S1"
+      ],
+      "pdf_page": [
+        75
+      ],
+      "review": "verified_primary",
+      "note": "Interamente sottoscritto e versato. 439.208.027 al 31/12/2024; 405.563.167 all'1/1/2024."
+    },
+    {
+      "id": "OWN_WALSIN_2022",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "2022-11-30",
+      "measure": "walsin_share_at_closing",
+      "value": 70,
+      "unit": "percent",
+      "status": "reported",
+      "precision": "exact_as_announced",
+      "source_ids": [
+        "S10"
+      ],
+      "review": "verified_primary",
+      "note": "Dato storico al closing, non estendibile automaticamente al 2026"
+    },
+    {
+      "id": "OWN_WALSIN_2025",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "2025-06-30",
+      "measure": "MEG_share_in_CAS",
+      "value": 71.83,
+      "unit": "percent",
+      "status": "reported",
+      "source_ids": [
+        "P_WLC_2Q25",
+        "S13"
+      ],
+      "note": "Tabella delle controllate WLC: 71,83% al 30/6/2025, 70,00% al 31/12/2024. Nota 2: MEG ha sottoscritto l'aumento (data di riferimento 9/6/2025) a una percentuale diversa dalla propria quota. MEG è controllata al 100% da Walsin Lihwa Europe.",
+      "review": "verified_primary",
+      "pdf_page": {
+        "P_WLC_2Q25": [
+          26
+        ]
+      }
+    },
+    {
+      "id": "OWN_WALSIN_DECLARED_2025",
+      "topic": "ownership",
+      "entity": "CAS_SpA_parent",
+      "period": "2025-12-31",
+      "measure": "walsin_indirect_share_as_stated_by_CAS",
+      "value": 70,
+      "unit": "percent",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25",
+        "P_CON25"
+      ],
+      "pdf_page": {
+        "P_SEP25": [
+          31
+        ],
+        "P_CON25": [
+          29
+        ]
+      },
+      "review": "verified_primary",
+      "note": "Attestazione della nota iniziale ai conti Cogne. In conflitto con OWN_WALSIN_2025 (conflitto C2)."
+    },
+    {
+      "id": "OWN_WALSIN_HISTORY_2024",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "2024",
+      "measure": "MEG_share_in_CAS_history",
+      "value": "77,60% al 30/6/2024; 70,00% dal 2/8/2024",
+      "unit": null,
+      "status": "reported",
+      "source_ids": [
+        "P_WLC_2Q25"
+      ],
+      "pdf_page": {
+        "P_WLC_2Q25": [
+          26
+        ]
+      },
+      "review": "verified_primary",
+      "note": "Registrato senza interpretazione."
+    },
+    {
+      "id": "OWN_WALSIN_INJECTION_2025",
+      "topic": "ownership",
+      "entity": "CAS_SpA",
+      "period": "2025-01-06",
+      "measure": "parent_board_approval_capital_injection",
+      "value": 60.5,
+      "unit": "EUR_million",
+      "status": "reported",
+      "precision": "exact_as_disclosed",
+      "source_ids": [
+        "S14",
+        "P_WLC_2Q25",
+        "S13"
+      ],
+      "note": "Il CdA WLC approva il 6/1/2025 60,5 milioni verso Walsin Lihwa Europe per rafforzare la controllata. L'importo effettivamente versato da MEG in CAS non è attestato: non identificarlo con la sottoscrizione.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "GOV_AUDIT_EU_2025",
+      "topic": "governance",
+      "entity": "Walsin_group",
+      "period": "2025-12-26",
+      "measure": "audit_committee_recommendation",
+      "value": "Rafforzare collaborazione e meccanismi per l'audit delle attività europee",
+      "unit": null,
+      "status": "reported",
+      "source_ids": [
+        "S14"
+      ],
+      "review": "verified_primary",
+      "note": "Raccomandazione interna Walsin; non prova trasferimento operativo di decisioni o ordini."
+    },
+    {
+      "id": "GOV_BOARD_2025",
+      "topic": "governance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "board_composition",
+      "value": "Presidente Yu-Lon Chiao; vicepresidente Eugenio Marzorati; AD Massimiliano Burelli; DG e consigliere delegato Monica Pirovano; consiglieri Roberto Marzorati, Hsin-Yi Ho, Chester Chiao, Chi Chia, Shyi-Chin Wang",
+      "unit": null,
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        2
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "GOV_CHAIR_2022",
+      "topic": "governance",
+      "entity": "CAS_SpA",
+      "period": "2022-12-01",
+      "measure": "change_of_chair",
+      "value": "Yu-Lon Chiao succede a Giuseppe Marzorati",
+      "unit": null,
+      "status": "reported",
+      "source_ids": [
+        "S10"
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "GOV_MEG_AUTONOMY_2025",
+      "topic": "governance",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "management_and_coordination_declaration",
+      "value": "La società dichiara piena autonomia decisionale degli organi e assenza di direzione e coordinamento ex art. 2497 c.c. da parte di MEG; nessun rapporto commerciale o finanziario con MEG nel 2024-2025",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        21,
+        97
+      ],
+      "review": "verified_primary",
+      "note": "Dichiarazione giuridico-societaria, non misura di autonomia nell'assegnazione dei carichi."
+    },
+    {
+      "id": "SHAREHOLDER_VIEW_MGMT_2026",
+      "topic": "governance",
+      "entity": "CAS_SpA",
+      "period": "2026-11",
+      "measure": "management_view_of_controlling_shareholder",
+      "value": "La direzione descrive Walsin come gruppo industriale con orizzonte d'investimento di 3-5 anni e volontà di investire ad Aosta per rinnovamento e competitività.",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S6"
+      ],
+      "review": "verified_attribution",
+      "note": "Giudizio di un dirigente sull'azionista di controllo: attestazione di parte, non evidenza di investimenti deliberati."
+    },
+    {
+      "id": "EU_DEMAND_2025",
+      "topic": "market",
+      "entity": "sector",
+      "period": "FY2025",
+      "value": "Contrazione attesa della domanda: Europa circa −4%, Americhe circa −3%; Asia +3%, India +6%. Dazi USA al 50% sull'acciaio UE e rischio di deviazione delle importazioni asiatiche verso l'Europa.",
+      "status": "attributed",
+      "pdf_page": 10,
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_CON_SALES_T_2024",
+      "topic": "market",
+      "entity": "group_consolidated",
+      "period": "FY2024",
+      "measure": "total_sales_tonnes",
+      "value": 162624,
+      "unit": "tonne",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_CON_SALES_T_2025",
+      "topic": "market",
+      "entity": "group_consolidated",
+      "period": "FY2025",
+      "measure": "total_sales_tonnes",
+      "value": 170690,
+      "unit": "tonne",
+      "status": "reported",
+      "source_ids": [
+        "P_CON25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "Perimetro 2025 include DMV per l'intero anno."
+    },
+    {
+      "id": "FIN_PARENT_SALES_T_2024",
+      "topic": "market",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2024",
+      "measure": "total_sales_tonnes",
+      "value": 145265,
+      "unit": "tonne",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary"
+    },
+    {
+      "id": "FIN_PARENT_SALES_T_2025",
+      "topic": "market",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "measure": "total_sales_tonnes",
+      "value": 141417,
+      "unit": "tonne",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        8
+      ],
+      "review": "verified_primary",
+      "note": "Vendite della società, non produzione del solo stabilimento di Aosta."
+    },
+    {
+      "id": "MARKET_CAUSE_MGMT_2026",
+      "topic": "market",
+      "entity": "CAS_SpA",
+      "period": "2026",
+      "measure": "stated_cause_of_downturn",
+      "value": "La direzione attribuisce la crisi alla chiusura del mercato USA con i dazi, che ha dirottato verso l'Europa il materiale asiatico a basso costo; nessun riferimento ad altri siti del gruppo.",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S6"
+      ],
+      "review": "verified_attribution",
+      "note": "Spiegazione di parte, coerente con EU_DEMAND_2025 e MARKET_US_CANCELLED. Non prova né esclude una riallocazione infragruppo."
+    },
+    {
+      "id": "MARKET_US_CANCELLED",
+      "topic": "market",
+      "entity": "CAS_SpA",
+      "period": "2025",
+      "measure": "US_customer_order_cancellations",
+      "value": "Clienti hanno cancellato gli ordini dopo conferma dei dazi",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S4"
+      ],
+      "review": "verified_secondary"
+    },
+    {
+      "id": "MARKET_US_EXPOSURE",
+      "topic": "market",
+      "entity": "CAS_SpA_or_site_unspecified",
+      "period": "2025",
+      "measure": "US_export_share",
+      "value": 10,
+      "unit": "percent_approx",
+      "status": "attributed",
+      "source_ids": [
+        "S4"
+      ],
+      "note": "Dichiarazione DG: circa 10% dell'export; non necessariamente quota fatturato di gruppo",
+      "review": "verified_secondary"
+    },
+    {
+      "id": "REV_2025_DRIVERS",
+      "topic": "market",
+      "entity": "CAS_SpA_parent",
+      "period": "FY2025",
+      "value": "Ricavi −10%: effetto volumi −3%, effetto prezzo materie prime −7%. Volumi spediti −3,8 mila tonnellate.",
+      "status": "reported",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        13,
+        75
+      ],
+      "note": "Le variazioni 2025 dei ricavi della società sono attribuite nel bilancio a volumi e prezzi; non determinano da sole il grado di sottocarico nel 2026.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "SAFEGUARD_EFFECT_SEPT_2026",
+      "topic": "market",
+      "entity": "CAS_SpA",
+      "period": "2026-09",
+      "measure": "stated_effect_of_EU_safeguard",
+      "value": "A settembre la direzione ha constatato che la misura di salvaguardia UE non avrebbe avuto l'efficacia attesa; i programmi di produzione sono stati cambiati di conseguenza.",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S6"
+      ],
+      "review": "verified_attribution",
+      "note": "Revisione di previsione: a settembre la direzione aggiorna l'attesa sulla salvaguardia UE contenuta in PLAN_2030_TARGETS e WALSIN_EU_OUTLOOK_2026 (vedi FR1)."
+    },
+    {
+      "id": "SALES_Q1_2026_VS_BUDGET",
+      "topic": "market",
+      "entity": "group",
+      "period": "2026-Q1",
+      "value": "Group sales volumes in line with or slightly above budget; average selling prices slightly below budget",
+      "status": "reported",
+      "pdf_page": 16,
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "note": "Base diversa da PROD_2026_VS_2025 (budget contro anno precedente): l'accostamento è un indizio da approfondire, non prova di riallocazione né di riduzione scorte.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "WALSIN_EU_OUTLOOK_2026",
+      "topic": "market",
+      "entity": "Walsin_group_Europe",
+      "period": "2026",
+      "measure": "parent_outlook",
+      "value": "Attesa di crescita significativa dei volumi di vendita in Europa dopo CBAM e nuove misure di salvaguardia UE",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S14"
+      ],
+      "note": "Previsione della capogruppo, non dato realizzato",
+      "review": "verified_primary"
+    },
+    {
+      "id": "WALSIN_STAINLESS_2025",
+      "topic": "market",
+      "entity": "Walsin_group",
+      "period": "FY2025",
+      "measure": "parent_business_report",
+      "value": "Acciaio inossidabile in Taiwan ed Europa colpito dalle barriere tariffarie; ricavi di gruppo in calo per minori volumi venduti di inossidabile",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S14"
+      ],
+      "review": "verified_primary",
+      "note": "Riferito al perimetro della capogruppo; non inferire automaticamente la domanda del sito di Aosta."
+    },
+    {
+      "id": "LOAD_BY_PRODUCT_2026",
+      "topic": "production",
+      "entity": "Aosta_site",
+      "period": "2026-10",
+      "measure": "load_heterogeneity_by_plant",
+      "value": "Carico eterogeneo fra impianti: le rifusioni sono indicate come operative (continuano a lavorare durante le fermate); gli impianti per l'aerospazio sono descritti come molto carichi; altri impianti, legati a prodotti in sofferenza, hanno meno volumi e faranno giorni di fermata.",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S6"
+      ],
+      "review": "verified_attribution",
+      "note": "Due attestazioni distinte: rifusioni operative, aerospazio molto carico. Nessuna quantificazione."
+    },
+    {
+      "id": "PROD_2026_VS_2025",
+      "topic": "production",
+      "entity": "CAS_SpA_and_group_ambiguous",
+      "period": "2026-01_to_2026-03",
+      "value": "Production volumes recorded in 2026 are lower than in the previous year",
+      "status": "reported",
+      "pdf_page": 15,
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "note": "Dichiarazione degli amministratori. Il periodo si riferisce a «Company and Group» insieme: non è chiaro se il calo sia della sola società o del gruppo. Primo riscontro primario del sottocarico 2026.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "PROD_REAL_STOP",
+      "topic": "production",
+      "entity": "Aosta_site",
+      "period": "2026-11_to_2026-12",
+      "measure": "actual_stoppage_days_by_department",
+      "value": null,
+      "unit": "days",
+      "status": "missing",
+      "source_ids": [],
+      "review": "missing",
+      "note": "Rischi e previsioni non diventano automaticamente giorni di fermo realizzati"
+    },
+    {
+      "id": "STOP_MGMT_NOV",
+      "topic": "production",
+      "entity": "Aosta_site_selected_departments",
+      "period": "2026-11_to_2026-12",
+      "measure": "planned_stoppages",
+      "value": "Fermate a macchia di leopardo secondo il carico dei singoli impianti: alcuni impianti fermi alcuni giorni a settimana, altre parti in attività; fermata natalizia di due o tre settimane, definita consueta. Nessun impianto fermo per due mesi e mezzo.",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S6"
+      ],
+      "note": "Testo verificato; resta il contrasto con STOP_UNION_OCT (C3). Giorni effettivi: PROD_REAL_STOP (missing).",
+      "review": "verified_attribution"
+    },
+    {
+      "id": "STOP_UNION_OCT",
+      "topic": "production",
+      "entity": "Aosta_site_selected_departments",
+      "period": "2026-11_to_2026-12",
+      "measure": "planned_stoppages",
+      "value": "Possibili fermi fino a nove settimane per alcuni reparti, secondo rappresentanti sindacali",
+      "unit": null,
+      "status": "disputed",
+      "source_ids": [
+        "S5",
+        "S8",
+        "S11"
+      ],
+      "note": "Non tradurre in nove settimane di fermo per tutta l'azienda",
+      "review": "verified_attribution_not_actual_stoppage"
+    },
+    {
+      "id": "GROUP_STAFF_AVG_2025",
+      "topic": "workforce",
+      "entity": "group_consolidated",
+      "period": "FY2025",
+      "measure": "average_staff",
+      "value": 2948,
+      "unit": "persons",
+      "status": "reported",
+      "source_ids": [
+        "S18"
+      ],
+      "note": "Media di gruppo (3.002 nel 2024); non confrontabile con gli occupati di Aosta a fine anno (STAFF_2025_END).",
+      "review": "verified_secondary"
+    },
+    {
+      "id": "LABOR_INTEGRATIVO_2026",
+      "topic": "workforce",
+      "entity": "CAS_SpA",
+      "period": "2026-07",
+      "measure": "company_agreement_status",
+      "value": "Contratto integrativo disdettato dall'azienda; trattativa sospesa dai sindacati il 16/10/2026",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S8",
+        "S20"
+      ],
+      "review": "verified_secondary"
+    },
+    {
+      "id": "STAFF_2025_END",
+      "topic": "workforce",
+      "entity": "Aosta_site",
+      "period": "2025-12",
+      "measure": "staff_count",
+      "value": 1226,
+      "unit": "persons",
+      "status": "attributed",
+      "source_ids": [
+        "S4"
+      ],
+      "note": "Dichiarazione DG, verificare perimetro occupazionale",
+      "review": "verified_secondary"
+    },
+    {
+      "id": "STAFF_CIG_EXHAUSTED",
+      "topic": "workforce",
+      "entity": "Aosta_site",
+      "period": "2026-10",
+      "measure": "wage_support_availability",
+      "value": "Ammortizzatori esauriti fino a marzo 2027; l'azienda propone ferie e permessi per coprire i periodi senza lavoro",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S20",
+        "S22"
+      ],
+      "review": "verified_secondary",
+      "note": "Dichiarazione sindacale riportata da S20 e S22; durata e copertura giuridica da precisare."
+    },
+    {
+      "id": "STAFF_SOLIDARITY",
+      "topic": "workforce",
+      "entity": "Aosta_site",
+      "period": "2026-05",
+      "measure": "solidarity_contracts_requested",
+      "value": 101,
+      "unit": "persons",
+      "status": "reported",
+      "source_ids": [
+        "S3"
+      ],
+      "review": "verified_secondary"
+    },
+    {
+      "id": "BUDGET_2027_MGMT",
+      "topic": "strategy",
+      "entity": "CAS_SpA",
+      "period": "2027",
+      "measure": "stated_budget_direction",
+      "value": "Il budget 2027 presentato dalla direzione commerciale, ancora da approvare, non è in riduzione; la direzione si attende una normalizzazione nel corso del 2027.",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S6"
+      ],
+      "review": "verified_attribution",
+      "note": "Previsione di parte; budget non approvato e non pubblicato. Coerente con MGMT_OUTLOOK_2027."
+    },
+    {
+      "id": "MGMT_OUTLOOK_2027",
+      "topic": "strategy",
+      "entity": "CAS_SpA",
+      "period": "2026-10-19",
+      "measure": "stated_outlook",
+      "value": "Secondo quanto riferito dalla Cgil dopo l'incontro con la Regione, l'azienda afferma che il 2027 non sarà un anno buio",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S8"
+      ],
+      "review": "verified_secondary",
+      "note": "Catena di attribuzione: azienda → Regione → Cgil → ANSA. Non è una previsione verificata."
+    },
+    {
+      "id": "PLAN_2030_TARGETS",
+      "topic": "strategy",
+      "entity": "group_and_parent",
+      "period": "2026-2030",
+      "value": "Piano 2030 preparato a gennaio 2026, aggiornato a marzo 2026. Gruppo 2026: EBITDA circa 7%, utile netto 0,4 milioni, posizione finanziaria netta 300 milioni, equilibrio finanziario a fine 2026. Società 2026: EBITDA 33 milioni (5%), PFN 250 milioni. Ripresa dei margini attesa da luglio 2026 con le salvaguardie UE.",
+      "status": "attributed",
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "pdf_page": [
+        15,
+        16
+      ],
+      "note": "Previsioni degli amministratori, attribuite. Incoerenza interna: il testo parla di «EBITDA circa 7% nel 2025», mentre il consuntivo consolidato 2025 è circa l'1% (FIN_CON_EBITDA_2025 su FIN_REVENUE_2025). Non usare la frase come dato 2025.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "PLAN_PRODUCT_REQUEST",
+      "topic": "strategy",
+      "entity": "Aosta_site",
+      "period": "2026-10",
+      "measure": "union_request",
+      "value": "La Fim chiede quali prodotti realizzare ad Aosta e in quali quantità",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S21"
+      ],
+      "review": "verified_secondary"
+    },
+    {
+      "id": "PLAN_REQUEST",
+      "topic": "strategy",
+      "entity": "Aosta_site",
+      "period": "2026-09-29",
+      "measure": "industrial_plan_quantification_request",
+      "value": "Sindacati richiedono volumi, numeri concreti e ulteriore confronto sul piano",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S7"
+      ],
+      "review": "verified_attribution_primary_union_communique"
+    },
+    {
+      "id": "STRATEGIC_MIMIT",
+      "topic": "strategy",
+      "entity": "Aosta_site",
+      "period": "2026-09-29",
+      "measure": "stated_commitment",
+      "value": "Interesse strategico e intenzione di continuare investimenti e produzione ad Aosta, come riferito dalla Fim",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S7"
+      ],
+      "review": "verified_attribution_primary_union_communique"
+    },
+    {
+      "id": "STRATEGY_DIVERSIFICATION_2026",
+      "topic": "strategy",
+      "entity": "CAS_SpA",
+      "period": "2026",
+      "measure": "stated_commercial_response",
+      "value": "Diversificazione su aerospazio, energia e leghe speciali; ricerca di nuovi clienti e mercati; vendita diretta agli utilizzatori saltando i distributori; riorganizzazione interna per competitività, efficienza, servizio e puntualità.",
+      "unit": null,
+      "status": "attributed",
+      "source_ids": [
+        "S6"
+      ],
+      "review": "verified_attribution"
+    },
+    {
+      "id": "ALLOC_GROUP_VOLUME",
+      "topic": "allocation",
+      "entity": "Aosta_site_vs_group",
+      "period": "2024-2026",
+      "measure": "comparable_production_volume_share",
+      "value": null,
+      "unit": "percent",
+      "status": "missing",
+      "source_ids": [],
+      "note": "Richiede volumi per famiglia di prodotto e capacità, con perimetri omogenei",
+      "review": "missing"
+    },
+    {
+      "id": "ALLOC_TRANSFER_EVIDENCE",
+      "topic": "allocation",
+      "entity": "Aosta_site_vs_group",
+      "period": "2025-2026",
+      "measure": "orders_moved_between_group_plants",
+      "value": null,
+      "unit": "orders_or_tonnes",
+      "status": "missing",
+      "source_ids": [],
+      "note": "Nessuna prova di riallocazione nel materiale acquisito",
+      "review": "missing"
+    },
+    {
+      "id": "GROUP_PERIMETER",
+      "topic": "allocation",
+      "entity": "group",
+      "period": "2026",
+      "measure": "production_sites",
+      "value": "Aosta; Degerfors e Storfors (Svezia); Special Melted Products (Regno Unito); DMV/Mannesmann Stainless Tubes (Germania, Francia, Italia, Stati Uniti); Com.Steel Inox (65%); Dong Guan Cogne Steel Products (Cina, circa 70%)",
+      "unit": null,
+      "status": "reported",
+      "source_ids": [
+        "S23",
+        "S14"
+      ],
+      "note": "Elenco del perimetro; non prova trasferimenti di ordini o riallocazioni intragruppo.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "GROUP_RESULTS_BY_ENTITY_2025",
+      "topic": "allocation",
+      "entity": "group_entities",
+      "period": "FY2025",
+      "value": {
+        "Cogne Acciai Speciali S.p.A.": -59.925,
+        "Degerfors Long Products AB": -6.625,
+        "DMV Deutschland": -3.29,
+        "DMV France": -2.818,
+        "DMV Italia": -2.865,
+        "DMV GmbH": -1.556,
+        "Special Melted Products": 10.61,
+        "Com. Steel Inox": 6.12,
+        "Cogne Stainless Bars": 3.153
+      },
+      "unit": "EUR_million",
+      "status": "reported",
+      "pdf_page": 38,
+      "source_ids": [
+        "P_CON25"
+      ],
+      "note": "Dalla tabella di perimetro del consolidato. I risultati non misurano il carico produttivo e risentono di prodotti, perimetri e prezzi infragruppo diversi.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "ENERGY_HEDGES",
+      "topic": "costs",
+      "entity": "CAS_SpA_and_group",
+      "period": "2025-2026",
+      "value": "Nel 2025 e nei primi mesi del 2026 la società ha stipulato coperture sul prezzo dell'energia elettrica",
+      "status": "reported",
+      "pdf_page": 15,
+      "source_ids": [
+        "P_SEP25"
+      ],
+      "note": "Coperture finanziarie sul prezzo dell'elettricità. Non equivalgono a un PPA: ENERGY_PPA resta missing.",
+      "review": "verified_primary"
+    },
+    {
+      "id": "ENERGY_PPA",
+      "topic": "costs",
+      "entity": "Aosta_site",
+      "period": "2026",
+      "measure": "PPA_status_and_covered_energy_share",
+      "value": null,
+      "unit": null,
+      "status": "missing",
+      "source_ids": [],
+      "note": "Non confondere una proposta di leva con PPA vigente",
+      "review": "missing"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "C1",
+      "oggetto": "Risultato netto 2025 di CAS S.p.A.",
+      "osservazioni": [
+        "FIN_PARENT_NET_2025",
+        "FIN_PARENT_NET_2025_SCOPE_TABLE"
+      ],
+      "stato": "aperto",
+      "nota": "Due documenti ufficiali, due cifre (−38,492 e −59,925). Il valore del civilistico approvato è −38,492. La differenza non è spiegata; non attribuirle una causa."
+    },
+    {
+      "id": "C2",
+      "oggetto": "Quota Walsin/MEG in CAS nel 2025",
+      "osservazioni": [
+        "OWN_WALSIN_2025",
+        "OWN_WALSIN_DECLARED_2025"
+      ],
+      "stato": "aperto, sbilanciato",
+      "nota": "La capogruppo attesta 71,83% al 30/6/2025 con nota esplicativa; il bilancio Cogne dichiara 70% al 31/12/2025. Nessun movimento successivo noto. Conservare entrambe le attestazioni."
+    },
+    {
+      "id": "C3",
+      "oggetto": "Fermate di novembre-dicembre 2026",
+      "osservazioni": [
+        "STOP_UNION_OCT",
+        "STOP_MGMT_NOV"
+      ],
+      "stato": "aperto",
+      "nota": "Attestazioni di parti in conflitto; i giorni effettivi sono PROD_REAL_STOP (missing)."
+    },
+    {
+      "id": "C4",
+      "oggetto": "Piano 2030, EBITDA 2025",
+      "osservazioni": [
+        "PLAN_2030_TARGETS",
+        "FIN_CON_EBITDA_2025"
+      ],
+      "stato": "segnalato",
+      "nota": "Incoerenza interna al documento: 7% dichiarato contro circa 1% consuntivo."
+    }
+  ],
+  "correzioni_rispetto_alle_versioni_precedenti": [
+    {
+      "voce": "S6",
+      "prima": "pending_direct_source_check",
+      "ora": "testo integrale letto; STOP_MGMT_NOV da pending a verified_attribution"
+    },
+    {
+      "voce": "Proposta C5",
+      "prima": "conflitto documentale",
+      "ora": "FR1, revisione di previsione (precisazione Geep)"
+    }
+  ],
+  "missing": [
+    "OWN_MARZORATI_POST",
+    "ALLOC_GROUP_VOLUME",
+    "ALLOC_TRANSFER_EVIDENCE",
+    "ENERGY_PPA",
+    "PROD_REAL_STOP"
+  ],
+  "verifiche_ancora_da_fare": [
+    "Volumi e mix per sito e per famiglia di prodotto (ALLOC_GROUP_VOLUME)",
+    "Giorni effettivi di fermo per reparto (PROD_REAL_STOP)",
+    "Riconciliazione delle due cifre di risultato CAS 2025 (C1)",
+    "Riconciliazione 70% / 71,83% (C2)",
+    "Esistenza e copertura di un PPA (ENERGY_PPA)"
+  ],
+  "comparison_protocol": {
+    "freeze_dataset_id": "CAS-DATI-v0.4",
+    "participants": [
+      "model_claude",
+      "model_geep"
+    ],
+    "rules": [
+      "Non modificare le osservazioni condivise durante il confronto",
+      "Tenere i punteggi e le soglie in file separati per ciascun modello",
+      "Ogni output deve elencare gli observation_id utilizzati e quelli ignorati",
+      "Non trasformare missing in zero",
+      "Distinguere rischio di crisi di domanda da prova di riallocazione infragruppo",
+      "Trattare dichiarazioni di parti in conflitto come attestazioni attribuite",
+      "Separare dato storico del 2022 da quota proprietaria corrente",
+      "Non utilizzare candidate_value come metrica operativa senza verifica",
+      "Annotare la versione esatta del dataset in ogni output"
+    ],
+    "questions": [
+      "Il sito è sotto-caricato? Con quali evidenze?",
+      "La domanda del mercato è diminuita?",
+      "Vi sono evidenze dirette di trasferimenti di ordini ad altri impianti del gruppo?",
+      "Quali dati cambierebbero il giudizio?"
+    ]
+  },
+  "verification_policy": {
+    "verified": "Fonte consultata nella revisione del 2026-11-01; non significa audit contabile",
+    "secondary": "Fonte giornalistica consultata; per cifre ufficiali serve estrazione dal documento societario",
+    "attributed": "Dichiarazione di un soggetto identificato, non fatto causale dimostrato",
+    "pending": "Richiede verifica primaria o confronto documentale",
+    "missing": "Non disponibile: null, mai zero"
+  },
+  "base_congelata_precedente": {
+    "dataset_id": "CAS-DATI-v0.3",
+    "freeze_audit": {
+      "date": "2026-11-01",
+      "by": "ChatGPT / Geep",
+      "base": "CAS-DATI-v0.3-CANDIDATA",
+      "type": "validazione strutturale, controlli mirati su fonti primarie e comunicato FIM",
+      "changes": [
+        "S7: consultato comunicato FIM originale",
+        "PLAN_REQUEST: attribuzione verificata nel comunicato sindacale, non conferma indipendente della posizione aziendale",
+        "STRATEGIC_MIMIT: attribuzione verificata nel comunicato sindacale, non conferma indipendente della posizione aziendale",
+        "S1: rimossa nota obsoleta che affermava PDF non analizzati",
+        "S16: corretta nota fuorviante sulla delibera 2026",
+        "OWN_WALSIN_2025: aggiunta pagina Walsin PDF 26",
+        "OWN_WALSIN_HISTORY_2024: aggiunta pagina Walsin PDF 26",
+        "REV_2025_DRIVERS: rimossa deduzione temporale non dimostrata",
+        "GROUP_PERIMETER: formulazione neutrale"
+      ],
+      "not_a_full_source_audit": true,
+      "pending_direct_sources": [
+        "S6: intervista La Stampa non accessibile"
+      ],
+      "preserved_conflicts": [
+        "C1",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "preserved_missing": [
+        "OWN_MARZORATI_POST",
+        "PROD_REAL_STOP",
+        "ALLOC_GROUP_VOLUME",
+        "ALLOC_TRANSFER_EVIDENCE",
+        "ENERGY_PPA"
+      ]
+    }
+  },
+  "forecast_revisions": [
+    {
+      "id": "FR1",
+      "oggetto": "Effetto delle salvaguardie UE nel 2026",
+      "previsione_originaria": [
+        "PLAN_2030_TARGETS",
+        "WALSIN_EU_OUTLOOK_2026"
+      ],
+      "revisione": "SAFEGUARD_EFFECT_SEPT_2026",
+      "stato": "forecast_revision",
+      "nota": "Piano e capogruppo attendevano la ripresa da luglio 2026; a settembre la direzione dichiara l'efficacia inferiore all'attesa. Aggiornamento di una previsione, non attestazione incompatibile."
+    }
+  ],
+  "freeze_audit": {
+    "date": "2026-11-01",
+    "by": "ChatGPT / Geep",
+    "base": "CAS-DATI-v0.4-CANDIDATA",
+    "type": "validazione JSON, diff integrale contro v0.3, controllo ID, fonti, conflitti, null, coerenza modello Claude v0.3",
+    "changes": [
+      "schema 0.3 -> 0.4",
+      "dataset_id candidata -> CAS-DATI-v0.4",
+      "stato: congelata",
+      "metadati di congelamento aggiunti; nessuna osservazione, fonte o valore cambiato rispetto a candidata"
+    ],
+    "not_a_full_source_audit": true,
+    "preserved_conflicts": [
+      "C1",
+      "C2",
+      "C3",
+      "C4"
+    ],
+    "preserved_missing": [
+      "OWN_MARZORATI_POST",
+      "ALLOC_GROUP_VOLUME",
+      "ALLOC_TRANSFER_EVIDENCE",
+      "ENERGY_PPA",
+      "PROD_REAL_STOP"
+    ],
+    "source_S6": "testo condiviso direttamente da Paolo il 2026-11-01"
+  }
+}

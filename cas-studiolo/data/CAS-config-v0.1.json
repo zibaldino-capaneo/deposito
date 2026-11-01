@@ -1,0 +1,100 @@
+{
+  "schema": "cas-editorial-config/0.1",
+  "config_version": "2026-11-01-c01",
+  "stato": "bozza per il controllo Geep; solo il tema 1 è sviluppato",
+  "regola": "Questo file contiene solo ordine, titoli, raggruppamenti e testi editoriali di raccordo. Nessun fatto, valore o giudizio: quelli si leggono dal dataset e dagli output dei modelli.",
+  "file": {
+    "dataset": "data/CAS-DATI-v0.4.json",
+    "modelli": {
+      "geep": "data/CAS-Geep-v0.4.json",
+      "claude": "data/CAS-Claude-v0.4.json"
+    }
+  },
+  "attesi": {
+    "dataset_id": "CAS-DATI-v0.4",
+    "modelli": {
+      "geep": { "model": "model_geep", "dataset_id": "CAS-DATI-v0.4" },
+      "claude": { "model": "model_claude", "dataset_id": "CAS-DATI-v0.4" }
+    }
+  },
+
+  "testata": {
+    "titolo": "Cogne: il carico, il mercato, le scelte",
+    "titolo_stato": "provvisorio",
+    "data": "1 novembre 2026",
+    "autori": ["Paolo Carena", "Claude", "ChatGPT"],
+    "domanda_guida": "Che cosa documenta la difficoltà produttiva di Cogne ad Aosta, quali cause sono meglio sostenute e che cosa rimane non dimostrato?",
+    "perimetro": "Cogne Acciai Speciali S.p.A., il gruppo che controlla, lo stabilimento di Aosta. I tre perimetri non coincidono e ogni dato dice a quale appartiene.",
+    "delimitazione": "Non è una previsione di chiusura, né un'accusa di riallocazione."
+  },
+
+  "come_si_legge": [
+    { "chiave": "reported", "etichetta": "Registrato", "testo": "Un dato contenuto in un documento: un bilancio, un comunicato, un atto." },
+    { "chiave": "attributed", "etichetta": "Dichiarato", "testo": "Ciò che una parte afferma: la direzione, un sindacato, la capogruppo. Prova che è stato detto, non che sia vero." },
+    { "chiave": "derived", "etichetta": "Derivato", "testo": "Ottenuto con un calcolo da altri dati, sotto un'ipotesi dichiarata." },
+    { "chiave": "disputed", "etichetta": "Contestato", "testo": "Due fonti affermano cose diverse sullo stesso fatto. Le mostriamo affiancate, senza fonderle." },
+    { "chiave": "missing", "etichetta": "Mancante", "testo": "Un dato che servirebbe e nessuna fonte riporta. Vale null: non zero, non «nessun problema»." },
+    { "chiave": "giudizio", "etichetta": "Giudizio", "testo": "Una lettura di un modello, motivata dai dati che cita. I giudizi stanno sotto i fatti, in due colonne, e non sono fatti." }
+  ],
+
+  "indice": [
+    { "id": "t1", "titolo": "Dove manca lavoro?", "stato": "maquette" },
+    { "id": "t2", "titolo": "Domanda e mercati", "stato": "in preparazione" },
+    { "id": "t3", "titolo": "Tenuta economico-finanziaria", "stato": "in preparazione" },
+    { "id": "t4", "titolo": "Chi controlla, chi decide, chi assegna gli ordini?", "stato": "in preparazione" },
+    { "id": "t5", "titolo": "Il futuro industriale di Aosta", "stato": "in preparazione" },
+    { "id": "t6", "titolo": "Quello che ancora non sappiamo", "stato": "in preparazione" }
+  ],
+
+  "mappa_rubriche": [
+    { "rubrica": "t1", "geep": ["carico"], "claude": ["carico_ridotto", "carico_spec"] },
+    { "rubrica": "t2", "geep": ["mercato"], "claude": [], "nota_claude": "Nessuna dimensione: il tema è trattato in Q2 e nell'ipotesi H2." },
+    { "rubrica": "t3", "geep": ["finanza"], "claude": ["fin"] },
+    { "rubrica": "t4", "geep": ["controllo_societario", "allocazione"], "claude": ["dec"] },
+    { "rubrica": "t5", "geep": [], "claude": ["sim"], "nota_geep": "Nessuna dimensione corrispondente." },
+    { "rubrica": "t6", "geep": ["tecnologia"], "claude": ["tec"] }
+  ],
+
+  "temi": [
+    {
+      "id": "t1",
+      "titolo": "Dove manca lavoro?",
+      "domanda": "Lo stabilimento di Aosta lavora meno di prima? Dove manca il lavoro, e dove no?",
+      "gruppi": [
+        { "titolo": "Produzione e carico per impianto", "osservazioni": ["PROD_2026_VS_2025", "LOAD_BY_PRODUCT_2026"] },
+        { "titolo": "Le fermate di fine anno", "conflitto": "C3",
+          "titolo_conflitto": "Lo stesso calendario di fermate, due racconti",
+          "punto_da_chiarire": "Quanti giorni di fermo, e in quali impianti.",
+          "chiarirebbe": "PROD_REAL_STOP" },
+        { "titolo": "Lavoro e ammortizzatori", "osservazioni": ["STAFF_SOLIDARITY", "STAFF_CIG_EXHAUSTED"] },
+        { "titolo": "Dati che mancano", "osservazioni": ["PROD_REAL_STOP", "ALLOC_GROUP_VOLUME"] }
+      ],
+      "etichette": {
+        "PROD_2026_VS_2025": "Produzione 2026 rispetto al 2025",
+        "LOAD_BY_PRODUCT_2026": "Carico diverso fra impianti",
+        "STOP_UNION_OCT": "Le fermate secondo i sindacati",
+        "STOP_MGMT_NOV": "Le fermate secondo la direzione",
+        "STAFF_SOLIDARITY": "Contratti di solidarietà richiesti",
+        "STAFF_CIG_EXHAUSTED": "Ammortizzatori disponibili",
+        "PROD_REAL_STOP": "Giorni di fermo effettivi per reparto",
+        "ALLOC_GROUP_VOLUME": "Volumi di Aosta a confronto con gli altri siti del gruppo",
+        "EU_DEMAND_2025": "Domanda europea di acciaio inossidabile",
+        "MARKET_CAUSE_MGMT_2026": "La causa della crisi secondo la direzione",
+        "STRATEGY_DIVERSIFICATION_2026": "La risposta commerciale dichiarata",
+        "GROUP_RESULTS_BY_ENTITY_2025": "Risultati 2025 delle società del gruppo",
+        "STAFF_2025_END": "Occupati ad Aosta a fine 2025"
+      },
+      "cosa_manca": "Per dire quanto lavoro manca, e dove, servirebbero ore e tonnellate per impianto messe a confronto con la capacità, e i giorni di fermo effettivi. Oggi nessuna fonte li riporta.",
+      "contesto": "In questo tema convivono quattro tipi di affermazione: un dato di bilancio (la produzione 2026 più bassa), dichiarazioni di parte (sindacati e direzione sulle fermate), una previsione (le fermate di novembre e dicembre non sono ancora avvenute) e dati che non esistono. Le prime tre si leggono in modo diverso; la quarta non va riempita.",
+      "colonne": {
+        "geep": { "domanda": "Q1_sito_sottocaricato", "dimensioni": ["carico"] },
+        "claude": { "domanda": "Q1_sito_sotto_caricato", "dimensioni": ["carico_ridotto", "carico_spec"] }
+      }
+    }
+  ],
+
+  "nomi_letture": {
+    "geep": { "nome": "Lettura Geep", "firma": "ChatGPT", "metodo": "Gradi di evidenza e giudizi qualitativi. Nessun coefficiente numerico." },
+    "claude": { "nome": "Lettura Claude", "firma": "Claude", "metodo": "Dimensioni con coefficienti illustrativi da 0 a 1 e soglia di allerta 0,66. I numeri sono una notazione ordinale del giudizio, non probabilità né misure." }
+  }
+}
