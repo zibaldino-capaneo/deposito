@@ -61,6 +61,7 @@ button{font:inherit;color:inherit}
 .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 22px}
 .legend div{display:grid;gap:4px;min-width:0}
 .legend p{font-size:13.5px;color:var(--muted)}
+.legend .st{justify-self:start}
 
 /* chip di stato */
 .st{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-data);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
@@ -192,6 +193,11 @@ details.altre .cards{margin-top:12px}
     management_interview:"Intervista a un dirigente", interview:"Intervista", union_communique:"Comunicato sindacale", trade_press:"Stampa di settore", aggregator:"Aggregatore di dati"
   };
 
+  // Traduzioni di sola visualizzazione: il dataset resta invariato e l'originale è mostrato sotto
+  const TRAD = {
+    PROD_2026_VS_2025: "I volumi di produzione registrati nel 2026 sono inferiori a quelli dell'anno precedente."
+  };
+
   let D, M = {}, C, OBS = {}, SRC = {}, CONF = {};
   const errors = [];
 
@@ -249,6 +255,7 @@ details.altre .cards{margin-top:12px}
     if (typeof v === "object") {
       return `<dl class="kv">${Object.entries(v).map(([k,x]) => `<dt>${esc(k.replace(/_/g," "))}</dt><dd class="mono">${typeof x==="number"?nf(x,Math.abs(x)<100?1:0):esc(x)}${typeof x==="number"&&u?" "+esc(u):""}</dd>`).join("")}</dl>`;
     }
+    if (TRAD[o.id]) return `<p class="val">${esc(TRAD[o.id])}</p><p class="small muted">Testo originale nel dataset: <span lang="en">«${esc(v)}»</span></p>`;
     return `<p class="val">${esc(v)}</p>`;
   }
   function pagesFor(o, sid){
@@ -326,7 +333,7 @@ details.altre .cards{margin-top:12px}
     const dims = (m.dimensioni||[]).filter(d => col.dimensioni.includes(d.id));
     dims.forEach(d => (d.evidenze||[]).forEach(i => used.add(i)));
     return `<section class="lettura geep" aria-label="${esc(nl.nome)}">
-      <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small">${esc(m.model_version)}</span></div>
+      <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small mono">${esc(m.model)} · ${esc(m.model_version)} · ${esc(m.dataset_id)}</span></div>
       <p class="metodo">${esc(nl.metodo)}</p>
       <div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
         <p class="testo"><b>${esc(q.esito||"")}</b></p>
@@ -350,7 +357,7 @@ details.altre .cards{margin-top:12px}
     dims.forEach(d => (d.osservazioni||[]).forEach(i => used.add(i)));
     (m.osservazioni_mancanti_che_pesano||[]).forEach(i => { if (temaIds.includes(i)) used.add(i); });
     return `<section class="lettura claude" aria-label="${esc(nl.nome)}">
-      <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small">${esc(m.model_version)}</span></div>
+      <div class="chi"><h3>${esc(nl.nome)}</h3><span class="muted small mono">${esc(m.model)} · ${esc(m.model_version)} · ${esc(m.dataset_id)}</span></div>
       <p class="metodo">${esc(nl.metodo)}</p>
       <div class="giud"><div class="lab"><span class="st giudizio">Giudizio</span><h4>Risposta alla domanda</h4></div>
         <p class="testo"><b>${esc(q.risposta||"")}</b></p>
