@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il segnale c'era, ma stava altrove — Studiolo Automotive</title>
+<style>
+  :root { --ink:#2b2620; --muted:#6b6256; --line:#cbbba7; --bg:#f3eddf; --carta:#f8f3e8; --zona:#ece2cf; --cartiglio:#ddcdb0;
+          --ok:#3b7d4f; --mezzo:#b8801b; --aperto:#b5523b; --sel:#2f5f8f; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color:var(--ink); background:var(--bg); font-size:14px; line-height:1.5; }
+  a { color:#7a4a1c; }
+  .testo { max-width:880px; margin:0 auto; padding:28px 22px 8px; font-family: Georgia, "Times New Roman", serif; font-size:16.5px; line-height:1.62; }
+  .occhiello { font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  h1 { font-size:30px; line-height:1.2; margin:6px 0 4px; font-weight:600; }
+  .sottotitolo { color:var(--muted); font-style:italic; margin:0 0 6px; }
+  .firma { font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif; font-size:13px; color:var(--ink); margin:0 0 14px; }
+  h2 { font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif; font-size:15px; letter-spacing:.03em; text-transform:uppercase; color:#7a5a32; margin:26px 0 6px; }
+  .testo p { margin:8px 0; }
+  .zona { background:var(--zona); border-radius:8px; padding:4px 18px 10px; margin:14px 0; }
+  .cartiglio { background:var(--cartiglio); border-left:5px solid #9a6b2f; border-radius:0 8px 8px 0; padding:10px 16px; margin:14px 0; font-weight:700; }
+  .cartiglio.credito { font-weight:400; font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif; font-size:14.5px; border-left-color:#5b6b7a; }
+  .cartiglio.credito b { font-weight:700; }
+  .clausola { font-size:14.5px; color:var(--muted); font-style:italic; }
+  .lettura { font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif; font-size:14.5px; line-height:1.55; }
+  .lettura p { margin:6px 0; }
+  .barra { display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:8px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--carta); position:sticky; top:0; z-index:2; }
+  .conta { font-weight:600; padding:4px 10px; border-radius:12px; }
+  .conta.aperte { background:#f2ddd5; color:var(--aperto); }
+  .conta.chiuse { background:#dfeadf; color:var(--ok); }
+  button, select, input, textarea { font:inherit; }
+  button { border:1px solid var(--line); background:#fff; border-radius:6px; padding:5px 10px; cursor:pointer; color:var(--ink); }
+  button:hover { border-color:#8f7f6a; }
+  button.primo { background:var(--sel); color:#fff; border-color:var(--sel); }
+  button.pericolo { color:var(--aperto); }
+  .corpo { display:grid; grid-template-columns: 1fr 370px; height: calc(100vh - 52px); min-height:620px; }
+  #telaBox { overflow:auto; background:#fffdf8; position:relative; } #tela { display:block; }
+  aside { border-left:1px solid var(--line); padding:14px 16px; overflow:auto; background:var(--carta); }
+  aside h3 { font-size:15px; margin:14px 0 6px; }
+  aside h3:first-child { margin-top:0; }
+  label { display:block; font-size:12px; color:var(--muted); margin:8px 0 2px; }
+  input[type=text], textarea, select { width:100%; border:1px solid var(--line); border-radius:6px; padding:5px 7px; background:#fff; color:var(--ink); }
+  textarea { min-height:52px; resize:vertical; }
+  .riga { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+  .riga input[type=number] { width:60px; border:1px solid var(--line); border-radius:6px; padding:4px; }
+  .piazzola { border:1px solid var(--line); border-radius:8px; padding:6px 10px 10px; margin-top:8px; background:#fff; }
+  .piazzola b { font-size:13px; }
+  .domande { list-style:none; padding:0; margin:0; }
+  .domande li { padding:5px 8px; border-left:3px solid var(--aperto); background:#fff; margin-bottom:4px; cursor:pointer; border-radius:0 6px 6px 0; }
+  .domande li:hover { background:#f6efe2; }
+  .domande li small { color:var(--muted); display:block; }
+  .legenda { display:flex; gap:12px; font-size:12px; color:var(--muted); align-items:center; flex-wrap:wrap; }
+  .pallino { display:inline-block; width:11px; height:11px; border-radius:50%; vertical-align:-1px; margin-right:4px; }
+  .nota { font-size:12px; color:var(--muted); }
+  svg text { font-family: inherit; pointer-events:none; }
+  .nodo { cursor:pointer; }
+  .fonti { max-width:880px; margin:0 auto; padding:18px 22px 36px; font-size:13.5px; }
+  .fonti h2 { margin-top:8px; }
+  .fonti ol { padding-left:20px; margin:6px 0; }
+  .fonti li { margin:3px 0; }
+  @media (max-width: 900px) { .corpo { grid-template-columns: 1fr; height:auto; } #telaBox { height:70vh; } aside { border-left:0; border-top:1px solid var(--line); } h1 { font-size:25px; } }
+</style>
+</head>
+<body>
+
+<article class="testo">
+  <div class="occhiello">Studiolo Automotive · verifica</div>
+  <h1>Il segnale c'era, ma stava altrove</h1>
+  <p class="sottotitolo">Verifica del 19 novembre 2026, rivista e completata il 21</p>
+  <p class="firma">Paolo Carena · ChatGPT (OpenAI) · Claude (Anthropic)</p>
+
+  <div class="cartiglio credito"><b>La prima verifica, del 19 novembre, è stata condotta con ChatGPT.</b> Questa la corregge su un punto, la completa su un altro e la scompone in un grafo di circoli, più sotto, dove ogni affermazione porta la sua prova e ogni cosa che non sappiamo resta in vista come domanda aperta.</div>
+
+  <h2>L'ipotesi</h2>
+  <p>Lo studiolo distingue tre grandezze che il discorso corrente tende a fondere: <b>dove si monta</b> un'auto, <b>chi ne controlla l'ingegneria</b>, <b>dove resta il valore aggiunto</b>. Una fabbrica in Europa non dice da sola chi progetta, né quanto valore resta qui.</p>
+
+  <h2>Hongqi: il diniego conta meno della piattaforma</h2>
+  <div class="zona">
+  <p>Il 17 novembre Xiao Xiao, che guida le attività internazionali di FAW e l'espansione europea di Hongqi, ha detto a Reuters che localizzare in Europa, produzione compresa, è una priorità strategica, e che fra i partner possibili ci sono Stellantis e Volkswagen. Volkswagen ha smentito trattative con FAW sulla produzione europea.</p>
+  <p>Il diniego però è il dato meno interessante. L'EHS4 di Hongqi è costruita su una piattaforma Leapmotor; FAW e Stellantis sono entrambi azionisti di Leapmotor; e già ad aprile Reuters riferiva trattative condotte proprio attraverso Leapmotor, con lo stabilimento Stellantis di Saragozza come possibile sede. Non è una decisione nuova, ma è il caso più pulito delle tre grandezze: impianto europeo e di Stellantis, architettura cinese e di Leapmotor, valore aggiunto ancora da misurare.</p>
+  </div>
+  <div class="cartiglio">La via Volkswagen è rumore; la via Leapmotor è sostanza, ed era già sul tavolo.</div>
+
+  <h2>Renault: l'ingegneria non passa a un concorrente, si sposta in casa</h2>
+  <div class="zona">
+  <p>La prima verifica aveva letto l'annuncio del 16 novembre come un taglio di ingegneri con assunzioni in digitale, robotica ed elettronica. Non è così. Il progetto France Industrie FutuREady prevede, entro il 2028, 1.650 operai, 250 addetti indiretti alla produzione e 100 giovani laureati, e fino a 1.000 uscite volontarie di impiegati, soprattutto in qualità e supply chain. Batterie ed elettronica compaiono fra i posti da proteggere, non fra le assunzioni. Il taglio degli ingegneri è di giugno: 800 in Francia entro il 2027, poi il 15–20% nel mondo.</p>
+  <p>Il punto che conta è un altro. Cercare un passaggio del controllo progettuale a BYD o Geely, non trovarlo e chiudere, vuol dire guardare nel posto sbagliato. Sull'asse dell'ingegneria il movimento c'è, e va verso l'ingegneria cinese di Renault stessa: la nuova Twingo è stata sviluppata in 21 mesi lavorando con ingegneri del centro di ricerca e sviluppo in Cina, e fra i centri toccati dai tagli la Cina non risulta.</p>
+  </div>
+  <div class="cartiglio">Il progetto resta in casa; ma la casa ha una stanza in Cina, ed è la stanza che cresce.</div>
+
+  <h2>BYD e Geely</h2>
+  <p>Nella finestra del 18–19 novembre non ci sono decisioni nuove. Allargando alla settimana, una sì: il 15 novembre BYD ha dato per imminente la produzione di serie a Szeged, dopo una conferenza dei fornitori europei in Germania il 13. È assemblaggio; dirà qualcosa sul valore aggiunto solo quando si saprà da dove arrivano i componenti. Geely resta sugli accordi già noti, Ford a Valencia e gli stabilimenti Volvo, entrambi dal 2028.</p>
+
+  <h2>Esito</h2>
+  <p>L'ipotesi regge, e la settimana la rafforza: due grandezze su tre si muovono, e non nella stessa direzione. L'assemblaggio viene in Europa; l'ingegneria resta cinese, anche quando a spostarla è un costruttore europeo. Sulla terza grandezza, il valore aggiunto, la settimana non dice niente: dieci delle quindici domande aperte del grafo lo riguardano, direttamente o attraverso un legame.</p>
+  <p class="clausola">La verifica riguarda le fonti reperite e non è una ricognizione esaustiva. Le date di controllo nel grafo sono nostre, non dei costruttori.</p>
+
+  <h2>Come si legge il grafo</h2>
+  <div class="lettura">
+    <p><b>Che cosa rappresenta.</b> Ogni circolo è una <b>condizione</b> che deve essere vera perché l'ipotesi regga; l'ipotesi è il circolo a sinistra. I circoli si aprono in sottocircoli quando una condizione si compone di più fatti. L'anello colorato dice a quale grandezza appartiene: <span style="color:#9a6b2f;font-weight:700">assemblaggio</span>, <span style="color:#2f5f8f;font-weight:700">ingegneria</span>, <span style="color:#3b7d4f;font-weight:700">valore aggiunto</span>. Per ciascuna è indicata la fonte da sorvegliare.</p>
+    <p><b>Le piazzole.</b> Ogni circolo ha tre piazzole: la <b>data</b> (quando il fatto è stato accertato, oppure entro quando dovremmo saperlo, con una data di controllo); la <b>prova</b> (su che cosa poggia: fonte e data); <b>chi</b> (chi decide o chi dichiara, e se la conferma viene da chi decide).</p>
+    <p><b>Lo stato.</b> Ogni circolo è un'<b>ipotesi</b>, un fatto <b>riferito</b> (R) da una fonte attendibile, un fatto <b>in corso</b> (C), o un fatto <b>accertato</b> (✓). Il colore dice quanto è completo: verde chiuso, ocra in parte, rosso aperto.</p>
+    <p><b>Il valore aggiunto</b> è scritto come un prodotto (×): volumi montati per contenuto locale per veicolo. Una moltiplicazione chiama almeno due domande più una terza, sul legame fra i fattori: se crescono i volumi, cresce anche il contenuto locale o si montano kit importati?</p>
+    <p><b>I legami</b> collegano circoli di rami diversi: <span style="color:#3b7d4f">si muovono insieme</span>, <span style="color:#b5523b">in contrasto</span>, <span style="color:#2f5f8f">deve accadere prima</span> (con la freccia), <span style="color:#b8801b">contendono gli stessi mezzi</span>. Un legame senza risposta resta una domanda aperta.</p>
+    <p><b>Il criterio d'arresto.</b> Le domande ancora aperte sono elencate a destra del grafo: ciascuna è una cosa che ancora non sappiamo. Si può cliccare un circolo, leggerne la prova, provare a rispondere; le modifiche restano nel vostro browser finché non si salva su file, e «Torna al grafo dello studiolo» ripristina la versione pubblicata.</p>
+  </div>
+</article>
+
+<div class="barra">
+  <span id="conta" class="conta aperte">—</span>
+  <span class="legenda">
+    <span><span class="pallino" style="background:var(--ok)"></span>chiuso</span>
+    <span><span class="pallino" style="background:var(--mezzo)"></span>in parte</span>
+    <span><span class="pallino" style="background:var(--aperto)"></span>aperto</span>
+    <span style="color:#3b7d4f">━ insieme</span><span style="color:#b5523b">╍ contrasto</span><span style="color:#2f5f8f">➝ prima</span><span style="color:#b8801b">┈ stessi mezzi</span>
+  </span>
+  <span style="flex:1"></span>
+  <span class="nota">grandezza</span><select id="filtroArea" style="width:auto"></select>
+  <span class="nota">zoom</span><button id="zMeno">−</button><button id="zAdatta">adatta</button><button id="zPiu">+</button>
+  <button id="ripristina">Torna al grafo dello studiolo</button>
+  <button id="esporta">Salva su file</button>
+  <label style="display:inline;margin:0"><input type="file" id="importa" accept="application/json" style="display:none"><span class="nota" style="cursor:pointer;border:1px solid var(--line);border-radius:6px;padding:5px 10px;background:#fff;color:var(--ink)">Apri da file</span></label>
+</div>
+<div id="avviso" style="display:none;padding:6px 22px;background:#e6ecf2;color:#2f5f8f;border-bottom:1px solid var(--line)"></div>
+<div class="corpo">
+  <div id="telaBox"><svg id="tela" role="img" aria-label="Grafo dei circoli della verifica"></svg></div>
+  <aside>
+    <h3 id="titoloNodo">Circolo</h3>
+    <div id="pannello"></div>
+    <h3>Domande ancora aperte</h3>
+    <ul id="domande" class="domande"></ul>
+  </aside>
+</div>
+
+<section class="fonti">
+  <h2>Fonti</h2>
+  <ol>
+    <li><a href="https://www.reuters.com/world/china/chinas-hongqi-evaluating-partners-including-vw-stellantis-build-cars-europe-2026-11-17/">Reuters, 17 novembre 2026</a>: Hongqi valuta partner, fra cui VW e Stellantis, per produrre in Europa; smentita di VW Group China. Ripreso da <a href="https://www.businessday.co.za/motoring/2026-11-18-hongqi-eyes-stellantis-vw-for-european-production/">BusinessDay, 18 novembre</a> (piattaforma Leapmotor dell'EHS4).</li>
+    <li><a href="https://finance.yahoo.com/news/exclusive-chinas-hongqi-once-favoured-050158372.html">Reuters, aprile 2026</a>: trattative Hongqi–Stellantis condotte via Leapmotor; <a href="https://www.electrive.com/2026/04/28/hongqi-eyes-european-collaboration-with-stellantis/">electrive, 28 aprile</a>.</li>
+    <li><a href="https://euronews.com/2026/11/17/renault-to-create-2000-jobs-in-france-while-cutting-1000-others-by-2028">Euronews, 17 novembre 2026</a> e <a href="https://www.just-auto.com/newsletters/renault-plans-2000-recruits-and-1000-voluntary-departures-report">just-auto, 17 novembre</a>: France Industrie FutuREady; <a href="https://www.lemonde.fr/en/economy/article/2026/11/17/renault-to-cut-more-than-1-000-jobs-in-france-to-stay-competitive-against-chinese-rivals_6782503_19.html">Le Monde, 17 novembre</a>.</li>
+    <li><a href="https://www.just-auto.com/newsletters/renault-cut-800-engineering-roles-france">just-auto, 25 giugno 2026</a>: 800 posti di ingegneria in Francia; <a href="https://finance.yahoo.com/sectors/technology/articles/renault-cut-20-engineers-competition-172724938.html">Reuters</a>: 15–20% degli ingegneri nel mondo, Twingo in 21 mesi con ingegneri cinesi; <a href="https://www.automotiveworld.com/news/renault-cuts-up-to-2400-engineers-in-china-speed-campaign/">Automotive World</a>: centri toccati dai tagli.</li>
+    <li><a href="https://equalocean.com/news/2026111722385">EqualOcean, 17 novembre 2026</a>: BYD prepara la produzione di serie a Szeged; <a href="https://www.carscoops.com/2026/09/byd-european-production-plans/">Carscoops, settembre</a>: secondo sito entro fine anno; <a href="https://www.electrive.com/2026/02/02/byd-begins-trial-production-of-passenger-cars-in-hungary/">electrive, febbraio</a>: centro R&S a Szeged.</li>
+    <li><a href="https://uz.kursiv.media/en/2026-08-18/geely-volvo-europe-luxury-car-production-2028/">Kursiv, 18 agosto 2026</a>: Geely negli stabilimenti Volvo dal 2028; accordo con Ford a Valencia.</li>
+  </ol>
+</section>
+
+<script>
+(function () {
+  const DATI_URL = 'dati.json';
+  let seq = 1;
+  const nuovoId = () => 'n' + (seq++) + '_' + Math.random().toString(36).slice(2, 6);
+  const crea = (nome, tipo) => ({ id: nuovoId(), nome: nome || 'Nuova condizione', tipo: tipo || 'nodo', entro: '', sentinella: '', mezzi: '', persona: '', sa: false, risposta: '', note: '', figli: [] });
+
+  let radice = crea('In attesa del grafo…', 'nodo');
+  let originale = null;
+  let selezionato = radice.id;
+  let eliminaArmato = false;
+  let zoom = null;
+  let legami = [];
+  let collegando = null;
+  let aree = [];
+  let filtroArea = '';
+  const CICLO = { proposto: 'ipotesi', validato: 'riferito', esecuzione: 'in corso', verificato: 'accertato' };
+  const SIGLA = { validato: 'R', esecuzione: 'C', verificato: '✓' };
+  const oggi = new Date().toISOString().slice(0, 10);
+  function mappaAree() { const m = {}; (function g(n, a) { const aa = n.area || a; m[n.id] = aa; n.figli.forEach(c => g(c, aa)); })(radice, ''); return m; }
+  const areaObj = id => aree.find(a => a.id === id);
+  const TIPI = {
+    insieme:   { label: 'si muovono insieme', col: '#3b7d4f', dash: '', domanda: 'Se uno si conferma, si conferma anche l’altro? Fino a che punto?' },
+    contrasto: { label: 'in contrasto', col: '#b5523b', dash: '7 4', domanda: 'Se uno cresce, quanto cala l’altro? Che cosa decide fra i due?' },
+    prima:     { label: 'deve accadere prima', col: '#2f5f8f', dash: '', freccia: true, domanda: 'Quanto margine c’è fra le due date, e che cosa lo segnala?' },
+    risorsa:   { label: 'contendono gli stessi mezzi', col: '#b8801b', dash: '2 4', domanda: 'Quali mezzi comuni, e chi ha la precedenza?' }
+  };
+
+  function applica(d) {
+    radice = JSON.parse(JSON.stringify(d.radice)); legami = JSON.parse(JSON.stringify(d.legami || [])); aree = JSON.parse(JSON.stringify(d.aree || []));
+    filtroArea = ''; selezionato = radice.id; zoom = null; tutto();
+  }
+
+  function trova(id, n = radice, padre = null) {
+    if (n.id === id) return { n, padre };
+    for (const c of n.figli) { const r = trova(id, c, n); if (r) return r; }
+    return null;
+  }
+  const esploso = n => n.figli.length > 0;
+
+  // ---------- regole: domande aperte per circolo (lessico di verifica)
+  function domandeDi(n) {
+    const q = [];
+    const nome = n.nome;
+    if (n === radice) {
+      if (!n.perche) q.push({ id: n.id, campo: 'perche', testo: 'Perché questa ipotesi, e a che cosa serve?' });
+      if (!n.mancato) q.push({ id: n.id, campo: 'mancato', testo: 'Se non regge, che cosa cambia?' });
+    }
+    if (n.tipo === 'legame') {
+      if (!n.risposta) q.push({ id: n.id, campo: 'risposta', testo: 'Se crescono i volumi, cresce anche il contenuto locale, o si montano kit importati?' });
+      return q.map(x => Object.assign(x, { nome }));
+    }
+    if (!n.entro) q.push({ id: n.id, campo: 'entro', testo: 'Quando è accaduto, o entro quando dovremmo saperlo?' });
+    if (!n.sentinella) q.push({ id: n.id, campo: 'sentinella', testo: 'Qual è la data di controllo?' });
+    if (n.entro && n.sentinella && n.sentinella > n.entro) q.push({ id: n.id, campo: 'sentinella', testo: 'La data di controllo viene dopo la scadenza: ce ne accorgeremmo troppo tardi.' });
+    if (n.tipo === 'prodotto') {
+      const fattori = n.figli.filter(c => c.tipo !== 'legame');
+      if (fattori.length < 2) q.push({ id: n.id, campo: 'esplodi', testo: 'È un prodotto: servono almeno due fattori.' });
+      if (!n.figli.some(c => c.tipo === 'legame')) q.push({ id: n.id, campo: 'esplodi', testo: 'Manca il legame fra i fattori.' });
+    } else if (n.tipo === 'somma' && n.figli.length < 2) {
+      q.push({ id: n.id, campo: 'esplodi', testo: 'È una somma: servono almeno due addendi.' });
+    }
+    if (!esploso(n)) {
+      if (!n.mezzi) q.push({ id: n.id, campo: 'mezzi', testo: 'Su che cosa poggia: quale fonte, di che data?' });
+      if (!n.persona) q.push({ id: n.id, campo: 'persona', testo: 'Chi decide, o chi lo dichiara?' });
+      else if (!n.sa) q.push({ id: n.id, campo: 'sa', testo: 'È confermato da chi decide?' });
+      if (aree.length && (n.ciclo || 'proposto') === 'proposto') q.push({ id: n.id, campo: 'ciclo', testo: 'È ancora un’ipotesi: c’è una fonte che lo riferisca?' });
+    }
+    if (n.sentinella && n.sentinella < oggi && n.ciclo !== 'verificato')
+      q.push({ id: n.id, campo: 'ciclo', testo: `La data di controllo è passata (${n.sentinella}): è accaduto?` });
+    return q.map(x => Object.assign(x, { nome }));
+  }
+  function domandeAlbero(n = radice, acc = []) { acc.push(...domandeDi(n)); n.figli.forEach(c => domandeAlbero(c, acc)); return acc; }
+  function domandeLegami() {
+    const q = [];
+    legami.forEach(l => {
+      const A = trova(l.da), B = trova(l.a); if (!A || !B) return;
+      const nome = `${A.n.nome.slice(0, 40)} ${TIPI[l.tipo].freccia ? '→' : '↔'} ${B.n.nome.slice(0, 40)}`;
+      if (!l.risposta) q.push({ id: l.da, campo: 'legame:' + l.id, testo: TIPI[l.tipo].domanda, nome });
+      if (l.tipo === 'prima' && A.n.entro && B.n.entro && A.n.entro > B.n.entro)
+        q.push({ id: l.da, campo: 'entro', testo: 'Deve accadere prima, ma la sua data viene dopo: una delle due date non regge.', nome });
+    });
+    return q;
+  }
+  function tutteLeDomande() { return domandeAlbero().concat(domandeLegami()); }
+  function stato(n) {
+    const proprie = domandeDi(n).length;
+    const figliChiusi = n.figli.every(c => stato(c) === 'chiuso');
+    if (proprie === 0 && figliChiusi) return 'chiuso';
+    const riempite = ['entro', 'sentinella', 'mezzi', 'persona', 'risposta', 'perche', 'mancato'].some(k => n[k]);
+    return riempite || n.figli.some(c => stato(c) !== 'aperto') ? 'mezzo' : 'aperto';
+  }
+
+  // ---------- disposizione: profondità sulle x, foglie in fila sulle y
+  function disponi() {
+    const pos = {}; const DX = 240, DY = 96; let fila = 0;
+    (function giro(n, prof) {
+      if (!n.figli.length) { pos[n.id] = { x: prof * DX, y: fila * DY, prof }; fila++; return; }
+      n.figli.forEach(c => giro(c, prof + 1));
+      const ys = n.figli.map(c => pos[c.id].y);
+      pos[n.id] = { x: prof * DX, y: (Math.min(...ys) + Math.max(...ys)) / 2, prof };
+    })(radice, 0);
+    return pos;
+  }
+  const raggio = p => p === 0 ? 40 : p === 1 ? 30 : p === 2 ? 25 : 21;
+  const COL = { chiuso: '#3b7d4f', mezzo: '#b8801b', aperto: '#b5523b' };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function righe(testo, max) {
+    const parole = String(testo).split(/\s+/); const out = []; let cur = '';
+    parole.forEach(p => { if ((cur + ' ' + p).trim().length > max) { if (cur) out.push(cur); cur = p; } else cur = (cur + ' ' + p).trim(); });
+    if (cur) out.push(cur);
+    if (out.length > 3) { out.length = 3; out[2] = out[2].slice(0, max - 1) + '…'; }
+    return out;
+  }
+
+  function disegna() {
+    const svg = document.getElementById('tela');
+    const pos = disponi();
+    let minx = 0, miny = 0, maxx = 0, maxy = 0;
+    Object.values(pos).forEach(p => { minx = Math.min(minx, p.x); maxx = Math.max(maxx, p.x); miny = Math.min(miny, p.y); maxy = Math.max(maxy, p.y); });
+    const m = 110;
+    const W = maxx - minx + 2 * m, H = maxy - miny + 2 * m;
+    svg.setAttribute('viewBox', `${minx - m} ${miny - m} ${W} ${H}`);
+    const box = document.getElementById('telaBox');
+    if (zoom === null) { const z = Math.min(box.clientWidth / W, box.clientHeight / H); svg.style.width = Math.max(200, W * Math.min(1, z) - 4) + 'px'; svg.style.height = Math.max(200, H * Math.min(1, z) - 4) + 'px'; }
+    else { svg.style.width = W * zoom + 'px'; svg.style.height = H * zoom + 'px'; }
+    let linee = '', legami_fattori = '', nodi = '';
+    (function giro(n) {
+      n.figli.forEach(c => {
+        const a = pos[n.id], b = pos[c.id];
+        const mx = (a.x + b.x) / 2;
+        linee += `<path d="M${a.x},${a.y} C${mx},${a.y} ${mx},${b.y} ${b.x},${b.y}" fill="none" stroke="#a89a86" stroke-width="1.4"/>`;
+        giro(c);
+      });
+      const leg = n.figli.find(c => c.tipo === 'legame');
+      if (leg) n.figli.filter(c => c.tipo !== 'legame').forEach(f => {
+        const a = pos[leg.id], b = pos[f.id];
+        const cx = Math.max(a.x, b.x) + 70 + Math.abs(a.y - b.y) * 0.15;
+        legami_fattori += `<path d="M${a.x + 18},${a.y} Q${cx},${(a.y + b.y) / 2} ${b.x + 18},${b.y}" fill="none" stroke="#8a6fb0" stroke-width="1.2" stroke-dasharray="4 4"/>`;
+      });
+    })(radice);
+    const MA = mappaAree();
+    (function giro(n) {
+      const p = pos[n.id], r = raggio(p.prof), st = stato(n), sel = n.id === selezionato;
+      const ar = areaObj(MA[n.id]), fuori = filtroArea && MA[n.id] !== filtroArea && n !== radice;
+      const sig = SIGLA[n.ciclo];
+      const segno = n.tipo === 'prodotto' ? '×' : n.tipo === 'somma' ? '+' : n.tipo === 'legame' ? '⇄' : '';
+      nodi += `<g class="nodo" data-id="${n.id}" opacity="${fuori ? 0.22 : 1}">
+        ${ar ? `<circle cx="${p.x}" cy="${p.y}" r="${r + 6}" fill="none" stroke="${ar.colore}" stroke-width="4" stroke-opacity="0.8"/>` : ''}
+        <circle cx="${p.x}" cy="${p.y}" r="${r}" fill="#fff"/><circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${COL[st]}" fill-opacity="0.16" stroke="${sel ? '#2f5f8f' : COL[st]}" stroke-width="${sel ? 4 : n === radice ? 3 : 2}"/>
+        ${segno ? `<text x="${p.x}" y="${p.y + 7}" text-anchor="middle" font-size="${r * 0.8}" fill="${COL[st]}" font-weight="600">${segno}</text>` : ''}
+        ${sig ? `<circle cx="${p.x + r * 0.78}" cy="${p.y - r * 0.78}" r="9" fill="#2f5f8f"/><text x="${p.x + r * 0.78}" y="${p.y - r * 0.78 + 4}" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">${sig}</text>` : ''}
+        ${righe(n.nome, p.prof === 0 ? 26 : 22).map((t, i) => `<text x="${p.x}" y="${p.y + r + 14 + i * 13}" text-anchor="middle" font-size="11.5" fill="#2b2620">${esc(t)}</text>`).join('')}
+      </g>`;
+      n.figli.forEach(giro);
+    })(radice);
+    let liberi = '';
+    legami.forEach(l => {
+      const a = pos[l.da], b = pos[l.a]; if (!a || !b) return;
+      const t = TIPI[l.tipo], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1;
+      const curva = Math.min(120, d * 0.25), cx = (a.x + b.x) / 2 - dy / d * curva, cy = (a.y + b.y) / 2 + dx / d * curva;
+      const rb = raggio(b.prof) + 4, ex = b.x - (b.x - cx) / Math.hypot(b.x - cx, b.y - cy) * rb, ey = b.y - (b.y - cy) / Math.hypot(b.x - cx, b.y - cy) * rb;
+      liberi += `<path d="M${a.x},${a.y} Q${cx},${cy} ${t.freccia ? ex : b.x},${t.freccia ? ey : b.y}" fill="none" stroke="${t.col}" stroke-width="${l.risposta ? 2 : 2.6}" stroke-opacity="0.85" ${t.dash ? `stroke-dasharray="${t.dash}"` : ''} ${t.freccia ? 'marker-end="url(#freccia)"' : ''}/>`;
+    });
+    const defs = '<defs><marker id="freccia" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f5f8f"/></marker></defs>';
+    svg.innerHTML = defs + linee + legami_fattori + liberi + nodi;
+    svg.querySelectorAll('.nodo').forEach(g => g.addEventListener('click', () => {
+      const id = g.dataset.id;
+      if (collegando) {
+        if (id !== collegando.da && !legami.some(l => l.tipo === collegando.tipo && ((l.da === collegando.da && l.a === id) || (l.da === id && l.a === collegando.da && !TIPI[l.tipo].freccia))))
+          legami.push({ id: nuovoId(), da: collegando.da, a: id, tipo: collegando.tipo, risposta: '' });
+        selezionato = collegando.da; collegando = null; avviso(''); tutto(); return;
+      }
+      selezionato = id; eliminaArmato = false; tutto();
+    }));
+  }
+
+  // ---------- pannello del circolo selezionato
+  function pannello() {
+    const r = trova(selezionato) || { n: radice, padre: null }; const n = r.n;
+    document.getElementById('titoloNodo').textContent = n === radice ? 'Ipotesi (radice)' : n.tipo === 'legame' ? 'Legame fra i fattori' : 'Circolo';
+    const v = k => esc(n[k] || '');
+    let h = `<label>La condizione che deve essere vera</label><textarea data-k="nome">${v('nome')}</textarea>`;
+    if (aree.length && n !== radice) {
+      const ered = areaObj(mappaAree()[r.padre ? r.padre.id : '']);
+      h += `<div class="riga" style="gap:6px"><div style="flex:1"><label>Grandezza</label><select data-k="area"><option value="">${ered ? 'come il padre: ' + esc(ered.nome) : '—'}</option>${aree.map(a => `<option value="${a.id}" ${n.area === a.id ? 'selected' : ''}>${esc(a.nome)}</option>`).join('')}</select></div>
+            <div style="flex:1"><label>Stato</label><select data-k="ciclo">${Object.entries(CICLO).map(([k, t]) => `<option value="${k}" ${(n.ciclo || 'proposto') === k ? 'selected' : ''}>${t}</option>`).join('')}</select></div></div>`;
+      const am = areaObj(mappaAree()[n.id]); if (am && am.presidio) h += `<p class="nota">Fonte da sorvegliare: ${esc(am.presidio)}</p>`;
+    }
+    if (n === radice) {
+      h += `<h3>Grandezze e fonti da sorvegliare</h3>` + aree.map(a => `<div class="riga" style="gap:6px"><input type="color" data-a="${a.id}" data-c="colore" value="${a.colore}" style="width:34px;padding:0;border:0">
+        <input type="text" data-a="${a.id}" data-c="nome" value="${esc(a.nome)}" style="flex:1"><input type="text" data-a="${a.id}" data-c="presidio" placeholder="fonte da sorvegliare" value="${esc(a.presidio || '')}" style="flex:1.4"></div>`).join('');
+      h += `<label>Perché questa ipotesi, e a che cosa serve?</label><textarea data-k="perche">${v('perche')}</textarea>
+            <label>Se non regge, che cosa cambia?</label><textarea data-k="mancato">${v('mancato')}</textarea>`;
+    }
+    if (n.tipo === 'legame') {
+      h += `<div class="piazzola"><b>Legame</b><label>Se crescono i volumi, cresce anche il contenuto locale, o si montano kit importati?</label><textarea data-k="risposta">${v('risposta')}</textarea></div>`;
+    } else {
+      h += `<div class="piazzola"><b>Data</b>
+              <label>Quando è accaduto, o entro quando dovremmo saperlo</label><input type="text" data-k="entro" placeholder="aaaa-mm-gg" value="${v('entro')}">
+              <label>Data di controllo</label><input type="text" data-k="sentinella" placeholder="aaaa-mm-gg" value="${v('sentinella')}"></div>`;
+      if (!esploso(n)) {
+        h += `<div class="piazzola"><b>Prova</b><label>Su che cosa poggia: fonte e data</label><textarea data-k="mezzi">${v('mezzi')}</textarea></div>
+              <div class="piazzola"><b>Chi</b><label>Chi decide, o chi lo dichiara?</label><input type="text" data-k="persona" value="${v('persona')}">
+              <div class="riga"><label style="margin:0"><input type="checkbox" data-k="sa" ${n.sa ? 'checked' : ''}> confermato da chi decide</label></div></div>`;
+      } else {
+        h += `<p class="nota">Prove e attori stanno nei sottocircoli: questo circolo chiede solo la sua data e che i sottocircoli siano chiusi.</p>`;
+      }
+      h += `<h3>Apri in sottocircoli</h3>
+            <label>La condizione è…</label>
+            <select id="tipoEsplodi">
+              <option value="nodo" ${n.tipo === 'nodo' ? 'selected' : ''}>più fatti distinti (sottocircoli)</option>
+              <option value="prodotto" ${n.tipo === 'prodotto' ? 'selected' : ''}>un prodotto (×): fattori + legame</option>
+              <option value="somma" ${n.tipo === 'somma' ? 'selected' : ''}>una somma (+): addendi</option>
+            </select>
+            <div class="riga">in <input type="number" id="quanti" min="1" max="12" value="${n.tipo === 'prodotto' || n.tipo === 'somma' ? 2 : 3}"> sottocircoli
+              <button class="primo" id="esplodi">Apri</button></div>`;
+    }
+    h += `<label>Note</label><textarea data-k="note">${v('note')}</textarea>`;
+    const miei = legami.filter(l => l.da === n.id || l.a === n.id);
+    h += `<h3>Legami</h3>`;
+    h += miei.length ? miei.map(l => {
+      const altro = trova(l.da === n.id ? l.a : l.da); const t = TIPI[l.tipo];
+      const verso = t.freccia ? (l.da === n.id ? 'deve accadere prima di' : 'deve venire dopo') : t.label + ' con';
+      return `<div class="piazzola" style="border-left:4px solid ${t.col}"><b>${esc(verso)}</b> ${esc(altro ? altro.n.nome : '?')}
+        <label>${esc(t.domanda)}</label><textarea data-l="${l.id}">${esc(l.risposta || '')}</textarea>
+        <div class="riga"><button class="pericolo" data-via="${l.id}">Togli questo legame</button></div></div>`;
+    }).join('') : '<p class="nota">Nessun legame. I legami collegano circoli anche di rami diversi.</p>';
+    h += `<div class="riga"><select id="tipoLegame">${Object.entries(TIPI).map(([k, t]) => `<option value="${k}">${t.label}</option>`).join('')}</select>
+          <button class="primo" id="collega">Collega a un altro circolo</button></div>`;
+    if (n !== radice) h += `<div class="riga"><button class="pericolo" id="elimina">${eliminaArmato ? 'Conferma: elimina con i suoi sottocircoli' : 'Elimina questo circolo'}</button></div>`;
+    const p = document.getElementById('pannello'); p.innerHTML = h;
+    p.querySelectorAll('[data-k]').forEach(el => {
+      const ev = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
+      el.addEventListener(ev, () => { n[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value; disegna(); elenco(); });
+    });
+    p.querySelectorAll('[data-a]').forEach(el => el.addEventListener('input', () => { const a = areaObj(el.dataset.a); if (a) { a[el.dataset.c] = el.value; disegna(); filtri(); } }));
+    p.querySelectorAll('[data-l]').forEach(el => el.addEventListener('input', () => { const l = legami.find(x => x.id === el.dataset.l); if (l) { l.risposta = el.value; disegna(); elenco(); } }));
+    p.querySelectorAll('[data-via]').forEach(el => el.addEventListener('click', () => { legami = legami.filter(x => x.id !== el.dataset.via); tutto(); }));
+    document.getElementById('collega').addEventListener('click', () => {
+      collegando = { da: n.id, tipo: document.getElementById('tipoLegame').value };
+      avviso(`Clicca il circolo da collegare a «${n.nome.slice(0, 50)}» (${TIPI[collegando.tipo].label}). Esc per annullare.`);
+    });
+    const te = document.getElementById('tipoEsplodi');
+    if (te) te.addEventListener('change', () => { const q = document.getElementById('quanti'); if (te.value !== 'nodo') q.value = 2; });
+    const ex = document.getElementById('esplodi');
+    if (ex) ex.addEventListener('click', () => {
+      const tipo = document.getElementById('tipoEsplodi').value;
+      let k = Math.max(1, Math.min(12, parseInt(document.getElementById('quanti').value, 10) || 1));
+      if (tipo === 'prodotto' || tipo === 'somma') k = Math.max(2, k);
+      n.tipo = tipo;
+      const base = tipo === 'prodotto' ? 'Fattore' : tipo === 'somma' ? 'Addendo' : 'Fatto';
+      const gia = n.figli.filter(c => c.tipo !== 'legame').length;
+      for (let i = 1; i <= k; i++) n.figli.push(crea(`${base} ${gia + i} di «${n.nome.slice(0, 30)}»`, 'nodo'));
+      if (tipo === 'prodotto' && !n.figli.some(c => c.tipo === 'legame')) n.figli.push(crea('Legame fra i fattori', 'legame'));
+      tutto();
+    });
+    const el = document.getElementById('elimina');
+    if (el) el.addEventListener('click', () => {
+      if (!eliminaArmato) { eliminaArmato = true; pannello(); return; }
+      const via = new Set(); (function raccogli(x) { via.add(x.id); x.figli.forEach(raccogli); })(n);
+      legami = legami.filter(l => !via.has(l.da) && !via.has(l.a));
+      const padre = r.padre; padre.figli = padre.figli.filter(c => c.id !== n.id);
+      if (padre.tipo === 'prodotto' && !padre.figli.some(c => c.tipo !== 'legame')) padre.figli = [];
+      if (!padre.figli.length) padre.tipo = 'nodo';
+      selezionato = padre.id; eliminaArmato = false; tutto();
+    });
+  }
+
+  function elenco() {
+    const MA = mappaAree();
+    const q = tutteLeDomande().filter(x => !filtroArea || MA[x.id] === filtroArea);
+    const c = document.getElementById('conta');
+    c.textContent = q.length ? `Domande ancora aperte: ${q.length}` : 'Nessuna domanda aperta';
+    c.className = 'conta ' + (q.length ? 'aperte' : 'chiuse');
+    document.getElementById('domande').innerHTML = q.length
+      ? q.map(x => `<li data-id="${x.id}" data-campo="${x.campo}">${esc(x.testo)}<small>${esc(x.nome)}</small></li>`).join('')
+      : '<li style="border-left-color:var(--ok)">Ogni circolo ha la sua data, la sua prova e chi la conferma.</li>';
+    document.querySelectorAll('#domande li[data-id]').forEach(li => li.addEventListener('click', () => {
+      selezionato = li.dataset.id; eliminaArmato = false; tutto();
+      const campo = li.dataset.campo;
+      const f = campo.startsWith('legame:') ? document.querySelector(`#pannello [data-l="${campo.slice(7)}"]`)
+        : document.querySelector(`#pannello [data-k="${campo}"]`) || (campo === 'esplodi' && document.getElementById('tipoEsplodi'));
+      if (f) f.focus();
+    }));
+  }
+
+  function filtri() {
+    const f = document.getElementById('filtroArea');
+    f.innerHTML = '<option value="">tutte</option>' + aree.map(a => `<option value="${a.id}" ${filtroArea === a.id ? 'selected' : ''}>${esc(a.nome)}</option>`).join('');
+    f.disabled = !aree.length;
+  }
+  document.getElementById('filtroArea').addEventListener('change', e => { filtroArea = e.target.value; disegna(); elenco(); });
+  function tutto() { filtri(); disegna(); pannello(); elenco(); }
+  function avviso(t) { const a = document.getElementById('avviso'); a.textContent = t; a.style.display = t ? 'block' : 'none'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && collegando) { collegando = null; avviso(''); } });
+
+  document.getElementById('zPiu').addEventListener('click', () => { zoom = Math.min(2, (zoom || attuale()) * 1.25); disegna(); });
+  document.getElementById('zMeno').addEventListener('click', () => { zoom = Math.max(0.2, (zoom || attuale()) / 1.25); disegna(); });
+  document.getElementById('zAdatta').addEventListener('click', () => { zoom = null; disegna(); });
+  function attuale() { const svg = document.getElementById('tela'); const vb = svg.viewBox.baseVal; return vb && vb.width ? svg.clientWidth / vb.width : 1; }
+  window.addEventListener('resize', () => { if (zoom === null) disegna(); });
+  document.getElementById('ripristina').addEventListener('click', () => { if (originale) applica(originale); });
+  document.getElementById('esporta').addEventListener('click', async () => {
+    const testo = JSON.stringify({ radice, legami, aree }, null, 1);
+    let dl = null;
+    try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { dl = null; }
+    if (dl) { try { await dl.save({ filename: 'circoli_verifica_automotive.json', data: testo }); } catch (e) {} return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([testo], { type: 'application/json' })); a.download = 'circoli_verifica_automotive.json'; a.click();
+  });
+  document.getElementById('importa').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    f.text().then(t => { try { const d = JSON.parse(t); if (d.radice) applica(d); } catch (err) { avviso('File non leggibile.'); } });
+  });
+
+  fetch(DATI_URL, { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(d => { originale = d; applica(d); })
+    .catch(() => { tutto(); avviso('Il grafo dello studiolo (dati.json) non si è caricato: usate «Apri da file».'); });
+  window.__circoli = { tutteLeDomande, get radice() { return radice; }, get legami() { return legami; } };
+})();
+</script>
+</body>
+</html>

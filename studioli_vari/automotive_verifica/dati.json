@@ -1,0 +1,153 @@
+{
+ "titolo": "Studiolo Automotive — verifica del 21 novembre 2026",
+ "aree": [
+  {"id": "A", "nome": "Assemblaggio", "colore": "#9a6b2f", "presidio": "Reuters; comunicati Stellantis, Leapmotor, BYD, Geely"},
+  {"id": "I", "nome": "Ingegneria", "colore": "#2f5f8f", "presidio": "Renault ai sindacati (Les Echos); centri R&S"},
+  {"id": "V", "nome": "Valore aggiunto", "colore": "#3b7d4f", "presidio": "nessuna fonte ancora: dati di filiera, regole UE sul contenuto locale"}
+ ],
+ "radice": {
+  "id": "rad", "tipo": "nodo",
+  "nome": "L'ipotesi regge: dove si monta, chi progetta e dove resta il valore sono tre cose distinte",
+  "perche": "Perché la localizzazione dell'assemblaggio viene letta come se portasse con sé ingegneria e valore aggiunto: lo studiolo sostiene che vanno misurati separatamente.",
+  "mancato": "Se le tre grandezze tornano a coincidere (chi monta in Europa progetta anche in Europa e vi lascia il valore), la distinzione non serve e lo studiolo va riscritto.",
+  "entro": "2027-12-31", "sentinella": "2026-12-31",
+  "mezzi": "", "persona": "", "sa": false, "risposta": "", "note": "",
+  "figli": [
+   {
+    "id": "a", "tipo": "nodo", "area": "A",
+    "nome": "Si monta in Europa, in impianti esistenti o propri",
+    "entro": "2027-12-31", "sentinella": "2026-12-31",
+    "mezzi": "", "persona": "", "sa": false, "risposta": "", "note": "", "ciclo": "esecuzione",
+    "figli": [
+     {
+      "id": "a1", "tipo": "nodo",
+      "nome": "Hongqi cerca un impianto europeo già installato",
+      "entro": "2027-06-30", "sentinella": "2026-12-31",
+      "mezzi": "", "persona": "", "sa": false, "risposta": "", "note": "", "ciclo": "esecuzione",
+      "figli": [
+       {"id": "a1a", "tipo": "nodo", "figli": [], "ciclo": "verificato",
+        "nome": "Hongqi dichiara di voler produrre in Europa",
+        "entro": "2026-11-17", "sentinella": "2026-11-17",
+        "mezzi": "Xiao Xiao (FAW) a Reuters, Venezia, 17 novembre: localizzare in Europa, produzione compresa, è una priorità strategica.",
+        "persona": "FAW", "sa": true, "risposta": "", "note": ""},
+       {"id": "a1b", "tipo": "nodo", "figli": [], "ciclo": "esecuzione",
+        "nome": "Via Stellantis–Leapmotor, stabilimento di Saragozza",
+        "entro": "2027-06-30", "sentinella": "2026-12-31",
+        "mezzi": "Reuters, 28 aprile: trattative condotte attraverso Leapmotor, di cui FAW e Stellantis sono azionisti; Saragozza indicata come possibile sede. Stellantis non ha commentato.",
+        "persona": "Stellantis, Leapmotor, FAW", "sa": false, "risposta": "",
+        "note": "È la via sostanziale, e non è nuova: c'era già ad aprile."},
+       {"id": "a1c", "tipo": "nodo", "figli": [], "ciclo": "verificato",
+        "nome": "Via Volkswagen: esclusa, per ora",
+        "entro": "2026-11-17", "sentinella": "2026-11-17",
+        "mezzi": "Portavoce di Volkswagen Group China a Reuters: nessuna trattativa con FAW sulla produzione di auto in Europa.",
+        "persona": "Volkswagen", "sa": true, "risposta": "",
+        "note": "FAW cita il rapporto di lunga data con VW in Cina; VW smentisce. Rumore, non segnale."}
+      ]
+     },
+     {"id": "a2", "tipo": "nodo", "figli": [], "ciclo": "esecuzione",
+      "nome": "BYD avvia la produzione di serie a Szeged",
+      "entro": "2026-12-31", "sentinella": "2026-12-31",
+      "mezzi": "He Zhiqi (BYD), 15 novembre: produzione di massa in preparazione; conferenza dei fornitori europei in Germania il 13 novembre. Capacità di prima fase 150.000 veicoli l'anno.",
+      "persona": "BYD", "sa": true, "risposta": "",
+      "note": "Fuori dalla finestra 18–19 novembre della prima verifica, ma dentro la settimana."},
+     {"id": "a3", "tipo": "nodo", "figli": [], "ciclo": "validato",
+      "nome": "BYD sceglie il secondo sito europeo",
+      "entro": "2026-12-31", "sentinella": "2026-12-15",
+      "mezzi": "Alfredo Altavilla (BYD), settembre: decisione entro fine anno; il sito turco di Manisa è sospeso.",
+      "persona": "BYD", "sa": false, "risposta": "", "note": ""},
+     {"id": "a4", "tipo": "nodo", "figli": [], "ciclo": "validato",
+      "nome": "Geely monta in impianti altrui (Ford a Valencia, Volvo)",
+      "entro": "2028-12-31", "sentinella": "2027-06-30",
+      "mezzi": "Accordo con Ford di luglio (EX5 a Valencia dal 2028); stabilimenti Volvo per i modelli di fascia alta dal 2028 (annuncio di agosto).",
+      "persona": "Geely, Ford, Volvo", "sa": true, "risposta": "",
+      "note": "Nessuna decisione nuova nella settimana."}
+    ]
+   },
+   {
+    "id": "i", "tipo": "nodo", "area": "I",
+    "nome": "L'architettura resta cinese, anche quando si monta in Europa",
+    "entro": "2027-12-31", "sentinella": "2026-12-31",
+    "mezzi": "", "persona": "", "sa": false, "risposta": "", "note": "", "ciclo": "esecuzione",
+    "figli": [
+     {"id": "i1", "tipo": "nodo", "figli": [], "ciclo": "verificato",
+      "nome": "La Hongqi EHS4 nasce su piattaforma Leapmotor",
+      "entro": "2026-11-18", "sentinella": "2026-11-18",
+      "mezzi": "Reuters, 18 novembre (ripreso da BusinessDay): come Stellantis, anche FAW ha investito in Leapmotor; l'EHS4 è costruita su una piattaforma Leapmotor.",
+      "persona": "Leapmotor (piattaforma), FAW (marchio)", "sa": true, "risposta": "", "note": ""},
+     {
+      "id": "i2", "tipo": "nodo",
+      "nome": "Renault sposta lo sviluppo senza cederlo",
+      "entro": "2027-12-31", "sentinella": "2026-12-31",
+      "mezzi": "", "persona": "", "sa": false, "risposta": "", "note": "", "ciclo": "esecuzione",
+      "figli": [
+       {"id": "i2a", "tipo": "nodo", "figli": [], "ciclo": "verificato",
+        "nome": "Tagli agli ingegneri in Francia: 800 entro il 2027",
+        "entro": "2026-06-24", "sentinella": "2026-06-24",
+        "mezzi": "Renault (Philippe Brunet), 24 giugno: 800 posti di ingegneria in Francia su circa 5.500; poi un taglio del 15–20% degli ingegneri nel mondo.",
+        "persona": "Renault", "sa": true, "risposta": "", "note": ""},
+       {"id": "i2b", "tipo": "nodo", "figli": [], "ciclo": "verificato",
+        "nome": "Twingo sviluppata in 21 mesi con ingegneri del centro R&S cinese",
+        "entro": "2026-11-21", "sentinella": "2026-11-21",
+        "mezzi": "Reuters (Guillaume, Patton): sviluppo della nuova Twingo sceso a 21 mesi lavorando con ingegneri cinesi nel centro di ricerca e sviluppo in Cina.",
+        "persona": "Renault, centro R&S in Cina", "sa": true, "risposta": "",
+        "note": "Data: quella della nostra verifica; la fonte è del 2026."},
+       {"id": "i2c", "tipo": "nodo", "figli": [], "ciclo": "validato",
+        "nome": "Nessun taglio di ingegneri in Cina",
+        "entro": "2027-06-30", "sentinella": "2026-12-31",
+        "mezzi": "Automotive World: i tagli toccano Francia, Brasile, India, Marocco, Romania, Corea del Sud, Spagna e Turchia; non risulta la Cina.",
+        "persona": "Renault", "sa": false, "risposta": "",
+        "note": "Non risulta non vuol dire che non avvenga: Renault non lo dice."},
+       {"id": "i2d", "tipo": "nodo", "figli": [], "ciclo": "verificato",
+        "nome": "Il 16 novembre riguarda le fabbriche, non gli ingegneri",
+        "entro": "2026-11-16", "sentinella": "2026-11-16",
+        "mezzi": "Progetto France Industrie FutuREady: 1.650 operai, 250 addetti indiretti, 100 giovani laureati entro il 2028; fino a 1.000 uscite volontarie di impiegati (qualità, supply chain); batterie ed elettronica fra i posti protetti.",
+        "persona": "Thierry Charvet (Renault)", "sa": true, "risposta": "",
+        "note": "La prima verifica lo aveva letto come taglio di ingegneri e assunzioni in digitale, robotica ed elettronica."}
+      ]
+     },
+     {"id": "i3", "tipo": "nodo", "figli": [], "ciclo": "validato",
+      "nome": "Nessun progetto europeo passa a BYD o Geely",
+      "entro": "2027-06-30", "sentinella": "2026-12-31",
+      "mezzi": "Nessuna fonte lo documenta, né il 19 né il 21 novembre.",
+      "persona": "Costruttori europei", "sa": false, "risposta": "",
+      "note": "Un'assenza di prove non si conferma: resta aperta per costruzione."},
+     {"id": "i4", "tipo": "nodo", "figli": [], "ciclo": "validato",
+      "nome": "BYD affianca a Szeged un centro R&S (guida intelligente, sistemi EV)",
+      "entro": "2027-06-30", "sentinella": "2026-12-31",
+      "mezzi": "electrive, febbraio, sulla base delle dichiarazioni del sindaco di Szeged.",
+      "persona": "BYD", "sa": false, "risposta": "",
+      "note": "Se si riempie, è ingegneria cinese in Europa: il caso rovesciato di Renault."}
+    ]
+   },
+   {
+    "id": "v", "tipo": "prodotto", "area": "V",
+    "nome": "Valore lasciato in Europa = volumi montati × contenuto locale per veicolo",
+    "entro": "2027-12-31", "sentinella": "2027-06-30",
+    "mezzi": "", "persona": "", "sa": false, "risposta": "", "note": "", "ciclo": "proposto",
+    "figli": [
+     {"id": "v1", "tipo": "nodo", "figli": [], "ciclo": "proposto",
+      "nome": "Volumi montati in Europa da marchi cinesi",
+      "entro": "2027-12-31", "sentinella": "2027-06-30",
+      "mezzi": "Solo capacità annunciate (Szeged 150.000 l'anno in prima fase): le capacità non sono volumi.",
+      "persona": "", "sa": false, "risposta": "", "note": ""},
+     {"id": "v2", "tipo": "nodo", "figli": [], "ciclo": "proposto",
+      "nome": "Contenuto locale per veicolo: componenti, batterie, software",
+      "entro": "", "sentinella": "",
+      "mezzi": "", "persona": "", "sa": false, "risposta": "",
+      "note": "È la grandezza su cui la settimana non dice niente."},
+     {"id": "v3", "tipo": "legame", "figli": [],
+      "nome": "Legame fra i fattori",
+      "entro": "", "sentinella": "", "mezzi": "", "persona": "", "sa": false, "risposta": "", "note": ""}
+    ]
+   }
+  ]
+ },
+ "legami": [
+  {"id": "L1", "da": "a1b", "a": "i1", "tipo": "insieme",
+   "risposta": "Stessa operazione vista da due lati: l'impianto sarebbe europeo e di Stellantis, l'architettura cinese e di Leapmotor."},
+  {"id": "L2", "da": "i2a", "a": "i2b", "tipo": "risorsa",
+   "risposta": "Le ore di sviluppo. Oggi la precedenza va al centro cinese, per tempi e costi (lettura nostra)."},
+  {"id": "L3", "da": "a1b", "a": "v1", "tipo": "prima", "risposta": ""},
+  {"id": "L4", "da": "i1", "a": "v2", "tipo": "contrasto", "risposta": ""}
+ ]
+}
